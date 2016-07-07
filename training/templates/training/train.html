@@ -2,11 +2,19 @@
 
 <ul>
 {% for excercise in training_session.excercise_set.all %}
-    <li>{{ excercise.name }}: hi</li>
+    <li>
+        {{ excercise.name }}: hi
+        <form action="{% url 'save_excercise' excercise.id %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="sets" value="{{ excercise.sets }}" />
+            <input type="submit" value="save" />
+        </form>
+    </li>
 {% endfor %}
 </ul>
 
-<form action="{% url 'add_excercise' training_session.id %}">
+<form action="{% url 'add_excercise' training_session.id %}" method="post">
+    {% csrf_token %}
     <input type="text" name="name" />
     <input type="submit" value="start" />
 </form>

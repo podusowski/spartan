@@ -1,7 +1,7 @@
 from django.shortcuts import *
 from django.http import HttpResponse
 
-from .models import TrainingSession
+from .models import TrainingSession, Excercise
 
 def index(request):
     return render(request, 'training/index.html')
@@ -15,3 +15,9 @@ def add_excercise(request, training_session_id):
     s.excercise_set.create()
     s.save()
     return redirect('train', training_session_id)
+
+def save_excercise(request, excercise_id):
+    s = Excercise.objects.get(pk=excercise_id)
+    s.sets = request.POST['sets']
+    s.save()
+    return redirect('train', s.training_session.id)
