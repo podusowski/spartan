@@ -1,1 +1,6 @@
-<h1>Train</h1>
+<h1>Session {{ training_session.id }}</h1>
+
+<form action="{% url 'add_excercise' training_session.id %}">
+    <input type="text" name="name" />
+    <input type="submit" />
+</form>
