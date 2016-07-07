@@ -12,4 +12,6 @@ def train(request, training_session_id):
 
 def add_excercise(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
+    s.excercise_set.create()
+    s.save()
     return redirect('train', training_session_id)

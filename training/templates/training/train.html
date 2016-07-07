@@ -1,6 +1,12 @@
 <h1>Session {{ training_session.id }}</h1>
 
+<ul>
+{% for excercise in training_session.excercise_set.all %}
+    <li>{{ excercise.name }}: hi</li>
+{% endfor %}
+</ul>
+
 <form action="{% url 'add_excercise' training_session.id %}">
     <input type="text" name="name" />
-    <input type="submit" />
+    <input type="submit" value="start" />
 </form>
