@@ -1,5 +1,13 @@
 <h1>Session {{ training_session.id }}</h1>
 
+<nav>
+    <a href="{% url 'index' %}">go back</a>
+</nav>
+
+{% if training_session.live %}
+<h2>Live</h2>
+{% endif %}
+
 <p>
     <ul>
     {% for excercise in training_session.excercise_set.all %}

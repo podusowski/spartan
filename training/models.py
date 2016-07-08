@@ -2,6 +2,12 @@ from django.db import models
 
 
 class TrainingSession(models.Model):
+    started = models.DateTimeField(null=True, default=None)
+    finished = models.DateTimeField(null=True, default=None)
+
+    def live(self):
+        return self.started is not None and self.finished is None
+
     def utd(self):
         """ userfriendly training data string """
         return '\n'.join(map(lambda x: x.utd(), self.excercise_set.all()))
