@@ -10,20 +10,20 @@ def index(request):
 def start_training_session(request):
     s = TrainingSession()
     s.save()
-    return redirect('train', s.id)
+    return redirect('training_session', s.id)
 
-def train(request, training_session_id):
+def training_session(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
-    return render(request, 'training/train.html', {'training_session': s})
+    return render(request, 'training/training_session.html', {'training_session': s})
 
 def add_excercise(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
-    s.excercise_set.create()
+    s.excercise_set.create(name=request.POST['name'])
     s.save()
-    return redirect('train', training_session_id)
+    return redirect('training_session', training_session_id)
 
 def save_excercise(request, excercise_id):
     s = Excercise.objects.get(pk=excercise_id)
     s.sets = request.POST['sets']
     s.save()
-    return redirect('train', s.training_session.id)
+    return redirect('training_session', s.training_session.id)
