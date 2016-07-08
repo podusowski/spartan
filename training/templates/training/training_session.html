@@ -4,6 +4,10 @@
     <a href="{% url 'index' %}">go back</a>
 </nav>
 
+{%if not training_session.started%}
+<p>this workout has not beed started yet, add first excercise to do it</p>
+{%endif%}
+
 {% if training_session.live %}
 <p>live, started at {{training_session.started.time}}</p>
 {% endif %}
