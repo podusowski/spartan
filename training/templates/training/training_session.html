@@ -5,8 +5,12 @@
 </nav>
 
 {% if training_session.live %}
-<h2>Live</h2>
+<p>live, started at {{training_session.started.time}}</p>
 {% endif %}
+
+{%if training_session.finished%}
+<p>started at {{training_session.started}} and finished at {{training_session.finished}}</p>
+{%endif%}
 
 <p>
     <ul>
@@ -32,9 +36,20 @@
     </form>
 </p>
 
+{%if not training_session.finished%}
+<p>
+    <form action="{% url 'finish_training_session' training_session.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="finish this session" />
+    </form>
+</p>
+{%endif%}
+
+{%if training_session.finished%}
 <h1>UTD string</h1>
 <p>
     <pre>
 {{ training_session.utd }}
     </pre>
 </p>
+{%endif%}

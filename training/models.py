@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 
 
@@ -7,6 +8,14 @@ class TrainingSession(models.Model):
 
     def live(self):
         return self.started is not None and self.finished is None
+
+    def start(self):
+        if not s.live():
+            s.started = datetime.datetime.now()
+
+    def finish(self):
+        if self.finished is None:
+            self.finished = datetime.datetime.now()
 
     def utd(self):
         """ userfriendly training data string """
