@@ -6,6 +6,11 @@ from .models import TrainingSession, Excercise
 def index(request):
     return render(request, 'training/index.html')
 
+def start_training_session(request):
+    s = TrainingSession()
+    s.save()
+    return redirect('train', s.id)
+
 def train(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
     return render(request, 'training/train.html', {'training_session': s})
