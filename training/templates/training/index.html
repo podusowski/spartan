@@ -5,3 +5,11 @@
 </p>
 
 <h1>Previous sessions</h1>
+
+<p>
+    <ul>
+    {% for session in previous_training_sessions %}
+        <li><a href="{% url 'train' session.id %}">{{ session.id }}.</a></li>
+    {% endfor %}
+    </ul>
+</p>

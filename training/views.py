@@ -4,7 +4,8 @@ from django.http import HttpResponse
 from .models import TrainingSession, Excercise
 
 def index(request):
-    return render(request, 'training/index.html')
+    previous_training_sessions = TrainingSession.objects.all()
+    return render(request, 'training/index.html', {'previous_training_sessions': previous_training_sessions})
 
 def start_training_session(request):
     s = TrainingSession()
