@@ -56,10 +56,19 @@ class ViewsTestCase(TestCase):
         request = self.request_factory.get('')
         views.start_training_session(request)
 
+        # session gets started when first excercise starts
         session = TrainingSession.objects.get()
         self.assertFalse(session.live())
 
         return session
+
+    def _finish_session(self, session):
+        request = self.request_factory.get('')
+        views.finish_training_session(request, session.pk)
+        session.refresh_from_db()
+        self.assertFalse(session.live())
+        self.assertIsNotNone(session.started)
+        self.assertIsNotNone(session.finished)
 
     def _start_excercise(self, session):
         request = self.request_factory.post('', {'name': "push-up"})
@@ -85,3 +94,6 @@ class ViewsTestCase(TestCase):
         self._add_reps(push_ups, "10 10")
 
         crunches = self._start_excercise(session)
+        self._add_reps(crunches, "20")
+
+        self._finish_session(session)
