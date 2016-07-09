@@ -22,7 +22,7 @@ def finish_workout(request, training_session_id):
 
 def training_session(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
-    return render(request, 'training/training_session.html', {'training_session': s})
+    return render(request, 'training/workout.html', {'training_session': s})
 
 def add_excercise(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
