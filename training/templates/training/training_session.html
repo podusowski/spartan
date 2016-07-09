@@ -42,7 +42,7 @@
 
 {%if not training_session.finished%}
 <p>
-    <form action="{% url 'finish_training_session' training_session.id %}" method="post">
+    <form action="{% url 'finish_workout' training_session.id %}" method="post">
         {% csrf_token %}
         <input type="submit" value="finish this session" />
     </form>

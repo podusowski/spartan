@@ -14,7 +14,7 @@ def start_workout(request):
     s.save()
     return redirect('training_session', s.id)
 
-def finish_training_session(request, training_session_id):
+def finish_workout(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
     s.finish()
     s.save()

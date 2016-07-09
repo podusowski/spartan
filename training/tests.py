@@ -62,9 +62,9 @@ class ViewsTestCase(TestCase):
 
         return session
 
-    def _finish_session(self, session):
+    def _finish_workout(self, session):
         request = self.request_factory.get('')
-        views.finish_training_session(request, session.pk)
+        views.finish_workout(request, session.pk)
         session.refresh_from_db()
         self.assertFalse(session.live())
         self.assertIsNotNone(session.started)
@@ -96,4 +96,4 @@ class ViewsTestCase(TestCase):
         crunches = self._start_excercise(session)
         self._add_reps(crunches, "20")
 
-        self._finish_session(session)
+        self._finish_workout(session)
