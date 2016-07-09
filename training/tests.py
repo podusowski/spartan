@@ -1,51 +1,51 @@
 from django.test import TestCase, RequestFactory
-from .models import TrainingSession, Excercise
+from .models import Workout, Excercise
 from . import views
 
 
 class TrainingSessionTestCase(TestCase):
     def setUp(self):
-        self.session = TrainingSession.objects.create()
+        self.workout = Workout.objects.create()
 
     def test_starting_session_should_mark_time_when_it_was_done(self):
-        self.assertFalse(self.session.live())
-        self.assertIsNone(self.session.started)
+        self.assertFalse(self.workout.live())
+        self.assertIsNone(self.workout.started)
 
-        self.session.start()
+        self.workout.start()
 
-        self.assertTrue(self.session.live())
-        self.assertIsNotNone(self.session.started)
+        self.assertTrue(self.workout.live())
+        self.assertIsNotNone(self.workout.started)
 
     def test_session_cant_be_started_twice(self):
-        self.session.start()
+        self.workout.start()
         with self.assertRaises(RuntimeError):
-            self.session.start()
+            self.workout.start()
 
     def test_finishing_session_should_mark_the_time(self):
-        self.session.start()
+        self.workout.start()
 
-        self.assertIsNone(self.session.finished)
+        self.assertIsNone(self.workout.finished)
 
-        self.session.finish()
+        self.workout.finish()
 
-        self.assertIsNotNone(self.session.started)
-        self.assertIsNotNone(self.session.finished)
+        self.assertIsNotNone(self.workout.started)
+        self.assertIsNotNone(self.workout.finished)
 
     def test_cant_finish_before_starting(self):
         with self.assertRaises(RuntimeError):
-            self.session.finish()
+            self.workout.finish()
 
     def test_cant_finish_twice(self):
-        self.session.start()
-        self.session.finish()
+        self.workout.start()
+        self.workout.finish()
         with self.assertRaises(RuntimeError):
-            self.session.finish()
+            self.workout.finish()
 
     def test_cant_start_finished_session(self):
-        self.session.start()
-        self.session.finish()
+        self.workout.start()
+        self.workout.finish()
         with self.assertRaises(RuntimeError):
-            self.session.start()
+            self.workout.start()
 
 
 class ViewsTestCase(TestCase):
@@ -56,23 +56,23 @@ class ViewsTestCase(TestCase):
         request = self.request_factory.get('')
         views.start_workout(request)
 
-        # session gets started when first excercise starts
-        session = TrainingSession.objects.get()
-        self.assertFalse(session.live())
+        # workout gets started when first excercise starts
+        workout = Workout.objects.get()
+        self.assertFalse(workout.live())
 
-        return session
+        return workout
 
-    def _finish_workout(self, session):
+    def _finish_workout(self, workout):
         request = self.request_factory.get('')
-        views.finish_workout(request, session.pk)
-        session.refresh_from_db()
-        self.assertFalse(session.live())
-        self.assertIsNotNone(session.started)
-        self.assertIsNotNone(session.finished)
+        views.finish_workout(request, workout.pk)
+        workout.refresh_from_db()
+        self.assertFalse(workout.live())
+        self.assertIsNotNone(workout.started)
+        self.assertIsNotNone(workout.finished)
 
-    def _start_excercise(self, session):
+    def _start_excercise(self, workout):
         request = self.request_factory.post('', {'name': "push-up"})
-        views.add_excercise(request, session.pk)
+        views.add_excercise(request, workout.pk)
         excercise = Excercise.objects.latest('pk')
         return excercise
 
@@ -83,17 +83,17 @@ class ViewsTestCase(TestCase):
         self.assertEqual(reps, excercise.sets)
 
     def test_full_session(self):
-        session = self._start_workout()
+        workout = self._start_workout()
 
-        push_ups = self._start_excercise(session)
+        push_ups = self._start_excercise(workout)
 
-        session.refresh_from_db()
-        self.assertTrue(session.live())
+        workout.refresh_from_db()
+        self.assertTrue(workout.live())
 
         self._add_reps(push_ups, "10")
         self._add_reps(push_ups, "10 10")
 
-        crunches = self._start_excercise(session)
+        crunches = self._start_excercise(workout)
         self._add_reps(crunches, "20")
 
-        self._finish_workout(session)
+        self._finish_workout(workout)
