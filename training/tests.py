@@ -3,20 +3,39 @@ from .models import TrainingSession
 
 
 class TrainingSessionTestCase(TestCase):
+    def setUp(self):
+        self.session = TrainingSession.objects.create()
+
     def test_starting_session_should_mark_time_when_it_was_done(self):
-        session = TrainingSession.objects.create()
+        self.assertFalse(self.session.live())
+        self.assertIsNone(self.session.started)
 
-        self.assertFalse(session.live())
-        self.assertIsNone(session.started)
+        self.session.start()
 
-        session.start()
-
-        self.assertTrue(session.live())
-        self.assertIsNotNone(session.started)
+        self.assertTrue(self.session.live())
+        self.assertIsNotNone(self.session.started)
 
     def test_session_cant_be_started_twice(self):
-        session = TrainingSession.objects.create()
-
-        session.start()
+        self.session.start()
         with self.assertRaises(RuntimeError):
-            session.start()
+            self.session.start()
+
+    def test_finishing_session_should_mark_the_time(self):
+        self.session.start()
+
+        self.assertIsNone(self.session.finished)
+
+        self.session.finish()
+
+        self.assertIsNotNone(self.session.started)
+        self.assertIsNotNone(self.session.finished)
+
+    def test_cant_finish_before_starting(self):
+        with self.assertRaises(RuntimeError):
+            self.session.finish()
+
+    def test_cant_finish_twice(self):
+        self.session.start()
+        self.session.finish()
+        with self.assertRaises(RuntimeError):
+            self.session.finish()

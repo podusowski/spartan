@@ -16,8 +16,13 @@ class TrainingSession(models.Model):
         self.started = datetime.datetime.now()
 
     def finish(self):
-        if self.finished is None:
-            self.finished = datetime.datetime.now()
+        if self.started is None:
+            raise RuntimeError("tried to finish not started session")
+
+        if self.finished is not None:
+            raise RuntimeError("tried to finish already finished session")
+
+        self.finished = datetime.datetime.now()
 
     def utd(self):
         """ userfriendly training data string """
