@@ -27,7 +27,7 @@ def training_session(request, training_session_id):
 def add_excercise(request, training_session_id):
     s = TrainingSession.objects.get(pk=training_session_id)
     s.excercise_set.create(name=request.POST['name'])
-    s.finish()
+    s.start()
     s.save()
     return redirect('training_session', training_session_id)
 

@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import TrainingSession
+from . import views
 
 
 class TrainingSessionTestCase(TestCase):
@@ -39,3 +40,13 @@ class TrainingSessionTestCase(TestCase):
         self.session.finish()
         with self.assertRaises(RuntimeError):
             self.session.finish()
+
+    def test_cant_start_finished_session(self):
+        self.session.start()
+        self.session.finish()
+        with self.assertRaises(RuntimeError):
+            self.session.start()
+
+
+class ViewsTestCase(TestCase):
+    pass

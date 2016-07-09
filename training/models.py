@@ -13,6 +13,9 @@ class TrainingSession(models.Model):
         if self.live():
             raise RuntimeError("session is already started")
 
+        if self.finished is not None:
+            raise RuntimeError("tried to start already finished session")
+
         self.started = datetime.datetime.now()
 
     def finish(self):
