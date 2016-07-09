@@ -1,5 +1,5 @@
-from django.test import TestCase
-from .models import TrainingSession
+from django.test import TestCase, RequestFactory
+from .models import TrainingSession, Excercise
 from . import views
 
 
@@ -49,4 +49,36 @@ class TrainingSessionTestCase(TestCase):
 
 
 class ViewsTestCase(TestCase):
-    pass
+    def setUp(self):
+        self.request_factory = RequestFactory()
+
+    def _start_training_session(self):
+        request = self.request_factory.get('')
+        views.start_training_session(request)
+
+        session = TrainingSession.objects.get()
+        self.assertFalse(session.live())
+
+        return session
+
+    def _start_excercise(self, session):
+        request = self.request_factory.post('', {'name': "push-up"})
+        views.add_excercise(request, session.pk)
+        excercise = Excercise.objects.get()
+        return excercise
+
+    def test_full_session(self):
+        session = self._start_training_session()
+
+        push_ups = self._start_excercise(session)
+
+        session.refresh_from_db()
+        self.assertTrue(session.live())
+
+        # add some reps
+        request = self.request_factory.post('', {'sets': "10 10"})
+        views.save_excercise(request, push_ups.pk)
+        push_ups.refresh_from_db()
+        self.assertEqual("10 10", push_ups.sets)
+
+        crunches = self._start_excercise(session)
