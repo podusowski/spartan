@@ -64,8 +64,14 @@ class ViewsTestCase(TestCase):
     def _start_excercise(self, session):
         request = self.request_factory.post('', {'name': "push-up"})
         views.add_excercise(request, session.pk)
-        excercise = Excercise.objects.get()
+        excercise = Excercise.objects.latest('pk')
         return excercise
+
+    def _add_reps(self, excercise, reps):
+        request = self.request_factory.post('', {'sets': reps})
+        views.save_excercise(request, excercise.pk)
+        excercise.refresh_from_db()
+        self.assertEqual(reps, excercise.sets)
 
     def test_full_session(self):
         session = self._start_training_session()
@@ -75,10 +81,7 @@ class ViewsTestCase(TestCase):
         session.refresh_from_db()
         self.assertTrue(session.live())
 
-        # add some reps
-        request = self.request_factory.post('', {'sets': "10 10"})
-        views.save_excercise(request, push_ups.pk)
-        push_ups.refresh_from_db()
-        self.assertEqual("10 10", push_ups.sets)
+        self._add_reps(push_ups, "10")
+        self._add_reps(push_ups, "10 10")
 
         crunches = self._start_excercise(session)
