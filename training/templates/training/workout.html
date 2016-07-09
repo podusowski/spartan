@@ -1,25 +1,25 @@
-<h1>Session {{ training_session.id }}</h1>
+<h1>Workout #{{workout.id}}</h1>
 
 <nav>
     <a href="{% url 'index' %}">go back</a>
 </nav>
 
-{%if not training_session.started%}
+{%if not workout.started%}
 <p>this workout has not beed started yet, add first excercise to do it</p>
 {%endif%}
 
-{% if training_session.live %}
+{% if workout.live %}
 <p>live</p>
 <p><input type="text" id="stopwatch" /></p>
 {% endif %}
 
-{%if training_session.finished%}
-<p>started at {{training_session.started}} and finished at {{training_session.finished}}</p>
+{%if workout.finished%}
+<p>started at {{workout.started}} and finished at {{workout.finished}}</p>
 {%endif%}
 
 <p>
     <ul>
-    {% for excercise in training_session.excercise_set.all %}
+    {% for excercise in workout.excercise_set.all %}
         <li>
             <form action="{% url 'save_excercise' excercise.id %}" method="post">
                 {% csrf_token %}
@@ -33,7 +33,7 @@
 </p>
 
 <p>
-    <form action="{% url 'add_excercise' training_session.id %}" method="post">
+    <form action="{% url 'add_excercise' workout.id %}" method="post">
         {% csrf_token %}
         <label for="new_excercise_name">start new excercise</label>
         <input type="text" id="new_excercise_name" name="name" placeholder="excercise name" required />
@@ -41,20 +41,20 @@
     </form>
 </p>
 
-{%if not training_session.finished%}
+{%if not workout.finished%}
 <p>
-    <form action="{% url 'finish_workout' training_session.id %}" method="post">
+    <form action="{% url 'finish_workout' workout.id %}" method="post">
         {% csrf_token %}
         <input type="submit" value="finish this session" />
     </form>
 </p>
 {%endif%}
 
-{%if training_session.finished%}
+{%if workout.finished%}
 <h1>UTD string</h1>
 <p>
     <pre>
-{{ training_session.utd }}
+{{ workout.utd }}
     </pre>
 </p>
 {%endif%}
@@ -80,7 +80,7 @@
 
     window.onload = function()
     {
-        var start_time = new Date("{{training_session.started.isoformat}}");
+        var start_time = new Date("{{workout.started.isoformat}}");
         update_stopwatch(start_time);
     };
 </script>

@@ -2,16 +2,16 @@
 
 <p>
     <form action="{% url 'start_workout' %}">
-        <input type="submit" value="start new training session" />
+        <input type="submit" value="start new workout" />
     </form>
 </p>
 
-<h1>Previous sessions</h1>
+<h1>Previous workouts</h1>
 
 <p>
     <ul>
-    {% for session in previous_training_sessions %}
-        <li><a href="{% url 'training_session' session.id %}">{{session.id}}.{%if session.live %}live{%endif%}{%if not session.started%}not started{%endif%}</a></li>
+    {% for workout in previous_workouts %}
+        <li><a href="{% url 'training_session' workout.id %}">#{{workout.id}}{%if workout.live %}live{%endif%}{%if not workout.started%}not started{%endif%}</a></li>
     {% endfor %}
     </ul>
 </p>

@@ -6,8 +6,8 @@ from django.http import HttpResponse
 from .models import Workout, Excercise
 
 def index(request):
-    previous_training_sessions = Workout.objects.order_by('-pk')
-    return render(request, 'training/index.html', {'previous_training_sessions': previous_training_sessions})
+    previous_workouts = Workout.objects.order_by('-pk')
+    return render(request, 'training/index.html', {'previous_workouts': previous_workouts})
 
 def start_workout(request):
     s = Workout()
@@ -21,8 +21,8 @@ def finish_workout(request, training_session_id):
     return redirect('training_session', s.id)
 
 def training_session(request, training_session_id):
-    s = Workout.objects.get(pk=training_session_id)
-    return render(request, 'training/workout.html', {'training_session': s})
+    workout = Workout.objects.get(pk=training_session_id)
+    return render(request, 'training/workout.html', {'workout': workout})
 
 def add_excercise(request, training_session_id):
     s = Workout.objects.get(pk=training_session_id)
