@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from .models import TrainingSession, Excercise
 
 def index(request):
-    previous_training_sessions = TrainingSession.objects.all()
+    previous_training_sessions = TrainingSession.objects.order_by('-pk')
     return render(request, 'training/index.html', {'previous_training_sessions': previous_training_sessions})
 
 def start_training_session(request):
