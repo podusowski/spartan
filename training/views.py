@@ -9,7 +9,7 @@ def index(request):
     previous_training_sessions = TrainingSession.objects.order_by('-pk')
     return render(request, 'training/index.html', {'previous_training_sessions': previous_training_sessions})
 
-def start_training_session(request):
+def start_workout(request):
     s = TrainingSession()
     s.save()
     return redirect('training_session', s.id)

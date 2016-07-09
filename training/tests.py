@@ -52,9 +52,9 @@ class ViewsTestCase(TestCase):
     def setUp(self):
         self.request_factory = RequestFactory()
 
-    def _start_training_session(self):
+    def _start_workout(self):
         request = self.request_factory.get('')
-        views.start_training_session(request)
+        views.start_workout(request)
 
         # session gets started when first excercise starts
         session = TrainingSession.objects.get()
@@ -83,7 +83,7 @@ class ViewsTestCase(TestCase):
         self.assertEqual(reps, excercise.sets)
 
     def test_full_session(self):
-        session = self._start_training_session()
+        session = self._start_workout()
 
         push_ups = self._start_excercise(session)
 
