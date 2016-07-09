@@ -10,6 +10,7 @@
 
 {% if training_session.live %}
 <p>live, started at {{training_session.started.time}}</p>
+<p><input type="text" id="stopwatch" /></p>
 {% endif %}
 
 {%if training_session.finished%}
@@ -57,3 +58,30 @@
     </pre>
 </p>
 {%endif%}
+
+<script>
+    function update_stopwatch(start_time)
+    {
+        now = new Date();
+
+        var diff = now.getTime() - start_time.getTime();
+
+        document.getElementById('stopwatch').value = format_time(diff);
+        refresh = setTimeout(function() { update_stopwatch(start_time); }, 500);
+    }
+
+    function format_time(ms)
+    {
+        var second = Math.floor(ms/1000);
+        var minute = Math.floor(ms/60000);
+        second = second - 60 * minute + '';
+        return minute + 'm ' + second + 's';
+    }
+
+    window.onload = function()
+    {
+        var start_time = new Date("{{training_session.started.isoformat}}");
+        update_stopwatch(start_time);
+    };
+</script>
+
