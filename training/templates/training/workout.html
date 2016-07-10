@@ -36,6 +36,8 @@
                         {%for reps in excercise.reps_set.all%}
                             <span class="reps">{{reps.reps}}</span>
                         {%endfor%}
+
+                        <span class="total_reps reps">({{excercise.total_reps}})</span>
                     </div>
 
                     {%if forloop.last%}

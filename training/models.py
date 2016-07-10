@@ -42,6 +42,10 @@ class Excercise(models.Model):
         r = ' '.join(map(lambda x: str(x.reps), reps))
         return ': '.join([self.name, r])
 
+    def total_reps(self):
+        reps = self.reps_set.all()
+        return sum(map(lambda x: x.reps, reps))
+
     workout = models.ForeignKey(Workout)
     name = models.CharField(max_length=200)
 
