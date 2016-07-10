@@ -1,7 +1,7 @@
 <html>
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimal-ui, user-scalable: no">
 <meta name="application-name" content="Spartan">
 <meta name="msapplication-TileColor" content="#0E2B5E"/>
 
@@ -31,14 +31,24 @@ p
     padding: 0.2em;
 }
 
+input[type="submit"]::-moz-focus-inner {border:0;}
+
 input
 {
     background-color: #0066cc;
-    border: 1px solid #1177dd;
+    border: 3px solid #0066cc;
     padding: 0.5em;
     font-size: 1.5em;
-    box-shadow: 0px 0px 5px 0px rgba(255,255,255,0.1);
+    box-shadow: 0px 0px 5px 0px rgba(255,255,255,0.2);
     max-width: 75%;
+    outline: none;
+}
+
+input[type="text"]
+{
+    background-color: white;
+    border: 3px solid #0066cc;
+    color: black;
 }
 
 label
@@ -58,6 +68,8 @@ li
 }
 </style>
 
+{%spaceless%}
 {%block content%}{%endblock%}
+{%endspaceless%}
 
 </html>
