@@ -11,7 +11,7 @@
 
 <style>
 
-{%with primary_color='#eb4f06' secondary_color='#555'%}
+{%with primary_color='#eb4f06' secondary_color='#444'%}
 
 
 *
@@ -74,19 +74,21 @@ input
     max-width: 60%;
     outline: none;
     color: white;
+    border-width: 1px;
+    border-style: solid;
 }
 
 .minor input
 {
     background-color: {{secondary_color}};
-    border: 3px solid {{secondary_color}};
+    border-color: {{secondary_color}};
 }
 
 .minor input[type="text"],
 .minor input[type="number"]
 {
-    border: 3px solid {{secondary_color}};
-    background-color: white;
+    border-color: {{secondary_color}};
+    background-color: #aaa;
     color: black;
 }
 
@@ -134,20 +136,15 @@ input
     margin-right: 0.5em;
 }
 
-.excercise div
-{
-    padding: 0.5em;
-}
-
 .major input
 {
     background-color: {{primary_color}};
-    border: 3px solid {{primary_color}};
+    border-color: {{primary_color}};
 }
 
 .major input[type="text"]
 {
-    border: 3px solid {{primary_color}};
+    border-color: {{primary_color}};
     background-color: white;
     color: black;
 }
@@ -156,20 +153,6 @@ input
 {
     color: {{primary_color}};
     font-size: x-large;
-}
-
-label
-{
-    font-style: italic;
-    display: block;
-    font-weight: bold;
-    margin: 0.5em;
-}
-
-fieldset
-{
-    background: transparent;
-    border: 0;
 }
 
 .box
@@ -185,8 +168,14 @@ li
     padding: 0.2em;
     margin: 0;
     list-style-position: inside;
-    background: linear-gradient(135deg, #222 0%, #000 100%);
     border-bottom: 1px solid #111;
+}
+
+li a
+{
+    display: block;
+    color: {{primary_color}};
+    text-decoration: none;
 }
 {%endwith%}
 </style>

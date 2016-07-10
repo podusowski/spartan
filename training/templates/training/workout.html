@@ -28,47 +28,45 @@
 
 <h2>excercises</h2>
 <div class="minor">
-        {%for excercise in workout.excercise_set.all%}
-                <div class="excercise box">
-                    <div>
-                        <span class="name">{{excercise.name}}</span>
+    {%for excercise in workout.excercise_set.all%}
+        <div class="excercise box">
+            <div>
+                <span class="name">{{excercise.name}}</span>
 
-                        {%for reps in excercise.reps_set.all%}
-                            <span class="reps">{{reps.reps}}</span>
-                        {%endfor%}
+                {%for reps in excercise.reps_set.all%}
+                    <span class="reps">{{reps.reps}}</span>
+                {%endfor%}
 
-                        <span class="total_reps reps">({{excercise.total_reps}})</span>
-                    </div>
+                <span class="total_reps reps">({{excercise.total_reps}})</span>
+            </div>
 
-                    {%if forloop.last%}
-                        <div>
-                            <form action="{% url 'add_reps' excercise.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" />
-                                    <input type="submit" value="add" />
-                            </form>
+            {%if forloop.last%}
+                <div>
+                    <form action="{% url 'add_reps' excercise.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" />
+                        <input type="submit" value="add" />
+                    </form>
 
-                            <form action="{% url 'add_reps' excercise.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="reps" value="10" />
-                                    <input type="submit" value="+10" />
-                            </form>
-                        </div>
-                    {%endif%}
+                    <form action="{% url 'add_reps' excercise.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="reps" value="10" />
+                        <input type="submit" value="+10" />
+                    </form>
                 </div>
-        {%empty%}
+            {%endif%}
+        </div>
+    {%empty%}
             <div class="box">you will be counting your reps here</div>
-        {%endfor%}
+    {%endfor%}
 </div>
 
 <h2>start new excercise</h2>
 <div class="major box">
     <form action="{% url 'add_excercise' workout.id %}" method="post">
-        <fieldset class="major">
             {% csrf_token %}
             <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
             <input type="submit" value="start" />
-        </fieldset>
     </form>
 </div>
 
