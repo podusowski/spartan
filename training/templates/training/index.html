@@ -2,15 +2,17 @@
 
 {%block content%}
 
-<h1>Spartan</h1>
+<h1>spartan</h1>
 
 <p>
     <form action="{% url 'start_workout' %}">
-        <input type="submit" value="start new workout" />
+        <fieldset class="major">
+            <input type="submit" value="new workout" />
+        </fieldset>
     </form>
 </p>
 
-<h1>Previous workouts</h1>
+<h1>history</h1>
 
 <p>
     <ul>

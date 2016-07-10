@@ -2,7 +2,7 @@
 
 {%block content%}
 
-<h1>Workout #{{workout.id}}</h1>
+<h1>workout #{{workout.id}}</h1>
 
 <nav>
     <a href="{% url 'index' %}">go back</a>
@@ -22,33 +22,39 @@
 
 <p>
     <ul>
-    {% for excercise in workout.excercise_set.all %}
-        <li>
-            <form action="{% url 'save_excercise' excercise.id %}" method="post">
-                {% csrf_token %}
-                <label for="sets_{{ excercise.id }}">{{ excercise.name }}</label>
-                <input type="text" id="sets_{{ excercise.id }}" name="sets" value="{{ excercise.sets }}" placeholder="reps" />
-                <input type="submit" value="save" />
-            </form>
-        </li>
-    {% endfor %}
+        {% for excercise in workout.excercise_set.all %}
+            <li>
+                <form action="{% url 'save_excercise' excercise.id %}" method="post">
+                    <fieldset class="minor">
+                        {% csrf_token %}
+                        <label for="sets_{{ excercise.id }}">{{ excercise.name }}</label>
+                        <input type="text" id="sets_{{ excercise.id }}" name="sets" value="{{ excercise.sets }}" placeholder="reps" />
+                        <input type="submit" value="save" />
+                    </fieldset>
+                </form>
+            </li>
+        {% endfor %}
     </ul>
 </p>
 
 <p>
     <form action="{% url 'add_excercise' workout.id %}" method="post">
-        {% csrf_token %}
-        <label for="new_excercise_name">start new excercise</label>
-        <input type="text" id="new_excercise_name" name="name" placeholder="excercise name" required />
-        <input type="submit" value="start" />
+        <fieldset class="major">
+            {% csrf_token %}
+            <label for="new_excercise_name">start new excercise</label>
+            <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
+            <input type="submit" value="start" />
+        </fieldset>
     </form>
 </p>
 
 {%if not workout.finished%}
 <p>
     <form action="{% url 'finish_workout' workout.id %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="finish workout" />
+        <fieldset class="major">
+            {% csrf_token %}
+            <input type="submit" value="finish workout" />
+        </fieldset>
     </form>
 </p>
 {%endif%}

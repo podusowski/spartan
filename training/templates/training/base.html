@@ -35,20 +35,11 @@ input[type="submit"]::-moz-focus-inner {border:0;}
 
 input
 {
-    background-color: #0066cc;
-    border: 3px solid #0066cc;
     padding: 0.5em;
     font-size: 1.5em;
     box-shadow: 0px 0px 5px 0px rgba(255,255,255,0.2);
     max-width: 75%;
     outline: none;
-}
-
-input[type="text"]
-{
-    background-color: white;
-    border: 3px solid #0066cc;
-    color: black;
 }
 
 input[readonly]
@@ -58,12 +49,52 @@ input[readonly]
     color: #D26700;
 }
 
-label
+fieldset.minor input
+{
+    background-color: #0066cc;
+    border: 3px solid #0066cc;
+}
+
+fieldset.minor input[type="text"]
+{
+    border: 3px solid #0066cc;
+    background-color: white;
+    color: black;
+}
+
+fieldset.minor label
 {
     color: #0066cc;
+}
+
+fieldset.major input
+{
+    background-color: #d26700;
+    border: 3px solid #d26700;
+}
+
+fieldset.major input[type="text"]
+{
+    border: 3px solid #d26700;
+    background-color: white;
+    color: black;
+}
+
+fieldset.major label
+{
+    color: #d26700;
+    font-size: x-large;
+}
+
+label
+{
     font-style: italic;
     display: block;
-    clear: right;
+}
+
+fieldset
+{
+    border: 0;
 }
 
 li
