@@ -13,8 +13,7 @@
 {%endif%}
 
 {% if workout.live %}
-<p>live</p>
-<p><input type="text" id="stopwatch" /></p>
+<p><input type="text" id="stopwatch" readonly /></p>
 {% endif %}
 
 {%if workout.finished%}
@@ -49,7 +48,7 @@
 <p>
     <form action="{% url 'finish_workout' workout.id %}" method="post">
         {% csrf_token %}
-        <input type="submit" value="finish this session" />
+        <input type="submit" value="finish workout" />
     </form>
 </p>
 {%endif%}
