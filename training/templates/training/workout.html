@@ -8,13 +8,22 @@
     <a href="{% url 'index' %}">go back</a>
 </nav>
 
+{%if workout.live%}
+<p>
+    <form action="{% url 'finish_workout' workout.id %}" method="post">
+        <fieldset class="major">
+            {% csrf_token %}
+            <input type="text" id="stopwatch" readonly />
+            <input type="submit" value="finish" />
+        </fieldset>
+    </form>
+</p>
+{%endif%}
+
+
 {%if not workout.started%}
 <p>this workout has not beed started yet, add first excercise to do it</p>
 {%endif%}
-
-{% if workout.live %}
-<p><input type="text" id="stopwatch" readonly /></p>
-{% endif %}
 
 {%if workout.finished%}
 <p>started at {{workout.started}} and finished at {{workout.finished}}</p>
@@ -47,17 +56,6 @@
         </fieldset>
     </form>
 </p>
-
-{%if not workout.finished%}
-<p>
-    <form action="{% url 'finish_workout' workout.id %}" method="post">
-        <fieldset class="major">
-            {% csrf_token %}
-            <input type="submit" value="finish workout" />
-        </fieldset>
-    </form>
-</p>
-{%endif%}
 
 {%if workout.finished%}
 <h1>UTD string</h1>
