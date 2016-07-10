@@ -55,11 +55,28 @@ fieldset.minor input
     border: 3px solid #0066cc;
 }
 
-fieldset.minor input[type="text"]
+fieldset.minor input[type="text"],
+fieldset.minor input[type="number"]
 {
     border: 3px solid #0066cc;
     background-color: white;
     color: black;
+}
+
+span.reps
+{
+    padding: 0.2em;
+    margin: 0.2em;
+    border: 3px solid #0066cc;
+    background-color: #0066cc;
+    color: white;
+    font-style: normal;
+    border-radius: 0.2em;
+}
+
+fieldset.minor input[type="number"]
+{
+    width: 20%;
 }
 
 fieldset.minor label
@@ -102,6 +119,7 @@ label
     font-style: italic;
     display: block;
     font-weight: bold;
+    margin: 0.5em;
 }
 
 fieldset
