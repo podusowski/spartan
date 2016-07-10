@@ -6,7 +6,7 @@
 
 {%if workout.live%}
 <div class="box">
-    <span id="stopwatch">--:--</span>
+    this workout took <span id="stopwatch">--:--</span> so far
 
     <form action="{% url 'finish_workout' workout.id %}" method="post">
         <fieldset class="major">
@@ -19,19 +19,17 @@
 
 
 {%if not workout.started%}
-<p>this workout has not beed started yet, add first excercise to do it</p>
+<div class="box">this workout has not beed started yet, add first excercise to do it</div>
 {%endif%}
 
 {%if workout.finished%}
-<p>started at {{workout.started}} and finished at {{workout.finished}}</p>
+<div class="box">started at {{workout.started}} and finished at {{workout.finished}} and it took {{workout.duration}}</div>
 {%endif%}
 
 <h2>excercises</h2>
 <div class="minor">
-    <ol>
         {%for excercise in workout.excercise_set.all%}
-            <li>
-                <div class="excercise">
+                <div class="excercise box">
                     <div>
                         <span class="name">{{excercise.name}}</span>
 
@@ -56,9 +54,9 @@
                         </div>
                     {%endif%}
                 </div>
-            </li>
+        {%empty%}
+            <div class="box">you will be counting your reps here</div>
         {%endfor%}
-    </ul>
 </div>
 
 <h2>start new excercise</h2>
@@ -74,11 +72,9 @@
 
 {%if workout.finished%}
 <h2>UTD string</h2>
-<p>
-    <pre>
-{{ workout.utd }}
-    </pre>
-</p>
+<div class="box">
+    <pre>{{ workout.utd }}</pre>
+</div>
 {%endif%}
 
 <script>

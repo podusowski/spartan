@@ -10,6 +10,10 @@
  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,800" rel="stylesheet"> 
 
 <style>
+
+{%with primary_color='#eb4f06' secondary_color='#555'%}
+
+
 *
 {
     margin: 0;
@@ -30,19 +34,22 @@ h1,
 h1 a
 {
     color: #ffb066;
-    font-weight: 300;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: -3px;
 }
 
 h1
 {
-    background-color: #b35600;
+    background-color: {{primary_color}};
     border-bottom: 3px solid #663100;
 }
 
 h2, h3, h4, h5
 {
     padding: 0.2em;
-    color: #D26700;
+    color: {{primary_color}};
     background-color: #111;
     font-weight: 300;
 }
@@ -71,14 +78,14 @@ input
 
 .minor input
 {
-    background-color: #0066cc;
-    border: 3px solid #0066cc;
+    background-color: {{secondary_color}};
+    border: 3px solid {{secondary_color}};
 }
 
 .minor input[type="text"],
 .minor input[type="number"]
 {
-    border: 3px solid #0066cc;
+    border: 3px solid {{secondary_color}};
     background-color: white;
     color: black;
 }
@@ -128,20 +135,20 @@ input
 
 .major input
 {
-    background-color: #d26700;
-    border: 3px solid #d26700;
+    background-color: {{primary_color}};
+    border: 3px solid {{primary_color}};
 }
 
 .major input[type="text"]
 {
-    border: 3px solid #d26700;
+    border: 3px solid {{primary_color}};
     background-color: white;
     color: black;
 }
 
 .major label
 {
-    color: #d26700;
+    color: {{primary_color}};
     font-size: x-large;
 }
 
@@ -175,6 +182,7 @@ li
     background: linear-gradient(135deg, #222 0%, #000 100%);
     border-bottom: 1px solid #111;
 }
+{%endwith%}
 </style>
 
 <h1><a href="{%url 'index'%}">spartan</a></h1>
