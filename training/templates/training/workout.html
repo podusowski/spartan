@@ -2,7 +2,7 @@
 
 {%block content%}
 
-<h1>workout #{{workout.id}}</h1>
+<h2>workout #{{workout.id}}</h2>
 
 <nav>
     <a href="{% url 'index' %}">go back</a>
@@ -10,10 +10,11 @@
 
 {%if workout.live%}
 <p>
+    <span id="stopwatch">stopwatch</span>
+
     <form action="{% url 'finish_workout' workout.id %}" method="post">
         <fieldset class="major">
             {% csrf_token %}
-            <input type="text" id="stopwatch" readonly />
             <input type="submit" value="finish" />
         </fieldset>
     </form>
@@ -29,40 +30,41 @@
 <p>started at {{workout.started}} and finished at {{workout.finished}}</p>
 {%endif%}
 
-<p>
+<div class="minor">
     <ul>
-        {% for excercise in workout.excercise_set.all %}
+        {%for excercise in workout.excercise_set.all%}
             <li>
-                <form action="{% url 'add_reps' excercise.id %}" method="post">
-                    <fieldset class="minor">
-                        {% csrf_token %}
-                        <label for="sets_{{ excercise.id }}">
-                            {{ excercise.name }}
+                <div class="excercise">
+                    <div>
+                        <span class="name">{{excercise.name}}</span>
 
-                            {%for reps in excercise.reps_set.all%}
-                                <span class="reps">{{reps.reps}}</span>
-                            {%endfor%}
-                        </label>
-                        <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" />
-                        <input type="submit" value="add" />
-                    </fieldset>
-                </form>
+                        {%for reps in excercise.reps_set.all%}
+                            <span class="reps">{{reps.reps}}</span>
+                        {%endfor%}
+                    </div>
 
+                    {%if forloop.last%}
+                        <div>
+                            <form action="{% url 'add_reps' excercise.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" />
+                                    <input type="submit" value="add" />
+                            </form>
 
-                <form action="{% url 'add_reps' excercise.id %}" method="post">
-                    <fieldset class="minor">
-                        {% csrf_token %}
-                        <input type="hidden" name="reps" value="10" />
-                        <input type="submit" value="+10" />
-                    </fieldset>
-                </form>
-
+                            <form action="{% url 'add_reps' excercise.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="reps" value="10" />
+                                    <input type="submit" value="+10" />
+                            </form>
+                        </div>
+                    {%endif%}
+                </div>
             </li>
-        {% endfor %}
+        {%endfor%}
     </ul>
-</p>
+</div>
 
-<p>
+<p class="major">
     <form action="{% url 'add_excercise' workout.id %}" method="post">
         <fieldset class="major">
             {% csrf_token %}
@@ -74,7 +76,7 @@
 </p>
 
 {%if workout.finished%}
-<h1>UTD string</h1>
+<h2>UTD string</h2>
 <p>
     <pre>
 {{ workout.utd }}
@@ -89,7 +91,7 @@
 
         var diff = now.getTime() - start_time.getTime();
 
-        document.getElementById('stopwatch').value = format_time(diff);
+        document.getElementById('stopwatch').innerHTML = format_time(diff);
         refresh = setTimeout(function() { update_stopwatch(start_time); }, 500);
     }
 
