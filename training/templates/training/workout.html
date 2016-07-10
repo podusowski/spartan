@@ -4,13 +4,9 @@
 
 <h2>workout #{{workout.id}}</h2>
 
-<nav>
-    <a href="{% url 'index' %}">go back</a>
-</nav>
-
 {%if workout.live%}
-<p>
-    <span id="stopwatch">stopwatch</span>
+<div class="box">
+    <span id="stopwatch">--:--</span>
 
     <form action="{% url 'finish_workout' workout.id %}" method="post">
         <fieldset class="major">
@@ -18,7 +14,7 @@
             <input type="submit" value="finish" />
         </fieldset>
     </form>
-</p>
+</div>
 {%endif%}
 
 
@@ -30,8 +26,9 @@
 <p>started at {{workout.started}} and finished at {{workout.finished}}</p>
 {%endif%}
 
+<h2>excercises</h2>
 <div class="minor">
-    <ul>
+    <ol>
         {%for excercise in workout.excercise_set.all%}
             <li>
                 <div class="excercise">
@@ -64,16 +61,16 @@
     </ul>
 </div>
 
-<p class="major">
+<h2>start new excercise</h2>
+<div class="major box">
     <form action="{% url 'add_excercise' workout.id %}" method="post">
         <fieldset class="major">
             {% csrf_token %}
-            <label for="new_excercise_name">start new excercise</label>
             <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
             <input type="submit" value="start" />
         </fieldset>
     </form>
-</p>
+</div>
 
 {%if workout.finished%}
 <h2>UTD string</h2>
