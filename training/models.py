@@ -35,8 +35,14 @@ class Workout(models.Model):
 class Excercise(models.Model):
     def utd(self):
         """ userfriendly training data string """
-        return ': '.join([self.name, self.sets])
+        reps = self.reps_set.all()
+        r = ' '.join(map(lambda x: str(x.reps), reps))
+        return ': '.join([self.name, r])
 
     workout = models.ForeignKey(Workout)
     name = models.CharField(max_length=200)
-    sets = models.CharField(max_length=200)
+
+
+class Reps(models.Model):
+    excercise = models.ForeignKey(Excercise)
+    reps = models.IntegerField()

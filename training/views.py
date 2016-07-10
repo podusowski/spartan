@@ -38,3 +38,8 @@ def save_excercise(request, excercise_id):
     s.sets = request.POST['sets']
     s.save()
     return redirect('training_session', s.workout.id)
+
+def add_reps(request, excercise_id):
+    s = Excercise.objects.get(pk=excercise_id)
+    s.reps_set.create(reps=request.POST['reps'])
+    return redirect('training_session', s.workout.id)

@@ -33,14 +33,21 @@
     <ul>
         {% for excercise in workout.excercise_set.all %}
             <li>
-                <form action="{% url 'save_excercise' excercise.id %}" method="post">
+                <form action="{% url 'add_reps' excercise.id %}" method="post">
                     <fieldset class="minor">
                         {% csrf_token %}
-                        <label for="sets_{{ excercise.id }}">{{ excercise.name }}</label>
-                        <input type="text" id="sets_{{ excercise.id }}" name="sets" value="{{ excercise.sets }}" placeholder="reps" />
-                        <input type="submit" value="save" />
+                        <label for="sets_{{ excercise.id }}">
+                            {{ excercise.name }}
+
+                            {%for reps in excercise.reps_set.all%}
+                                <span class="reps">{{reps.reps}}</span>
+                            {%endfor%}
+                        </label>
+                        <input type="text" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" />
+                        <input type="submit" value="add" />
                     </fieldset>
                 </form>
+
             </li>
         {% endfor %}
     </ul>
