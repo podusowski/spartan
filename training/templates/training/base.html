@@ -1,8 +1,9 @@
 <html>
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+<meta name="application-name" content="Spartan">
+<meta name="msapplication-TileColor" content="#0E2B5E"/>
 
 <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
@@ -15,18 +16,29 @@
     color: white;
     font-family: 'Roboto', sans-serif;
     font-weight: normal;
+    box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5
 {
+    padding: 0.2em;
     color: #D26700;
+    background-color: #111;
+}
+
+p
+{
+    padding: 0.2em;
 }
 
 input
 {
     background-color: #0066cc;
-    border: none;
+    border: 1px solid #1177dd;
     padding: 0.5em;
+    font-size: 1.5em;
+    box-shadow: 0px 0px 5px 0px rgba(255,255,255,0.1);
+    max-width: 75%;
 }
 
 label
@@ -39,7 +51,6 @@ label
 
 li
 {
-    border-left: 1em solid #D26700;
     list-style-type: none;
     padding-left: 0;
     margin: 0;
