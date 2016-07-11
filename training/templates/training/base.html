@@ -99,14 +99,20 @@ input[type="number"]
     width: 4em;
 }
 
+.excercise
+{
+    vertical-align: middle;
+}
+
 .excercise .name
 {
     font-weight: 100;
     font-size: smaller;
-    display: block;
     margin-bottom: 0.2em;
     color: #999;
     text-shadow: 2px 2px 0px #000;
+    display: inline-block;
+    width: 10em;
 }
 
 #stopwatch,
@@ -122,19 +128,11 @@ input[type="number"]
 
 .excercise .reps
 {
-    float: left;
 }
 
 .excercise .total_reps
 {
     color: {{primary_color}};
-    clear: right;
-}
-
-.excercise
-{
-    font-size: larger;
-    color: #eee;
 }
 
 .excercise form
@@ -142,12 +140,6 @@ input[type="number"]
     margin-right: 0.5em;
     display: inline-block;
     width: auto;
-}
-
-.major label
-{
-    color: {{primary_color}};
-    font-size: x-large;
 }
 
 .box
