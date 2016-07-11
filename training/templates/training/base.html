@@ -11,7 +11,7 @@
 
 <style>
 
-{%with primary_color='#eb4f06' secondary_color='#444'%}
+{%with primary_color='#eb4f06' primary_color_darker='#ae3a04' primary_color_lighter='#fb986a' secondary_color='#444'%}
 
 
 *
@@ -50,7 +50,8 @@ h2, h3, h4, h5
 {
     padding: 0.2em;
     color: {{primary_color}};
-    background-color: #111;
+    background-color: #222;
+    border-bottom: 1px solid #111;
     font-weight: 300;
 }
 
@@ -59,46 +60,52 @@ p
     padding: 0.2em;
 }
 
-input[type="submit"]::-moz-focus-inner {border:0;}
-
-input[type="submit"]
+input[type="submit"]::-moz-focus-inner
 {
-    min-width: 3em;
+    border: 0;
 }
 
 input
 {
     padding: 0.2em;
-    font-size: 1.5em;
+    font-size: 1.2em;
+    font-weight: 100;
     box-shadow: 0px 0px 5px 0px rgba(255,255,255,0.2);
-    max-width: 60%;
     outline: none;
     color: white;
     border-width: 1px;
     border-style: solid;
+    height: 2em;
 }
 
-.minor input
+input[type="text"],
+input[type="number"]
 {
-    background-color: {{secondary_color}};
-    border-color: {{secondary_color}};
+    background: linear-gradient(0deg, #222 0%, #000 100%);
+    border-image: linear-gradient(to left, {{primary_color}} 0%, #000 100%);
+    border-image-slice: 1;
+    border-right: 0;
 }
 
-.minor input[type="text"],
-.minor input[type="number"]
+input[type="submit"]
 {
-    border-color: {{secondary_color}};
-    background-color: #aaa;
-    color: black;
+    background-color: {{primary_color}};
+    background: linear-gradient(to top, {{primary_color}} 0%, {{primary_color_darker}} 100%);
+    border-color: {{primary_color}};
+}
+
+input[type="number"]
+{
+    width: 4em;
 }
 
 .excercise .name
 {
-    font-weight: bold;
+    font-weight: 100;
     font-size: smaller;
     display: block;
-    margin-bottom: 1em;
-    color: #aaa;
+    margin-bottom: 0.2em;
+    color: #999;
     text-shadow: 2px 2px 0px #000;
 }
 
@@ -106,22 +113,22 @@ input
 .excercise .reps,
 .excercise .total_reps
 {
-    padding: 0.2em;
-    margin: 0.2em;
+    margin-right: 0.5em;
     color: white;
-    font-weight: bold;
+    font-weight: 100;
     text-shadow: 2px 2px 0px #000;
-    font-size: larger;
+    font-size: large;
+}
+
+.excercise .reps
+{
+    float: left;
 }
 
 .excercise .total_reps
 {
     color: {{primary_color}};
-}
-
-.minor input[type="number"]
-{
-    width: 20%;
+    clear: right;
 }
 
 .excercise
@@ -132,21 +139,9 @@ input
 
 .excercise form
 {
-    display: inline;
     margin-right: 0.5em;
-}
-
-.major input
-{
-    background-color: {{primary_color}};
-    border-color: {{primary_color}};
-}
-
-.major input[type="text"]
-{
-    border-color: {{primary_color}};
-    background-color: white;
-    color: black;
+    display: inline-block;
+    width: auto;
 }
 
 .major label
@@ -158,8 +153,10 @@ input
 .box
 {
     background: linear-gradient(135deg, #222 0%, #000 100%);
+    border-top: 1px solid #222;
     border-bottom: 1px solid #111;
-    padding: 0.5em;
+    padding: 0.2em;
+    overflow: auto;
 }
 
 li
