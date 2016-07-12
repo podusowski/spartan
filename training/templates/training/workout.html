@@ -15,7 +15,6 @@
 </div>
 {%endif%}
 
-
 {%if not workout.started%}
 <div class="box">this workout has not beed started yet, add first excercise to do it</div>
 {%endif%}
@@ -43,11 +42,13 @@
                         <input type="submit" value="add" />
                     </form>
 
+                    {%for rep,_ in most_common_reps%}
                     <form action="{% url 'add_reps' excercise.id %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="reps" value="10" />
-                        <input type="submit" value="+10" />
+                        <input type="hidden" name="reps" value="{{rep}}" />
+                        <input type="submit" value="+{{rep}}" />
                     </form>
+                    {%endfor%}
             {%endif%}
         </div>
     {%empty%}

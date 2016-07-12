@@ -1,5 +1,6 @@
 import datetime
 from django.db import models
+from django.db.models import Count
 
 
 class Workout(models.Model):
@@ -53,3 +54,7 @@ class Excercise(models.Model):
 class Reps(models.Model):
     excercise = models.ForeignKey(Excercise)
     reps = models.IntegerField()
+
+    @staticmethod
+    def most_common():
+        return Reps.objects.values_list('reps').annotate(rep_count=Count('reps')).order_by('-rep_count')

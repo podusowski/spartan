@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import *
 from django.http import HttpResponse
 
-from .models import Workout, Excercise
+from .models import *
 
 def index(request):
     previous_workouts = Workout.objects.order_by('-pk')
@@ -22,7 +22,7 @@ def finish_workout(request, training_session_id):
 
 def training_session(request, training_session_id):
     workout = Workout.objects.get(pk=training_session_id)
-    return render(request, 'training/workout.html', {'workout': workout})
+    return render(request, 'training/workout.html', {'workout': workout, 'most_common_reps': Reps.most_common()[0:4]})
 
 def add_excercise(request, training_session_id):
     s = Workout.objects.get(pk=training_session_id)
