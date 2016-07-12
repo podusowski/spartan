@@ -1,19 +1,19 @@
 <html>
 
+{%with primary_color='#eb4f06' primary_color_darker='#ae3a04' primary_color_lighter='#fb986a' secondary_color='#444'%}
+
+<head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui, user-scalable: no">
 <meta name="application-name" content="Spartan">
 <meta name="msapplication-TileColor" content="#0E2B5E"/>
 <meta name="msapplication-config" content="none"/>
 <meta name="msapplication-navbutton-color" content="#4285f4">
+<meta name="theme-color" content="{{primary_color_darker}}">
 
- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,800" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,800" rel="stylesheet"> 
 
 <style>
-
-{%with primary_color='#eb4f06' primary_color_darker='#ae3a04' primary_color_lighter='#fb986a' secondary_color='#444'%}
-
-
 *
 {
     margin: 0;
@@ -113,7 +113,7 @@ dt,
     color: #999;
     text-shadow: 2px 2px 0px #000;
     display: inline-block;
-    width: 10em;
+    width: 5em;
     vertical-align: middle;
 }
 
@@ -191,10 +191,16 @@ dd
 {%endwith%}
 </style>
 
+<head>
+
+<body>
+
 <h1><a href="{%url 'index'%}">spartan</a></h1>
 
 {%spaceless%}
 {%block content%}{%endblock%}
 {%endspaceless%}
+
+</body>
 
 </html>
