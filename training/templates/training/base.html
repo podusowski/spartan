@@ -104,6 +104,7 @@ input[type="number"]
     vertical-align: middle;
 }
 
+dt,
 .excercise .name
 {
     font-weight: 100;
@@ -113,8 +114,10 @@ input[type="number"]
     text-shadow: 2px 2px 0px #000;
     display: inline-block;
     width: 10em;
+    vertical-align: middle;
 }
 
+dd,
 #stopwatch,
 .excercise .reps,
 .excercise .total_reps
@@ -123,11 +126,12 @@ input[type="number"]
     color: white;
     font-weight: 100;
     text-shadow: 2px 2px 0px #000;
-    font-size: large;
 }
 
-.excercise .reps
+.excercise .reps,
+.excercise .total_reps
 {
+    font-size: large;
 }
 
 .excercise .total_reps
@@ -165,6 +169,24 @@ li a
     display: block;
     color: {{primary_color}};
     text-decoration: none;
+}
+
+dl
+{
+    overflow: hidden;
+}
+
+dt
+{
+    width: 5em;
+    clear: left;
+    float: left;
+}
+
+dd
+{
+    float: left;
+    clear: right;
 }
 {%endwith%}
 </style>

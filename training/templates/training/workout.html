@@ -20,7 +20,13 @@
 {%endif%}
 
 {%if workout.finished%}
-<div class="box">started at {{workout.started}} and finished at {{workout.finished}} and it took {{workout.duration}}</div>
+<div class="box">
+    <dl>
+        <dt>started</dt><dd>{{workout.started}}</dd>
+        <dt>finished</dt><dd>{{workout.finished}}</dd>
+        <dt>took</dt><dd>{{workout.duration}}</dd>
+    </dl>
+</div>
 {%endif%}
 
 <h2>excercises</h2>
