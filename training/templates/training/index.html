@@ -3,10 +3,13 @@
 {%block content%}
 
 <h2>your account</h2>
-<div class="box major">
+<div class="box">
     <dl>
         <dt>total workouts</dt><dd>{{total_workouts}}</dd>
     </dl>
+</div>
+
+<div class="box">
     <form action="{% url 'start_workout' %}">
         <input type="submit" value="new workout" />
     </form>
