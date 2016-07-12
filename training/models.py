@@ -7,9 +7,6 @@ class Workout(models.Model):
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
 
-    def duration(self):
-        return str(self.finished - self.started)
-
     def live(self):
         return self.started is not None and self.finished is None
 

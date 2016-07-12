@@ -23,8 +23,7 @@
 <div class="box">
     <dl>
         <dt>started</dt><dd>{{workout.started}}</dd>
-        <dt>finished</dt><dd>{{workout.finished}}</dd>
-        <dt>took</dt><dd>{{workout.duration}}</dd>
+        <dt>took</dt><dd>{{workout.started|timesince:workout.finished}}</dd>
     </dl>
 </div>
 {%endif%}
