@@ -6,8 +6,13 @@
 
 {%if workout.live%}
 <div class="box">
-    this workout took <span id="stopwatch">--:--</span> so far
+    <dl>
+        <dt>duration</dt><dd><span id="stopwatch">--:--</span></dd>
+        <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
+    </dl>
+</div>
 
+<div class="box">
     <form action="{% url 'finish_workout' workout.id %}" method="post">
         {% csrf_token %}
         <input type="submit" value="finish" />
@@ -24,6 +29,7 @@
     <dl>
         <dt>started</dt><dd>{{workout.started}}</dd>
         <dt>took</dt><dd>{{workout.started|timesince:workout.finished}}</dd>
+        <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
     </dl>
 </div>
 {%endif%}

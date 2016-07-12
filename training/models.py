@@ -28,6 +28,9 @@ class Workout(models.Model):
 
         self.finished = datetime.datetime.now()
 
+    def total_reps(self):
+        return sum(map(lambda x: x.total_reps(), self.excercise_set.all()))
+
     def utd(self):
         """ userfriendly training data string """
         return '\n'.join(map(lambda x: x.utd(), self.excercise_set.all()))
