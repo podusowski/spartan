@@ -7,7 +7,8 @@ from .models import *
 
 def index(request):
     previous_workouts = Workout.objects.order_by('-pk')
-    return render(request, 'training/index.html', {'previous_workouts': previous_workouts})
+    return render(request, 'training/index.html', {'previous_workouts': previous_workouts,
+                                                   'total_workouts': len(Workout.objects.all())})
 
 def start_workout(request):
     s = Workout()

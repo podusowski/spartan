@@ -4,6 +4,9 @@
 
 <h2>your account</h2>
 <div class="box major">
+    <dl>
+        <dt>total workouts</dt><dd>{{total_workouts}}</dd>
+    </dl>
     <form action="{% url 'start_workout' %}">
         <input type="submit" value="new workout" />
     </form>
