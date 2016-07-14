@@ -2,7 +2,7 @@
 
 {%block content%}
 
-<h2>workout #{{workout.id}}</h2>
+<h2>workout</h2>
 
 {%if workout.live%}
 <div class="box">
@@ -44,7 +44,7 @@
         {%endfor%}
 
         {%if excercise.total_reps > 0%}
-            <span class="total_reps reps">({{excercise.total_reps}})</span>
+            <span class="total_reps reps">{{excercise.total_reps}}</span>
         {%endif%}
     </div>
 

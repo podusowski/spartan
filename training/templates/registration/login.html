@@ -2,12 +2,14 @@
 
 {%block content%}
 
-<form action="{% url 'login' %}" method="post">
-    {% csrf_token %}
-    <ul>
-        {{form.as_ul}}
-    </ul>
-    <input type="submit" value="login" />
-</form>
+<div class="box">
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <ul>
+            {{form.as_ul}}
+        </ul>
+        <input type="submit" value="login" />
+    </form>
+</div>
 
 {%endblock%}

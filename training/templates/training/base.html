@@ -89,17 +89,18 @@ input[type="text"],
 input[type="password"],
 input[type="number"]
 {
-    background: linear-gradient(0deg, #222 0%, #000 100%);
-    border-image: linear-gradient(to left, {{primary_color}} 0%, #000 2em);
+    background: linear-gradient(0deg, #111 0%, #000 100%);
+    border-image: linear-gradient(to top, #000 0%, #222 100%);
     border-image-slice: 1;
     border-right: 0;
+    font-weight: 100;
 }
 
 input[type="submit"]
 {
     background-color: {{primary_color}};
     background: linear-gradient(to top, {{primary_color}} 0%, {{primary_color_darker}} 100%);
-    border-color: {{primary_color}};
+    border-color: {{primary_color_darker}};
 }
 
 input[type="number"]
@@ -124,6 +125,7 @@ dd,
 }
 
 dt,
+label,
 .excercise .name
 {
     font-size: smaller;
@@ -156,7 +158,11 @@ dd
 
 .excercise .total_reps
 {
-    color: {{primary_color}};
+    background-color: {{secondary_color}};
+    border-radius: 1em;
+    color: white;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }
 
 form

@@ -11,7 +11,7 @@ def index(request):
     if request.user.is_authenticated():
         return redirect('dashboard')
     else:
-        return render(request, 'training/index.html')
+        return render(request, 'training/index.html', {'users_count': User.objects.all().count()})
 
 
 @login_required
