@@ -1,0 +1,28 @@
+{%extends "training/base.html"%}
+
+{%block content%}
+
+<h2>your account</h2>
+<div class="box">
+    <dl>
+        <dt>total workouts</dt><dd>{{total_workouts}}</dd>
+    </dl>
+</div>
+
+<div class="box">
+    <form action="{% url 'start_workout' %}">
+        <input type="submit" value="new workout" />
+    </form>
+</div>
+
+<h2>history</h2>
+
+<div class="box">
+    <ul>
+    {% for workout in previous_workouts %}
+        <li><a href="{% url 'training_session' workout.id %}">#{{workout.id}}{%if workout.live %}live{%endif%}{%if not workout.started%}not started{%endif%}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+{%endblock%}
