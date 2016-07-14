@@ -69,6 +69,7 @@
     <div class="box">you will be counting your reps here</div>
 {%endfor%}
 
+{%if not workout.finished%}
 <h2>start new excercise</h2>
 <div class="major box">
     <form action="{% url 'add_excercise' workout.id %}" method="post">
@@ -77,6 +78,7 @@
             <input type="submit" value="start" />
     </form>
 </div>
+{%endif%}
 
 {%if workout.finished%}
 <h2>UTD string</h2>
