@@ -2,16 +2,15 @@
 
 {%block content%}
 
-<h2>your account</h2>
+<h2>login</h2>
 <div class="box">
-    <form action="{% url 'start_workout' %}">
-        <input type="submit" value="new workout" />
+    <form action="{% url 'login' %}">
+        <input type="submit" value="login" />
     </form>
+</div>
 
-    <form action="{% url 'dashboard' %}">
-        <input type="submit" value="dashboard" />
-    </form>
-
+<h2>create new account</h2>
+<div class="box">
     <form action="{% url 'register' %}">
         <input type="submit" value="register" />
     </form>
