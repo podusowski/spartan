@@ -30,6 +30,11 @@ body
     color: white;
 }
 
+a
+{
+    color: white;
+}
+
 h1,
 h1 a
 {
@@ -209,6 +214,13 @@ dd
 <body>
 
 <h1><a href="{%url 'index'%}">spartan</a></h1>
+<div class="box user">
+{%if request.user.is_authenticated%}
+    logged as {{request.user.username}} (<a href="{% url 'logout' %}">logout</a>)
+{%else%}
+    not logged in
+{%endif%}
+</div>
 
 {%spaceless%}
 {%block content%}{%endblock%}
