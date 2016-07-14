@@ -16,9 +16,8 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    previous_workouts = Workout.objects.order_by('-pk')
-    return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts,
-                                                       'total_workouts': len(Workout.objects.all())})
+    previous_workouts = Workout.objects.filter(user=request.user).order_by('-pk')
+    return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts})
 
 
 @login_required
