@@ -24,6 +24,7 @@ def dashboard(request):
 @login_required
 def start_workout(request):
     s = Workout()
+    s.user = request.user
     s.save()
     return redirect('training_session', s.id)
 
@@ -38,13 +39,13 @@ def finish_workout(request, training_session_id):
 
 @login_required
 def training_session(request, training_session_id):
-    workout = Workout.objects.get(pk=training_session_id)
+    workout = Workout.objects.get(pk=training_session_id, user=request.user)
     return render(request, 'training/workout.html', {'workout': workout, 'most_common_reps': Reps.most_common()[0:4]})
 
 
 @login_required
 def add_excercise(request, training_session_id):
-    s = Workout.objects.get(pk=training_session_id)
+    s = Workout.objects.get(pk=training_session_id, user=request.user)
     s.excercise_set.create(name=request.POST['name'])
     try:
         s.start()
@@ -56,7 +57,7 @@ def add_excercise(request, training_session_id):
 
 @login_required
 def save_excercise(request, excercise_id):
-    s = Excercise.objects.get(pk=excercise_id)
+    s = Excercise.objects.get(pk=excercise_id, user=request.user)
     s.sets = request.POST['sets']
     s.save()
     return redirect('training_session', s.workout.id)
@@ -64,6 +65,6 @@ def save_excercise(request, excercise_id):
 
 @login_required
 def add_reps(request, excercise_id):
-    s = Excercise.objects.get(pk=excercise_id)
+    s = Excercise.objects.get(pk=excercise_id, user=request.user)
     s.reps_set.create(reps=request.POST['reps'])
     return redirect('training_session', s.workout.id)

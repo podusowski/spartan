@@ -1,9 +1,11 @@
 import datetime
 from django.db import models
 from django.db.models import Count
+from django.contrib.auth.models import User
 
 
 class Workout(models.Model):
+    user = models.OneToOneField(User)
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
 
