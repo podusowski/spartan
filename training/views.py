@@ -6,7 +6,10 @@ from django.http import HttpResponse
 from .models import *
 
 def index(request):
-    return render(request, 'training/index.html')
+    if request.user.is_authenticated():
+        return redirect('dashboard')
+    else:
+        return render(request, 'training/index.html')
 
 def dashboard(request):
     previous_workouts = Workout.objects.order_by('-pk')
