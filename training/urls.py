@@ -8,11 +8,12 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url('^$', views.index, name='index'),
 
-    url('^register/$', CreateView.as_view(
+    url('^register/$',
+        CreateView.as_view(
             template_name='registration/register.html',
             form_class=UserCreationForm,
             success_url='/'
-    ), name='register'),
+        ), name='register'),
 
     url('^dashboard$', views.dashboard, name='dashboard'),
     url('^start_workout/$', views.start_workout, name='start_workout'),
