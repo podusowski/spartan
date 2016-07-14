@@ -56,7 +56,7 @@
                 <input type="submit" value="add" />
             </form>
 
-            {%for rep,_ in most_common_reps%}
+            {%for rep,_ in most_common_reps|slice:":4"%}
                 <form action="{% url 'add_reps' excercise.id %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="reps" value="{{rep}}" />
