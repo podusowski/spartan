@@ -3,7 +3,7 @@ if [ `id -u` -ne 0 ]; then
     exit 1
 fi
 
-echo you are about to pull changes from git, apply migrations and restart apache server, make sure you know exactly what that script is doing before continuing
+echo make sure what that script is doing before continuing
 echo hit enter or ^c to abort
 
 read line
@@ -13,7 +13,7 @@ if ! pwd | grep '/var/www'; then
     read line
 fi
 
-service apache stop
-sudo -u www-data 'git pull'
-sudo -u www-data './manage migrate'
-service apache start
+service apache2 stop
+sudo -u www-data bash -c 'git pull'
+sudo -u www-data bash -c './manage.py migrate'
+service apache2 start
