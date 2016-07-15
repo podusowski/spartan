@@ -14,6 +14,6 @@ if ! pwd | grep '/var/www'; then
 fi
 
 service apache stop
-sudo -u www-data bash -c 'git pull'
-sudo -u www-data bash -c './manage migrate'
+sudo -u www-data 'git pull'
+sudo -u www-data './manage migrate'
 service apache start
