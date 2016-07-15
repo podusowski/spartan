@@ -39,7 +39,9 @@ def finish_workout(request, training_session_id):
 @login_required
 def training_session(request, training_session_id):
     workout = Workout.objects.get(pk=training_session_id, user=request.user)
-    return render(request, 'training/workout.html', {'workout': workout, 'most_common_reps': Reps.most_common()})
+    return render(request, 'training/workout.html', {'workout': workout,
+                                                     'most_common_reps': Reps.most_common(),
+                                                     'most_common_excercises': Excercise.most_common()})
 
 
 @login_required
@@ -64,6 +66,6 @@ def save_excercise(request, excercise_id):
 
 @login_required
 def add_reps(request, excercise_id):
-    s = Excercise.objects.get(pk=excercise_id, user=request.user)
+    s = Excercise.objects.get(pk=excercise_id, workout__user=request.user)
     s.reps_set.create(reps=request.POST['reps'])
     return redirect('training_session', s.workout.id)

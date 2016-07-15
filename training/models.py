@@ -52,6 +52,10 @@ class Excercise(models.Model):
     workout = models.ForeignKey(Workout)
     name = models.CharField(max_length=200)
 
+    @staticmethod
+    def most_common():
+        return Excercise.objects.values_list('name').annotate(count=Count('name')).order_by('-count')
+
 
 class Reps(models.Model):
     excercise = models.ForeignKey(Excercise)
