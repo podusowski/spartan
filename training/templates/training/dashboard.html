@@ -18,11 +18,22 @@
 <h2>history</h2>
 
 <div class="box">
-    <ul>
-    {% for workout in previous_workouts %}
-        <li><a href="{% url 'training_session' workout.id %}">#{{workout.id}}{%if workout.live %}live{%endif%}{%if not workout.started%}not started{%endif%}</a></li>
-    {% endfor %}
-    </ul>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>status</th>
+            <th>started</th>
+            <th>total reps</th>
+        </tr>
+        {% for workout in previous_workouts %}
+            <tr>
+                <td><a href="{% url 'training_session' workout.id %}">{{workout.id}}.</a></td>
+                <td><a href="{% url 'training_session' workout.id %}">{{workout.status}}</a></td>
+                <td><a href="{% url 'training_session' workout.id %}">{{workout.started}}</a></td>
+                <td><a href="{% url 'training_session' workout.id %}">{{workout.total_reps}}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
 </div>
 
 {%endblock%}
