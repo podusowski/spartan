@@ -5,9 +5,17 @@ from django.contrib.auth.models import User
 
 
 class Workout(models.Model):
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User)
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
+
+    def status(self):
+        if self.live():
+            return 'live'
+        elif self.finished is not None:
+            return 'finished'
+        else:
+            return 'not started'
 
     def live(self):
         return self.started is not None and self.finished is None
