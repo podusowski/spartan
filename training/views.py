@@ -57,14 +57,6 @@ def add_excercise(request, training_session_id):
 
 
 @login_required
-def save_excercise(request, excercise_id):
-    s = Excercise.objects.get(pk=excercise_id, user=request.user)
-    s.sets = request.POST['sets']
-    s.save()
-    return redirect('training_session', s.workout.id)
-
-
-@login_required
 def add_reps(request, excercise_id):
     s = Excercise.objects.get(pk=excercise_id, workout__user=request.user)
     s.reps_set.create(reps=request.POST['reps'])
