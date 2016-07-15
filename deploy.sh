@@ -16,4 +16,5 @@ fi
 service apache2 stop
 sudo -u www-data bash -c 'git pull'
 sudo -u www-data bash -c './manage.py migrate'
+sudo -u www-data bash -c './manage.py collectstatic'
 service apache2 start
