@@ -4,6 +4,10 @@
 
 <head>
 
+{% load sass_tags %}
+
+<link href="{% sass_src 'training/style.scss' %}" rel="stylesheet" type="text/css" />
+
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui, user-scalable: no">
 <meta name="application-name" content="Spartan">
 <meta name="msapplication-TileColor" content="#0E2B5E"/>
@@ -25,7 +29,6 @@
 body
 {
     font-family: Calibri, 'Open Sans', sans-serif;
-    background-color: black;
     font-weight: normal;
     color: white;
 }
