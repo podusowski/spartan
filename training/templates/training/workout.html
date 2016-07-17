@@ -51,7 +51,7 @@
                 <span class="total_reps reps">{{excercise.total_reps}}</span>
             {%endif%}
 
-            {% if forloop.last and excercise.last_update_time and not workout.finished %}
+            {% if forloop.last and excercise.time_updated and not workout.finished %}
                 <span id="last_update_stopwatch">--</span>
                 <script>
                     $(document).ready(function() {
