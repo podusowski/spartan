@@ -37,8 +37,10 @@
 <h2>excercises</h2>
 {%for excercise in workout.excercise_set.all%}
     <div class="excercise box">
-        <span class="name">{{excercise.name}}</span>
+    <dl>
+        <dt>{{excercise.name}}</dt>
 
+        <dd>
         {%for reps in excercise.reps_set.all%}
             <span class="reps">{{reps.reps}}</span>
         {%endfor%}
@@ -46,6 +48,8 @@
         {%if excercise.total_reps > 0%}
             <span class="total_reps reps">{{excercise.total_reps}}</span>
         {%endif%}
+        </dd>
+    </dl>
     </div>
 
     {%if forloop.last and not workout.finished%}

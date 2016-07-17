@@ -45,7 +45,7 @@ h2, h3, h4, h5
 {
     padding: 0.2em;
     color: $primary_color;
-    background-color: #222;
+    background-color: lighten($background-color, 10%);
     border-bottom: 1px solid #111;
     font-weight: 300;
 }
@@ -55,107 +55,71 @@ p
     padding: 0.2em;
 }
 
-input[type="submit"]::-moz-focus-inner
+@mixin text1
 {
-    border: 0;
-}
-
-input
-{
-    padding: 0.2em;
-    font-size: 1.2em;
-    font-weight: 100;
-    box-shadow: 0px 0px 3px 0px rgba(255,255,255,0.3);
-    outline: none;
-    border-width: 1px;
-    border-style: solid;
-    height: 2em;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="number"]
-{
-    background: linear-gradient(0deg, #111 0%, #000 100%);
-    border-image: linear-gradient(to top, #000 0%, #222 100%);
-    border-image-slice: 1;
-    border-right: 0;
+    color: #999;
+    text-shadow: 1px 1px 1px #000;
     font-weight: 100;
 }
 
-input[type="submit"]
+@mixin text2
 {
-    background-color: $primary_color;
-    background: linear-gradient(to top, $primary_color 0%, darken($primary_color, 20%) 100%);
-    border-color: darken($primary_color, 30%);
-    color: lighten($primary_color, 70%);
-}
-
-input[type="number"]
-{
-    width: 4em;
-}
-
-.excercise
-{
-    vertical-align: middle;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 100;
 }
 
 table
 {
     width: 100%;
-}
+    border-spacing: 0;
 
-td a
-{
-    display: block;
-}
+    td a
+    {
+        display: block;
+        @include text2;
+    }
 
-tr
-{
-    border-bottom: 1px solid $secondary_color;
+    th
+    {
+        @include text1;
+    }
+
+    tr
+    {
+        border-bottom: 1px solid $secondary_color;
+    }
+
+    tr:hover
+    {
+        background-color: $secondary_color;
+    }
 }
 
 dt,
-dd,
-.name,
-.reps,
-.total_reps,
 .box
 {
-    text-shadow: 1px 1px 1px #000;
-    font-weight: 100;
+    @include text1;
+}
+
+dd,
+{
+    @include text2;
 }
 
 dt,
 label,
-.excercise .name
 {
-    font-size: smaller;
     margin-bottom: 0.2em;
-    color: #999;
     display: inline-block;
     width: 5em;
     vertical-align: middle;
 }
 
-dd,
-#stopwatch,
 .excercise .reps,
 .excercise .total_reps
 {
     margin-right: 0.5em;
-}
-
-dd
-{
-    font-size: smaller;
-}
-
-.excercise .reps,
-.excercise .total_reps
-{
-    font-size: large;
 }
 
 .excercise .total_reps
@@ -171,40 +135,71 @@ form
     margin-right: 0.5em;
     display: inline-block;
     width: auto;
+
+    input[type="submit"]::-moz-focus-inner
+    {
+        border: 0;
+    }
+
+    input
+    {
+        padding: 0.2em;
+        font-size: 1.2em;
+        font-weight: 100;
+        box-shadow: 0px 0px 3px 0px rgba(255,255,255,0.3);
+        outline: none;
+        border-width: 1px;
+        border-style: solid;
+        height: 2em;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"]
+    {
+        background: linear-gradient(0deg, lighten($background-color, 5%) 0%, darken($background-color, 5%) 100%);
+        border-image: linear-gradient(to top, #000 0%, #222 100%);
+        border-image-slice: 1;
+        border-right: 0;
+    }
+
+    input[type="submit"]
+    {
+        background-color: $primary_color;
+        background: linear-gradient(to top, $primary_color 0%, darken($primary_color, 20%) 100%);
+        border-color: darken($primary_color, 30%);
+        color: lighten($primary_color, 70%);
+    }
+
+    input[type="number"]
+    {
+        width: 4em;
+    }
 }
 
 .box
 {
-    background: linear-gradient(135deg, #222 0%, #000 100%);
+    background: linear-gradient(135deg, lighten($background-color, 10%) 0%, darken($background-color, 10%) 100%);
     border-top: 1px solid #222;
     border-bottom: 1px solid #111;
     padding: 0.2em;
     overflow: auto;
 }
 
-li
-{
-    list-style-type: none;
-    padding: 0.2em;
-    margin: 0;
-    list-style-position: inside;
-    border-bottom: 1px solid #111;
-}
-
 dl
 {
     overflow: hidden;
-}
 
-dt
-{
-    width: 5em;
-    clear: left;
-    float: left;
-}
+    dt
+    {
+        width: 5em;
+        clear: left;
+        float: left;
+    }
 
-dd
-{
-    float: left;
-    clear: right;
+    dd
+    {
+        float: left;
+        clear: right;
+    }
 }
