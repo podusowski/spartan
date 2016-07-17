@@ -55,7 +55,7 @@
                 <span id="last_update_stopwatch">--</span>
                 <script>
                     $(document).ready(function() {
-                        stopwatch("last_update_stopwatch", new Date("{{ excercise.last_update_time.isoformat }}"));
+                        stopwatch("last_update_stopwatch", new Date("{{ excercise.time_updated.isoformat }}"));
                     });
                 </script>
             {% endif %}
