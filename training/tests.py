@@ -1,59 +1,18 @@
 from django.test import TestCase, RequestFactory
+from django.contrib.auth.models import AnonymousUser, User
 from .models import Workout, Excercise
 from . import views
-
-
-class TrainingSessionTestCase(TestCase):
-    def setUp(self):
-        self.workout = Workout.objects.create()
-
-    def test_starting_session_should_mark_time_when_it_was_done(self):
-        self.assertFalse(self.workout.live())
-        self.assertIsNone(self.workout.started)
-
-        self.workout.start()
-
-        self.assertTrue(self.workout.live())
-        self.assertIsNotNone(self.workout.started)
-
-    def test_session_cant_be_started_twice(self):
-        self.workout.start()
-        with self.assertRaises(RuntimeError):
-            self.workout.start()
-
-    def test_finishing_session_should_mark_the_time(self):
-        self.workout.start()
-
-        self.assertIsNone(self.workout.finished)
-
-        self.workout.finish()
-
-        self.assertIsNotNone(self.workout.started)
-        self.assertIsNotNone(self.workout.finished)
-
-    def test_cant_finish_before_starting(self):
-        with self.assertRaises(RuntimeError):
-            self.workout.finish()
-
-    def test_cant_finish_twice(self):
-        self.workout.start()
-        self.workout.finish()
-        with self.assertRaises(RuntimeError):
-            self.workout.finish()
-
-    def test_cant_start_finished_session(self):
-        self.workout.start()
-        self.workout.finish()
-        with self.assertRaises(RuntimeError):
-            self.workout.start()
 
 
 class ViewsTestCase(TestCase):
     def setUp(self):
         self.request_factory = RequestFactory()
+        self.user = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
 
     def _start_workout(self):
         request = self.request_factory.get('')
+        request.user = self.user
+
         views.start_workout(request)
 
         # workout gets started when first excercise starts
@@ -64,6 +23,8 @@ class ViewsTestCase(TestCase):
 
     def _finish_workout(self, workout):
         request = self.request_factory.get('')
+        request.user = self.user
+
         views.finish_workout(request, workout.pk)
         workout.refresh_from_db()
         self.assertFalse(workout.live())
@@ -72,13 +33,15 @@ class ViewsTestCase(TestCase):
 
     def _start_excercise(self, workout):
         request = self.request_factory.post('', {'name': "push-up"})
+        request.user = self.user
         views.add_excercise(request, workout.pk)
         excercise = Excercise.objects.latest('pk')
         return excercise
 
     def _add_reps(self, excercise, reps):
         request = self.request_factory.post('', {'reps': reps})
-        views.add_reps(request, excercise.pk, reps)
+        request.user = self.user
+        views.add_reps(request, excercise.pk)
         excercise.refresh_from_db()
 
     def test_full_session(self):
