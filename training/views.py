@@ -21,7 +21,6 @@ def dashboard(request):
                                                        'most_common_excercises': Excercise.most_common()})
 
 
-
 @login_required
 def start_workout(request):
     s = Workout()
@@ -61,5 +60,6 @@ def add_excercise(request, training_session_id):
 @login_required
 def add_reps(request, excercise_id):
     s = Excercise.objects.get(pk=excercise_id, workout__user=request.user)
-    s.reps_set.create(reps=request.POST['reps'])
+    reps = s.reps_set.create(reps=request.POST['reps'])
+    reps.time_created = datetime.datetime.now()
     return redirect('training_session', s.workout.id)

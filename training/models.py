@@ -75,6 +75,7 @@ class Excercise(models.Model):
 class Reps(models.Model):
     excercise = models.ForeignKey(Excercise)
     reps = models.IntegerField()
+    time_created = models.DateTimeField(null=True, default=None)
 
     @staticmethod
     def most_common():
