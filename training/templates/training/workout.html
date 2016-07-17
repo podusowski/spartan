@@ -37,12 +37,14 @@
 </div>
 {%endif%}
 
+{% load training_format %}
+
 <h2>excercises</h2>
 {%for excercise in workout.excercise_set.all%}
     <dl class="excercise box">
         <dt>
             <span class="name">{{excercise.name}}</span>
-            <span class="note">{{excercise.duration}}</span>
+            <span class="note">{{excercise.duration|duration}}</span>
         </dt>
 
         <dd>
