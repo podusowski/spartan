@@ -36,21 +36,19 @@
 
 <h2>excercises</h2>
 {%for excercise in workout.excercise_set.all%}
-    <div class="excercise box">
-    <dl>
+    <dl class="excercise box">
         <dt>{{excercise.name}}</dt>
 
         <dd>
-        {%for reps in excercise.reps_set.all%}
-            <span class="reps">{{reps.reps}}</span>
-        {%endfor%}
+            {%for reps in excercise.reps_set.all%}
+                <span class="reps">{{reps.reps}}</span>
+            {%endfor%}
 
-        {%if excercise.total_reps > 0%}
-            <span class="total_reps reps">{{excercise.total_reps}}</span>
-        {%endif%}
+            {%if excercise.total_reps > 0%}
+                <span class="total_reps reps">{{excercise.total_reps}}</span>
+            {%endif%}
         </dd>
     </dl>
-    </div>
 
     {%if forloop.last and not workout.finished%}
         <div class="box">
@@ -75,7 +73,7 @@
 
 {%if not workout.finished%}
 <h2>start new excercise</h2>
-<div class="major box">
+<div class="box">
     <form action="{% url 'add_excercise' workout.id %}" method="post">
         {% csrf_token %}
         <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
