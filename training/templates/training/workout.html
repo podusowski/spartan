@@ -40,7 +40,10 @@
 <h2>excercises</h2>
 {%for excercise in workout.excercise_set.all%}
     <dl class="excercise box">
-        <dt>{{excercise.name}}</dt>
+        <dt>
+            {{excercise.name}}
+            {{excercise.duration}}
+        </dt>
 
         <dd>
             {%for reps in excercise.reps_set.all%}

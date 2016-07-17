@@ -47,13 +47,25 @@ def training_session(request, training_session_id):
 
 @login_required
 def add_excercise(request, training_session_id):
-    s = Workout.objects.get(pk=training_session_id, user=request.user)
-    s.excercise_set.create(name=request.POST['name'])
+    workout = Workout.objects.get(pk=training_session_id, user=request.user)
+
     try:
-        s.start()
+        current_excercise = workout.excercise_set.order_by('-pk')[0]
+        current_excercise.time_finished = datetime.datetime.now()
+        current_excercise.save()
     except:
         pass
-    s.save()
+
+    excercise = workout.excercise_set.create(name=request.POST['name'])
+    try:
+        workout.start()
+    except:
+        pass
+    workout.save()
+
+    excercise.time_started = datetime.datetime.now()
+    excercise.save()
+
     return redirect('training_session', training_session_id)
 
 
