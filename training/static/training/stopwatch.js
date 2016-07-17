@@ -7,10 +7,43 @@ function stopwatch(html_element_id, start_time)
     setTimeout(function() { stopwatch(html_element_id, start_time); }, 500);
 }
 
+function format_number(number)
+{
+    if (number > 10)
+    {
+        return '' + number
+    }
+    else
+    {
+        return '0' + number
+    }
+}
+
 function format_timespan(ms)
 {
-    var second = Math.floor(ms/1000);
-    var minute = Math.floor(ms/60000);
-    second = second - 60 * minute;
-    return minute + 'm ' + second + 's';
+    var day = Math.floor(ms / (24 * 60 * 60 * 1000));
+    ms = ms % (24 * 60 * 60 * 1000);
+
+    var hour = Math.floor(ms / (60 * 60 * 1000));
+    ms = ms % (60 * 60 * 1000);
+
+    var minute = Math.floor(ms / (60 * 1000));
+    ms = ms % (60 * 1000);
+
+    var second = Math.floor(ms / 1000);
+
+    var mins_and_secs = format_number(minute) + 'm:' + format_number(second) + 's';
+
+    if (day > 0)
+    {
+        return day + 'd:' + hour + 'h:' + mins_and_secs;
+    }
+    else if (hour > 0)
+    {
+        return hour + 'h:' + mins_and_secs;
+    }
+    else
+    {
+        return mins_and_secs;
+    }
 }
