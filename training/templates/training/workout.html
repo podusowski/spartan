@@ -51,8 +51,13 @@
                 <span class="total_reps reps">{{excercise.total_reps}}</span>
             {%endif%}
 
-            {% if forloop.last and excercise.last_update_time %}
-                {{ excercise.last_update_time }}
+            {% if forloop.last and excercise.last_update_time and not workout.finished %}
+                <span id="last_update_stopwatch">--</span>
+                <script>
+                    $(document).ready(function() {
+                        stopwatch("last_update_stopwatch", new Date("{{ excercise.last_update_time.isoformat }}"));
+                    });
+                </script>
             {% endif %}
         </dd>
     </dl>
@@ -105,10 +110,9 @@
 {%endif%}
 
 <script>
-    window.onload = function()
-    {
+    $(document).ready(function() {
         stopwatch("stopwatch", new Date("{{workout.started.isoformat}}"));
-    };
+    });
 </script>
 
 {%endblock%}
