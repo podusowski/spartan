@@ -62,4 +62,5 @@ def add_reps(request, excercise_id):
     s = Excercise.objects.get(pk=excercise_id, workout__user=request.user)
     reps = s.reps_set.create(reps=request.POST['reps'])
     reps.time_created = datetime.datetime.now()
+    reps.save()
     return redirect('training_session', s.workout.id)

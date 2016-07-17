@@ -2,6 +2,9 @@
 
 {%block content%}
 
+{% load staticfiles %}
+<script src="{% static 'training/stopwatch.js' %}"></script>
+
 <h2>workout</h2>
 
 {%if workout.live%}
@@ -47,6 +50,10 @@
             {%if excercise.total_reps > 0%}
                 <span class="total_reps reps">{{excercise.total_reps}}</span>
             {%endif%}
+
+            {% if forloop.last and excercise.last_update_time %}
+                {{ excercise.last_update_time }}
+            {% endif %}
         </dd>
     </dl>
 
@@ -96,9 +103,6 @@
     <pre>{{ workout.utd }}</pre>
 </div>
 {%endif%}
-
-{% load staticfiles %}
-<script src="{% static 'training/stopwatch.js' %}"></script>
 
 <script>
     window.onload = function()

@@ -64,6 +64,12 @@ class Excercise(models.Model):
         reps = self.reps_set.all()
         return sum(map(lambda x: x.reps, reps))
 
+    def last_update_time(self):
+        try:
+            return self.reps_set.order_by('-pk')[0].time_created
+        except IndexError:
+            return None
+
     workout = models.ForeignKey(Workout)
     name = models.CharField(max_length=200)
 
