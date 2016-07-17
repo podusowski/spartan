@@ -69,6 +69,19 @@ p
     font-weight: 100;
 }
 
+@mixin text3
+{
+    color: lighten($primary_color, 20%);
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 100;
+    font-size: 0.5em;
+}
+
+.note
+{
+    @include text3;
+}
+
 table
 {
     width: 100%;
@@ -97,9 +110,16 @@ table
 }
 
 dt,
-.box
+.box,
+.name
 {
     @include text1;
+}
+
+.note,
+.name
+{
+    display: block;
 }
 
 dd,

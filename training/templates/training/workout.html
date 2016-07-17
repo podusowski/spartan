@@ -41,8 +41,8 @@
 {%for excercise in workout.excercise_set.all%}
     <dl class="excercise box">
         <dt>
-            {{excercise.name}}
-            {{excercise.duration}}
+            <span class="name">{{excercise.name}}</span>
+            <span class="note">{{excercise.duration}}</span>
         </dt>
 
         <dd>
