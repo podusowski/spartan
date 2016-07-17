@@ -98,13 +98,13 @@
 {%endif%}
 
 <script>
-    function update_stopwatch(html_element_id, start_time)
+    function stopwatch(html_element_id, start_time)
     {
         var now = new Date();
         var diff = now.getTime() - start_time.getTime();
 
         document.getElementById(html_element_id).innerHTML = format_timespan(diff);
-        setTimeout(function() { update_stopwatch(html_element_id, start_time); }, 500);
+        setTimeout(function() { stopwatch(html_element_id, start_time); }, 500);
     }
 
     function format_timespan(ms)
@@ -117,7 +117,7 @@
 
     window.onload = function()
     {
-        update_stopwatch("stopwatch", new Date("{{workout.started.isoformat}}"));
+        stopwatch("stopwatch", new Date("{{workout.started.isoformat}}"));
     };
 </script>
 
