@@ -72,6 +72,9 @@ class Excercise(models.Model):
 
     workout = models.ForeignKey(Workout)
     name = models.CharField(max_length=200)
+    time_started = models.DateTimeField(null=True, default=None)
+    time_finished = models.DateTimeField(null=True, default=None)
+    time_updated = models.DateTimeField(null=True, default=None)
 
     @staticmethod
     def most_common():
