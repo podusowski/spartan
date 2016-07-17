@@ -98,28 +98,26 @@
 {%endif%}
 
 <script>
-    function update_stopwatch(start_time)
+    function update_stopwatch(html_element_id, start_time)
     {
-        now = new Date();
-
+        var now = new Date();
         var diff = now.getTime() - start_time.getTime();
 
-        document.getElementById('stopwatch').innerHTML = format_time(diff);
-        refresh = setTimeout(function() { update_stopwatch(start_time); }, 500);
+        document.getElementById(html_element_id).innerHTML = format_timespan(diff);
+        setTimeout(function() { update_stopwatch(html_element_id, start_time); }, 500);
     }
 
-    function format_time(ms)
+    function format_timespan(ms)
     {
         var second = Math.floor(ms/1000);
         var minute = Math.floor(ms/60000);
-        second = second - 60 * minute + '';
+        second = second - 60 * minute;
         return minute + 'm ' + second + 's';
     }
 
     window.onload = function()
     {
-        var start_time = new Date("{{workout.started.isoformat}}");
-        update_stopwatch(start_time);
+        update_stopwatch("stopwatch", new Date("{{workout.started.isoformat}}"));
     };
 </script>
 
