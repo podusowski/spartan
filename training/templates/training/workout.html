@@ -3,6 +3,8 @@
 {%block content%}
 
 {% load staticfiles %}
+{% load training_format %}
+
 <script src="{% static 'training/stopwatch.js' %}"></script>
 
 <h2>workout</h2>
@@ -31,13 +33,11 @@
 <div class="box">
     <dl>
         <dt>started</dt><dd>{{workout.started}}</dd>
-        <dt>took</dt><dd>{{workout.started|timesince:workout.finished}}</dd>
+        <dt>took</dt><dd>{{workout.duration|duration}}</dd>
         <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
     </dl>
 </div>
 {%endif%}
-
-{% load training_format %}
 
 <h2>excercises</h2>
 {%for excercise in workout.excercise_set.all%}

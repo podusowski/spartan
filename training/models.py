@@ -44,9 +44,9 @@ class Workout(models.Model):
 
     def duration(self):
         if self.started is not None and self.finished is not None:
-            return defaultfilters.timesince(self.started, self.finished)
+            return self.finished - self.started
         else:
-            return '-'
+            return datetime.timedelta()
 
     def utd(self):
         """ userfriendly training data string """
@@ -68,7 +68,7 @@ class Excercise(models.Model):
         if self.time_started is not None and self.time_finished is not None:
             return self.time_finished - self.time_started
         else:
-            return ''
+            return datetime.timedelta()
 
     workout = models.ForeignKey(Workout)
     name = models.CharField(max_length=200)

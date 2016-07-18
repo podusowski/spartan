@@ -17,6 +17,8 @@
 
 <h2>history</h2>
 
+{% load training_format %}
+
 <div class="box">
     <table>
         <tr>
@@ -29,7 +31,7 @@
             <tr>
                 <td><a href="{% url 'training_session' workout.id %}">{{workout.status}}</a></td>
                 <td><a href="{% url 'training_session' workout.id %}">{{workout.started}}</a></td>
-                <td><a href="{% url 'training_session' workout.id %}">{{workout.duration}}</a></td>
+                <td><a href="{% url 'training_session' workout.id %}">{{workout.duration|duration}}</a></td>
                 <td><a href="{% url 'training_session' workout.id %}">{{workout.total_reps}}</a></td>
             </tr>
         {% endfor %}

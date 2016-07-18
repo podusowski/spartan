@@ -9,7 +9,7 @@ function stopwatch(html_element_id, start_time)
 
 function format_number(number)
 {
-    if (number > 10)
+    if (number > 9)
     {
         return '' + number
     }
