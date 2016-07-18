@@ -44,7 +44,17 @@
     <dl class="excercise box">
         <dt>
             <span class="name">{{excercise.name}}</span>
-            <span class="note">{{excercise.duration|duration}}</span>
+
+            {% if forloop.last and not workout.finished %}
+                <span id="excercise_duration" class="note">{{excercise.duration|duration}}</span>
+                <script>
+                    $(document).ready(function() {
+                        stopwatch("excercise_duration", new Date("{{excercise.time_started.isoformat}}"));
+                    });
+                </script>
+            {% else %}
+                <span class="note">{{excercise.duration|duration}}</span>
+            {% endif %}
         </dt>
 
         <dd>

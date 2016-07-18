@@ -21,6 +21,11 @@ function format_number(number)
 
 function format_timespan(ms)
 {
+    if (ms < 0)
+    {
+        return "--";
+    }
+
     var day = Math.floor(ms / (24 * 60 * 60 * 1000));
     ms = ms % (24 * 60 * 60 * 1000);
 
