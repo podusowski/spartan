@@ -77,6 +77,20 @@ p
     font-size: 0.7em;
 }
 
+@mixin box_borders
+{
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #111;
+}
+
+@mixin box
+{
+    background: linear-gradient(135deg, lighten($background-color, 10%) 0%, darken($background-color, 10%) 100%);
+    @include box_borders;
+    padding: 0.2em;
+    overflow: auto;
+}
+
 .note
 {
     @include text3;
@@ -95,17 +109,19 @@ table
 
     th
     {
+        background-color: lighten($background-color, 10%);
         @include text1;
     }
 
-    tr
+    td
     {
-        border-bottom: 1px solid $secondary_color;
+        @include box_borders;
+        padding: 0.3em;
     }
 
     tr:hover
     {
-        background-color: $secondary_color;
+        background-color: lighten($background-color, 20%);
     }
 }
 
@@ -199,11 +215,7 @@ form
 
 .box
 {
-    background: linear-gradient(135deg, lighten($background-color, 10%) 0%, darken($background-color, 10%) 100%);
-    border-top: 1px solid #222;
-    border-bottom: 1px solid #111;
-    padding: 0.2em;
-    overflow: auto;
+    @include box
 }
 
 dl
