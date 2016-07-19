@@ -5,6 +5,7 @@ from django.shortcuts import *
 from django.http import HttpResponse
 
 from .models import *
+from . import statistics
 
 
 def index(request):
@@ -16,7 +17,7 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    previous_workouts = Workout.objects.filter(user=request.user).order_by('-pk')
+    previous_workouts = statistics.previous_workouts(request)
     return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts,
                                                        'most_common_excercises': Excercise.most_common()})
 
