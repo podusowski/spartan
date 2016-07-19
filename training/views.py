@@ -23,10 +23,8 @@ def dashboard(request):
 
 @login_required
 def start_workout(request):
-    s = Workout()
-    s.user = request.user
-    s.save()
-    return redirect('workout', s.id)
+    workout = Workout.objects.create(user=request.user)
+    return redirect('workout', workout.id)
 
 
 @login_required
