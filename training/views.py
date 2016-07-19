@@ -26,7 +26,7 @@ def start_workout(request):
     s = Workout()
     s.user = request.user
     s.save()
-    return redirect('training_session', s.id)
+    return redirect('workout', s.id)
 
 
 @login_required
@@ -42,11 +42,11 @@ def finish_workout(request, training_session_id):
     except:
         pass
 
-    return redirect('training_session', workout.id)
+    return redirect('workout', workout.id)
 
 
 @login_required
-def training_session(request, training_session_id):
+def workout(request, training_session_id):
     workout = Workout.objects.get(pk=training_session_id, user=request.user)
     return render(request, 'training/workout.html', {'workout': workout,
                                                      'most_common_reps': Reps.most_common(),
@@ -74,7 +74,7 @@ def add_excercise(request, training_session_id):
     excercise.time_started = datetime.datetime.now()
     excercise.save()
 
-    return redirect('training_session', training_session_id)
+    return redirect('workout', training_session_id)
 
 
 @login_required
@@ -84,4 +84,4 @@ def add_reps(request, excercise_id):
 
     s.time_updated = datetime.datetime.now()
     s.save()
-    return redirect('training_session', s.workout.id)
+    return redirect('workout', s.workout.id)

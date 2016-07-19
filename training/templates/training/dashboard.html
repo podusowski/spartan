@@ -29,10 +29,10 @@
         </tr>
         {% for workout in previous_workouts %}
             <tr>
-                <td><a href="{% url 'training_session' workout.id %}">{{workout.status}}</a></td>
-                <td><a href="{% url 'training_session' workout.id %}">{{workout.started}}</a></td>
-                <td><a href="{% url 'training_session' workout.id %}">{{workout.duration|duration}}</a></td>
-                <td><a href="{% url 'training_session' workout.id %}">{{workout.total_reps}}</a></td>
+                <td><a href="{% url 'workout' workout.id %}">{{workout.status}}</a></td>
+                <td><a href="{% url 'workout' workout.id %}">{{workout.started}}</a></td>
+                <td><a href="{% url 'workout' workout.id %}">{{workout.duration|duration}}</a></td>
+                <td><a href="{% url 'workout' workout.id %}">{{workout.total_reps}}</a></td>
             </tr>
         {% endfor %}
     </table>
