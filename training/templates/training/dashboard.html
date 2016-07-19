@@ -22,16 +22,26 @@
 <div class="box">
     <table>
         <tr>
-            <th>status</th>
             <th>started</th>
             <th>duration</th>
-            <th>total reps</th>
+            <th>reps</th>
         </tr>
         {% for workout in previous_workouts %}
             <tr>
-                <td><a href="{% url 'workout' workout.id %}">{{workout.status}}</a></td>
-                <td><a href="{% url 'workout' workout.id %}">{{workout.started}}</a></td>
-                <td><a href="{% url 'workout' workout.id %}">{{workout.duration|duration}}</a></td>
+                <td>
+                    <a href="{% url 'workout' workout.id %}">
+                        {% if workout.started %}
+                            {{workout.started}}
+                        {% else %}
+                            not started
+                        {% endif %}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'workout' workout.id %}">
+                        {% if workout.live %}live{% else %}{{workout.duration|duration}}{% endif %}
+                    </a>
+                </td>
                 <td><a href="{% url 'workout' workout.id %}">{{workout.total_reps}}</a></td>
             </tr>
         {% endfor %}
