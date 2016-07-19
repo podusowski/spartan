@@ -83,3 +83,10 @@ def add_reps(request, excercise_id):
     s.time_updated = datetime.datetime.now()
     s.save()
     return redirect('workout', s.workout.id)
+
+
+@login_required
+def delete_workout(request, workout_id):
+    workout = Workout.objects.get(pk=workout_id, user=request.user)
+    workout.delete()
+    return redirect('dashboard')

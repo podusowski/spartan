@@ -117,6 +117,14 @@
 </div>
 {%endif%}
 
+<h2>delete</h2>
+<div class="box">
+    <form action="{% url 'delete_workout' workout.id %}" method="post" onsubmit="return confirm('are you sure you want to delete this workout?')">
+        {% csrf_token %}
+        <input type="submit" value="delete" />
+    </form>
+</div>
+
 {%if workout.finished%}
 <h2>UTD string</h2>
 <div class="box">
