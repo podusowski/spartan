@@ -4,7 +4,6 @@ from django.db.models import Count
 from django.contrib.auth.models import User
 from django.template import defaultfilters
 
-
 class Workout(models.Model):
     user = models.ForeignKey(User)
     started = models.DateTimeField(null=True, default=None)
