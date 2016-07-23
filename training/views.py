@@ -19,7 +19,8 @@ def index(request):
 def dashboard(request):
     previous_workouts = statistics.previous_workouts(request)
     return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts,
-                                                       'most_common_excercises': statistics.most_common_excercises(request)})
+                                                       'most_common_excercises': statistics.most_common_excercises(request),
+                                                       'reps_per_week': statistics.reps_per_week(request, 5)})
 
 
 @login_required
