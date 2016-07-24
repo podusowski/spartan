@@ -25,3 +25,12 @@ def duration(value):
         return '{}h:{}'.format(hour, mins_and_secs)
     else:
         return mins_and_secs
+
+
+@register.filter
+def project(value, key):
+    return map(lambda x: x[key], value)
+
+@register.filter()
+def js_list(value):
+    return ', '.join(map(lambda x: '"{}"'.format(x), value))

@@ -6,21 +6,21 @@
 <div class="box">
     <canvas id="total_reps" width="100" height="30"></canvas>
     <script>
-        Chart.defaults.global.elements.line.borderColor = '#CF4A08';
-        data = [
-            {% for r in reps_per_week %}
-                {% if r %}
-                    {{ r }}
-                    {% if not forloop.last %}, {% endif %}
-                {% endif %}
-            {% endfor %}
-            ];
+        Chart.defaults.global.elements.line.borderColor = 'rgba(207, 74, 8, 0.8)';
+        Chart.defaults.global.elements.line.backgroundColor= 'rgba(207, 74, 8, 0.05)';
+
+        {% load training_format %}
+        data = [{{ reps_per_week | project:"value" | join:"," }}];
+        labels = [{{ reps_per_week | project:"time" | js_list | safe }}];
+
         ctx = $('#total_reps');
         chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['dupa', 'this week'],
+                labels: labels,
                 datasets: [{
+                    tension: 0,
+                    label: "reps",
                     data: data
                 }]
             },

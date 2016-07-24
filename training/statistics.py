@@ -25,11 +25,14 @@ def _week_range(number):
         week_start -= week
 
 
-def reps_per_week(request, weeks):
+def reps_per_week(request, weeks_number):
     def reps_in_range(time_range):
         begin, end = time_range
-        return Reps.objects.filter(excercise__workout__user=request.user,
+        reps = Reps.objects.filter(excercise__workout__user=request.user,
                                    excercise__time_started__gt=begin,
                                    excercise__time_started__lt=end).aggregate(Sum('reps'))['reps__sum']
 
-    return list(map(reps_in_range, _week_range(weeks)))
+        return {'time': str(begin) + "-" + str(end),
+                'value': 0 if reps is None else reps}
+
+    return list(map(reps_in_range, _week_range(weeks_number)))
