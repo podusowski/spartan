@@ -4,15 +4,37 @@
 
 <h2>total reps</h2>
 <div class="box">
+    <canvas id="total_reps" width="100" height="30"></canvas>
+    <script>
+        Chart.defaults.global.elements.line.borderColor = '#CF4A08';
+        data = [
             {% for r in reps_per_week %}
-                {% if forloop.first %}
-                    this week: {{ r }}, previous:
-                {% else %}
-                    {% if r %}
-                        {{ r }}
-                    {% endif %}
+                {% if r %}
+                    {{ r }}
+                    {% if not forloop.last %}, {% endif %}
                 {% endif %}
             {% endfor %}
+            ];
+        ctx = $('#total_reps');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['dupa', 'this week'],
+                datasets: [{
+                    data: data
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 </div>
 
 {% endblock %}
