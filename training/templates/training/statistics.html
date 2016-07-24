@@ -1,0 +1,18 @@
+{% extends "training/base.html" %}
+
+{% block content %}
+
+<h2>total reps</h2>
+<div class="box">
+            {% for r in reps_per_week %}
+                {% if forloop.first %}
+                    this week: {{ r }}, previous:
+                {% else %}
+                    {% if r %}
+                        {{ r }}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+</div>
+
+{% endblock %}

@@ -5,7 +5,7 @@ from django.shortcuts import *
 from django.http import HttpResponse
 
 from .models import *
-from . import statistics
+from .statistics import *
 
 
 def index(request):
@@ -17,10 +17,16 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    previous_workouts = statistics.previous_workouts(request)
-    return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts,
-                                                       'most_common_excercises': statistics.most_common_excercises(request),
-                                                       'reps_per_week': statistics.reps_per_week(request, 5)})
+    return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts(request),
+                                                       'most_common_excercises': most_common_excercises(request),
+                                                       'reps_per_week': reps_per_week(request, 5)})
+
+
+@login_required
+def statistics(request):
+    return render(request, 'training/statistics.html', {'previous_workouts': previous_workouts(request),
+                                                        'most_common_excercises': most_common_excercises(request),
+                                                        'reps_per_week': reps_per_week(request, 5)})
 
 
 @login_required

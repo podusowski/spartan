@@ -16,6 +16,7 @@ urlpatterns = [
         ), name='register'),
 
     url('^dashboard$', views.dashboard, name='dashboard'),
+    url('^statistics$', views.statistics, name='statistics'),
     url('^start_workout/$', views.start_workout, name='start_workout'),
     url('^finish_workout/(?P<training_session_id>[0-9]+)$', views.finish_workout, name='finish_workout'),
     url('^delete_workout/(?P<workout_id>[0-9]+)/$', views.delete_workout, name='delete_workout'),
