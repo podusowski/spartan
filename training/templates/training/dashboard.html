@@ -21,7 +21,7 @@
 
 {% load training_format %}
 
-<div class="box">
+<section>
     <table>
         <tr>
             <th>started</th>
@@ -32,11 +32,7 @@
             <tr>
                 <td>
                     <a href="{% url 'workout' workout.id %}">
-                        {% if workout.started %}
-                            {{workout.started}}
-                        {% else %}
-                            not started
-                        {% endif %}
+                        {% firstof workout.started 'not started' %}
                     </a>
                 </td>
                 <td>
@@ -48,6 +44,6 @@
             </tr>
         {% endfor %}
     </table>
-</div>
+<section>
 
 {%endblock%}
