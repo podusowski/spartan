@@ -185,6 +185,20 @@ label,
     @include important-value;
 }
 
+@mixin button($color)
+{
+    @include text1;
+    display: inline-block;
+    background-color: $color;
+    background: linear-gradient(to top, lighten($color, 10%) 0%, darken($color, 10%) 100%);
+    border-color: darken($color, 30%);
+    color: lighten($color, 70%);
+    padding: 0.5em;
+    border: 1px solid darken($color, 30%);
+    border-radius: 0.2em;
+    color: lighten($color, 70%);
+}
+
 form
 {
     margin-right: 0.5em;
@@ -199,9 +213,8 @@ form
     input
     {
         padding: 0.2em;
-        font-size: 1.2em;
+        font-size: larger;
         font-weight: 100;
-        box-shadow: 0px 0px 3px 0px rgba(255,255,255,0.3);
         outline: none;
         border-width: 1px;
         border-style: solid;
@@ -220,10 +233,8 @@ form
 
     input[type="submit"]
     {
-        background-color: $primary_color;
-        background: linear-gradient(to top, $primary_color 0%, darken($primary_color, 20%) 100%);
-        border-color: darken($primary_color, 30%);
-        color: lighten($primary_color, 70%);
+        @include button($primary_color);
+        padding: 0.2em;
     }
 
     input[type="number"]
@@ -281,6 +292,7 @@ dl.number
 section
 {
     @include box;
+    @include text1;
 }
 
 nav
@@ -289,14 +301,6 @@ nav
 
     a
     {
-        @include text1;
-        display: inline-block;
-        padding: 0.5em;
-        margin: 0.1em;
-        background-color: $secondary_color;
-        background: linear-gradient(to top, $secondary_color 0%, lighten($secondary_color, 20%) 100%);
-        border: 1px solid darken($secondary_color, 30%);
-        color: lighten($primary_color, 70%);
-        border-radius: 0.2em;
+        @include button($secondary_color)
     }
 }

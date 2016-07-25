@@ -1,5 +1,16 @@
 {%extends "training/base.html"%}
 
+{% block nav %}
+<nav>
+    <a href="{% url 'dashboard' %}">dashboard</a>
+    <a href="{% url 'delete_workout' workout.id %}" onclick="return confirm('are you sure you want to delete this workout?')">delete</a>
+
+    {% if workout.live %}
+        <a href="{% url 'finish_workout' workout.id %}" onclick="return confirm('are you sure this is it?')">finish</a>
+    {% endif %}
+</nav>
+{% endblock %}
+
 {%block content%}
 
 {% load staticfiles %}
@@ -9,40 +20,22 @@
 
 <h2>workout</h2>
 
-{%if workout.live%}
-<div class="box">
-    <dl>
-        <dt>duration</dt><dd><span id="stopwatch">--:--</span></dd>
-        <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
-    </dl>
-</div>
-
-<div class="box">
-    <form action="{% url 'finish_workout' workout.id %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="finish" />
-    </form>
-
-    <form action="{% url 'delete_workout' workout.id %}" method="post" onsubmit="return confirm('are you sure you want to delete this workout?')">
-        {% csrf_token %}
-        <input type="submit" value="abort" />
-    </form>
-</div>
-{%endif%}
-
-{%if not workout.started%}
-<div class="box">this workout has not beed started yet, add first excercise to do it</div>
-{%endif%}
-
-{%if workout.finished%}
-<div class="box">
-    <dl>
-        <dt>started</dt><dd>{{workout.started}}</dd>
-        <dt>took</dt><dd>{{workout.duration|duration}}</dd>
-        <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
-    </dl>
-</div>
-{%endif%}
+<section>
+    {%if workout.live%}
+        <dl>
+            <dt>duration</dt><dd><span id="stopwatch">--:--</span></dd>
+            <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
+        </dl>
+    {% elif not workout.started%}
+        this workout has not beed started yet, add some excercise to do it
+    {% elif workout.finished %}
+        <dl>
+            <dt>started</dt><dd>{{workout.started}}</dd>
+            <dt>took</dt><dd>{{workout.duration|duration}}</dd>
+            <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
+        </dl>
+    {%endif%}
+</section>
 
 <h2>excercises</h2>
 {%for excercise in workout.excercise_set.all%}
@@ -63,13 +56,13 @@
         </dt>
 
         <dd>
-            {%for reps in excercise.reps_set.all%}
+            {% for reps in excercise.reps_set.all %}
                 <span class="reps">{{reps.reps}}</span>
-            {%endfor%}
+            {% endfor %}
 
-            {%if excercise.total_reps > 0%}
+            {% if excercise.total_reps > 0 %}
                 <span class="total_reps reps">{{excercise.total_reps}}</span>
-            {%endif%}
+            {% endif %}
 
             {% if forloop.last and excercise.time_updated and not workout.finished %}
                 <span id="last_update_stopwatch">--</span>
@@ -121,16 +114,6 @@
     {%endfor%}
 </div>
 {%endif%}
-
-{% if not workout.live %}
-<h2>delete</h2>
-<div class="box">
-    <form action="{% url 'delete_workout' workout.id %}" method="post" onsubmit="return confirm('are you sure you want to delete this workout?')">
-        {% csrf_token %}
-        <input type="submit" value="delete" />
-    </form>
-</div>
-{% endif %}
 
 {%if workout.finished%}
 <h2>UTD string</h2>
