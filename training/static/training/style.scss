@@ -172,12 +172,17 @@ label,
     margin-right: 0.5em;
 }
 
-.excercise .total_reps
+@mixin important-value
 {
     background-color: $secondary_color;
     border-radius: 1em;
     padding-left: 0.5em;
     padding-right: 0.5em;
+}
+
+.excercise .total_reps
+{
+    @include important-value;
 }
 
 form
@@ -248,4 +253,32 @@ dl
         float: left;
         clear: right;
     }
+}
+
+dl.number
+{
+    overflow: hidden;
+
+    dt
+    {
+        display: inline;
+        float: none;
+        font-size: smaller;
+        white-space: nowrap;
+        vertical-align: top;
+        margin-right: 0.3em;
+    }
+
+    dd
+    {
+        @include important-value;
+        display: inline-block;
+        float: none;
+        margin-right: 1em;
+    }
+}
+
+section
+{
+    @include box;
 }

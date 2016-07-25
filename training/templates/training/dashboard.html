@@ -2,15 +2,14 @@
 
 {%block content%}
 
-
 <h2>your account</h2>
-<div class="box">
-    <dl>
+<section>
+    <dl class="number">
         <dt>total workouts</dt><dd>{{previous_workouts.count}}</dd>
         <dt>total reps</dt><dd>{{ total_reps }}</dd>
     </dl>
     <p><a href="{% url 'statistics' %}">more stats</a></p>
-</div>
+</section>
 
 <div class="box">
     <form action="{% url 'start_workout' %}">
