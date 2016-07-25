@@ -56,13 +56,15 @@
         </dt>
 
         <dd>
-            {% for reps in excercise.reps_set.all %}
-                <span class="reps">{{reps.reps}}</span>
-            {% endfor %}
+            <ul>
+                {% for reps in excercise.reps_set.all %}
+                    <li>{{reps.reps}}</li>
+                {% endfor %}
 
-            {% if excercise.total_reps > 0 %}
-                <span class="total_reps reps">{{excercise.total_reps}}</span>
-            {% endif %}
+                {% if excercise.total_reps > 0 %}
+                    <li><strong>{{excercise.total_reps}}</strong></li>
+                {% endif %}
+            </ul>
 
             {% if forloop.last and excercise.time_updated and not workout.finished %}
                 <span id="last_update_stopwatch">--</span>
@@ -75,7 +77,7 @@
         </dd>
     </dl>
 
-    {%if forloop.last and not workout.finished%}
+    {% if forloop.last and not workout.finished %}
         <div class="box">
             <form action="{% url 'add_reps' excercise.id %}" method="post">
                 {% csrf_token %}
@@ -96,24 +98,24 @@
     <div class="box">you will be counting your reps here</div>
 {%endfor%}
 
-{%if not workout.finished%}
-<h2>start new excercise</h2>
-<div class="box">
-    <form action="{% url 'add_excercise' workout.id %}" method="post">
-        {% csrf_token %}
-        <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
-        <input type="submit" value="start" />
-    </form>
-
-    {%for excercise,_ in most_common_excercises|slice:":4"%}
+{% if not workout.finished %}
+    <h2>start new excercise</h2>
+    <section>
         <form action="{% url 'add_excercise' workout.id %}" method="post">
             {% csrf_token %}
-            <input type="hidden" name="name" value="{{excercise}}" />
-            <input type="submit" value="{{excercise}}" />
+            <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
+            <input type="submit" value="start" />
         </form>
-    {%endfor%}
-</div>
-{%endif%}
+
+        {%for excercise,_ in most_common_excercises|slice:":4"%}
+            <form action="{% url 'add_excercise' workout.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="name" value="{{excercise}}" />
+                <input type="submit" value="{{excercise}}" />
+            </form>
+        {%endfor%}
+    </section>
+{% endif %}
 
 {%if workout.finished%}
 <h2>UTD string</h2>

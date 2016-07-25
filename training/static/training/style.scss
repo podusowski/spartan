@@ -166,21 +166,17 @@ label,
     vertical-align: middle;
 }
 
-.excercise .reps,
-.excercise .total_reps
-{
-    margin-right: 0.5em;
-}
-
 @mixin important-value
 {
     background-color: $secondary_color;
     border-radius: 1em;
     padding-left: 0.5em;
     padding-right: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
-.excercise .total_reps
+strong
 {
     @include important-value;
 }
@@ -263,6 +259,17 @@ dl
     {
         float: left;
         clear: right;
+    }
+}
+
+ul
+{
+    display: inline-block;
+
+    li
+    {
+        display: inline-block;
+        margin-right: 0.5em;
     }
 }
 
