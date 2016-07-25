@@ -1,4 +1,11 @@
-{%extends "training/base.html"%}
+{%extends "training/base.html" %}
+
+{% block nav %}
+<nav>
+    <a href="{% url 'start_workout' %}">new workout</a>
+    <a href="{% url 'statistics' %}">statistics</a>
+</nav>
+{% endblock %}
 
 {%block content%}
 
@@ -8,14 +15,7 @@
         <dt>total workouts</dt><dd>{{previous_workouts.count}}</dd>
         <dt>total reps</dt><dd>{{ total_reps }}</dd>
     </dl>
-    <p><a href="{% url 'statistics' %}">more stats</a></p>
 </section>
-
-<div class="box">
-    <form action="{% url 'start_workout' %}">
-        <input type="submit" value="new workout" />
-    </form>
-</div>
 
 <h2>history</h2>
 

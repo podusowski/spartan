@@ -38,6 +38,12 @@
     </div>
 </div>
 
+{% block nav %}
+<nav>
+    <a href="{% url 'dashboard' %}">dashboard</a>
+</nav>
+{% endblock %}
+
 {%spaceless%}
 {%block content%}{%endblock%}
 {%endspaceless%}

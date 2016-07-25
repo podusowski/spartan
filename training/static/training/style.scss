@@ -282,3 +282,21 @@ section
 {
     @include box;
 }
+
+nav
+{
+    @include box;
+
+    a
+    {
+        @include text1;
+        display: inline-block;
+        padding: 0.5em;
+        margin: 0.1em;
+        background-color: $secondary_color;
+        background: linear-gradient(to top, $secondary_color 0%, lighten($secondary_color, 20%) 100%);
+        border: 1px solid darken($secondary_color, 30%);
+        color: lighten($primary_color, 70%);
+        border-radius: 0.2em;
+    }
+}
