@@ -6,8 +6,12 @@
 <div class="box">
     <canvas id="total_reps" width="100" height="30"></canvas>
     <script>
+        Chart.defaults.global.elements.rectangle.borderColor = 'rgba(207, 74, 8, 0.8)';
+        Chart.defaults.global.elements.rectangle.backgroundColor = 'rgba(207, 74, 8, 0.8)';
+
         Chart.defaults.global.elements.line.borderColor = 'rgba(207, 74, 8, 0.8)';
-        Chart.defaults.global.elements.line.backgroundColor= 'rgba(207, 74, 8, 0.05)';
+        Chart.defaults.global.elements.line.backgroundColor = 'rgba(207, 74, 8, 0.05)';
+        Chart.defaults.global.legend.display = false;
 
         {% load training_format %}
         data = [{{ reps_per_week | project:"value" | join:"," }}];
@@ -15,7 +19,7 @@
 
         ctx = $('#total_reps');
         chart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{

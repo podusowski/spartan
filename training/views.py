@@ -19,6 +19,7 @@ def index(request):
 def dashboard(request):
     return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts(request),
                                                        'most_common_excercises': most_common_excercises(request),
+                                                       'total_reps': total_reps(request),
                                                        'reps_per_week': reps_per_week(request, 5)})
 
 

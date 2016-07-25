@@ -7,18 +7,7 @@
 <div class="box">
     <dl>
         <dt>total workouts</dt><dd>{{previous_workouts.count}}</dd>
-        <dt>total reps</dt>
-        <dd>
-            {% for r in reps_per_week %}
-                {% if forloop.first %}
-                    this week: {{ r }}, previous:
-                {% else %}
-                    {% if r %}
-                        {{ r }}
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-        </dd>
+        <dt>total reps</dt><dd>{{ total_reps }}</dd>
     </dl>
     <p><a href="{% url 'statistics' %}">more stats</a></p>
 </div>
