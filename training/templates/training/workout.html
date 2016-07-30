@@ -18,25 +18,27 @@
 
 <script src="{% static 'training/stopwatch.js' %}"></script>
 
-<h2>workout</h2>
-
-<section>
-    {%if workout.live%}
+{%if workout.live%}
+    <h2>workout</h2>
+    <section>
         <dl>
             <dt>duration</dt><dd><span id="stopwatch">--:--</span></dd>
             <dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd>
             <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
         </dl>
-    {% elif not workout.started%}
-        this workout has not beed started yet, add some excercise to do it
-    {% elif workout.finished %}
+    </section>
+{% endif %}
+
+{% if workout.finished %}
+    <h2>workout</h2>
+    <section>
         <dl>
             <dt>started</dt><dd>{{workout.started}}</dd>
             <dt>took</dt><dd>{{workout.duration|duration}}</dd>
             <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
         </dl>
-    {%endif%}
-</section>
+    </section>
+{%endif%}
 
 <h2>excercises</h2>
 <section>
@@ -104,7 +106,7 @@
         </div>
     {%endif%}
 {%empty%}
-    <div class="box">you will be counting your reps here</div>
+    excersice is not started until you add first excercise
 {%endfor%}
 </section>
 
@@ -123,12 +125,12 @@
     </section>
 {% endif %}
 
-{%if workout.finished%}
-<h2>UTD string</h2>
-<div class="box">
-    <pre>{{ workout.utd }}</pre>
-</div>
-{%endif%}
+{% if workout.finished %}
+    <h2>UTD string</h2>
+    <section>
+        <pre>{{ workout.utd }}</pre>
+    </section>
+{% endif %}
 
 <script>
     $(document).ready(function() {

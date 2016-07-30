@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Count
 from django.contrib.auth.models import User
 from django.template import defaultfilters
+from django.db.models import Sum
 
 class Workout(models.Model):
     user = models.ForeignKey(User)
@@ -39,7 +40,7 @@ class Workout(models.Model):
         self.finished = datetime.datetime.now()
 
     def total_reps(self):
-        return sum(map(lambda x: x.total_reps(), self.excercise_set.all()))
+        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or '-'
 
     def duration(self):
         if self.started is not None and self.finished is not None:
