@@ -61,7 +61,22 @@ h2, h3, h4, h5
     color: $primary_color;
     background-color: lighten($background-color, 10%);
     border-bottom: 1px solid #111;
-    font-weight: 300;
+    font-weight: 100;
+    font-size: normal;
+
+    border-left: 1px solid #222;
+    border-top: 1px solid #222;
+    border-right: 1px solid #111;
+}
+
+h2, h3, h4, h5
+{
+    margin: 10px 10px 0 10px;
+}
+
+section
+{
+    margin: 0 10px 10px 10px;
 }
 
 p
@@ -93,6 +108,8 @@ p
 
 @mixin box_borders
 {
+    border-left: 1px solid #222;
+    border-right: 1px solid #111;
     border-top: 1px solid #222;
     border-bottom: 1px solid #111;
 }
@@ -101,7 +118,7 @@ p
 {
     background: linear-gradient(135deg, lighten($background-color, 10%) 0%, darken($background-color, 10%) 100%);
     @include box_borders;
-    padding: 0.2em;
+    padding: 0.5em;
     overflow: auto;
 }
 
@@ -186,7 +203,9 @@ strong
     @include text1;
     display: inline-block;
     background-color: $color;
-    background: linear-gradient(to top, lighten($color, 10%) 0%, darken($color, 10%) 100%);
+    background: linear-gradient(to top,
+                                lighten($color, 8%) 0%,
+                                darken($color, 8%) 100%);
     border-color: darken($color, 30%);
     color: lighten($color, 70%);
     padding: 0.5em;
@@ -222,15 +241,21 @@ form
     input[type="number"]
     {
         background: linear-gradient(0deg, lighten($background-color, 5%) 0%, darken($background-color, 5%) 100%);
-        border-image: linear-gradient(to top, #000 0%, #222 100%);
-        border-image-slice: 1;
-        border-right: 0;
+        border: 1px solid black;
     }
 
     input[type="submit"]
     {
-        @include button($primary_color);
-        padding: 0.2em;
+        @include button(#111);
+        padding: 0.2em 0.5em 0.2em 0.5em;
+    }
+
+    input[type="number"] + input[type="submit"],
+    input[type="text"] + input[type="submit"]
+    {
+        border: 1px solid black;
+        border-left: 0;
+        border-radius: 0 0.2em 0.2em 0;
     }
 
     input[type="number"]
@@ -253,6 +278,8 @@ dl
         width: 5em;
         clear: left;
         float: left;
+        padding-bottom: 0.2em;
+        border-bottom: 1px solid #222;
     }
 
     dd
@@ -310,4 +337,12 @@ nav
     {
         @include button($secondary_color)
     }
+}
+
+.excercise a
+{
+    @include button(darken($secondary_color, 10%))
+    padding: 0.2em 0.5em 0.2em 0.5em;
+    margin: 0.2em;
+    border-radius: 0.3em;
 }
