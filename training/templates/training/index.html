@@ -3,18 +3,18 @@
 {%block content%}
 
 <h2>already have an account?</h2>
-<div class="box">
+<section>
     <form action="{% url 'login' %}">
         <input type="submit" value="login" />
     </form>
-</div>
+</section>
 
 <h2>create new account</h2>
-<div class="box">
+<section>
     <p>join {{users_count}} other users</p>
     <form action="{% url 'register' %}">
         <input type="submit" value="register" />
     </form>
-</div>
+</section>
 
 {%endblock%}
