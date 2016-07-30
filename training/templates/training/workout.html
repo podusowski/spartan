@@ -24,6 +24,7 @@
     {%if workout.live%}
         <dl>
             <dt>duration</dt><dd><span id="stopwatch">--:--</span></dd>
+            <dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd>
             <dt>total reps</dt><dd>{{workout.total_reps}}</dd>
         </dl>
     {% elif not workout.started%}
@@ -68,7 +69,6 @@
             </ul>
 
             {% if forloop.last and excercise.time_updated and not workout.finished %}
-                <span id="last_update_stopwatch">--</span>
                 <script>
                     $(document).ready(function() {
                         stopwatch("last_update_stopwatch", new Date("{{ excercise.time_updated.isoformat }}"));
