@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
@@ -56,11 +57,18 @@ def finish_workout(request, training_session_id):
 def workout(request, training_session_id):
     workout = Workout.objects.get(pk=training_session_id, user=request.user)
 
-    from .gpxpy import gpx
+    gpx = None
+    if workout.is_gpx():
+        from . import gpxpy
+        gpx_file = workout.gpx_set.get().gpx
+        if os.path.isfile(gpx_file.path):
+            xml = gpx_file.read().decode('utf-8')
+            gpx = gpxpy.parse(xml)
 
     return render(request, 'training/workout.html', {'workout': workout,
                                                      'most_common_reps': Reps.most_common(),
-                                                     'most_common_excercises': Excercise.most_common()})
+                                                     'most_common_excercises': Excercise.most_common(),
+                                                     'gpx': gpx})
 
 
 @login_required
