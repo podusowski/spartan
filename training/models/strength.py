@@ -88,3 +88,8 @@ class Reps(models.Model):
     @staticmethod
     def most_common():
         return Reps.objects.values_list('reps').annotate(rep_count=Count('reps')).order_by('-rep_count')
+
+
+class Gpx(models.Model):
+    workout = models.ForeignKey(Workout)
+    gpx = models.FileField(upload_to='gpx')
