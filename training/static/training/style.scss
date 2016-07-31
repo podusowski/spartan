@@ -294,7 +294,7 @@ dl
     {
         display: block;
         width: 100%;
-        border-bottom: 1px solid #222;
+        //border-bottom: 1px solid #222;
         vertical-align: middle;
         white-space: nowrap;
         @include text1;
@@ -309,6 +309,11 @@ dl
         vertical-align: middle;
         @include text2;
     }
+}
+
+dl.vertical
+{
+    display: block;
 }
 
 ul
