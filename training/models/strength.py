@@ -10,6 +10,9 @@ class Workout(models.Model):
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
 
+    def is_gpx(self):
+        return len(self.gpx_set.all()) > 0
+
     def status(self):
         if self.live():
             return 'live'
