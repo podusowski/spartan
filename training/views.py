@@ -58,6 +58,7 @@ def workout(request, training_session_id):
     workout = Workout.objects.get(pk=training_session_id, user=request.user)
 
     gpx = None
+    moving_data = None
     if workout.is_gpx():
         from . import gpxpy
         gpx_file = workout.gpx_set.get().gpx
@@ -65,10 +66,15 @@ def workout(request, training_session_id):
             xml = gpx_file.read().decode('utf-8')
             gpx = gpxpy.parse(xml)
 
+            segment = gpx.tracks[0].segments[0]
+
+            moving_data = segment.get_moving_data()
+
     return render(request, 'training/workout.html', {'workout': workout,
                                                      'most_common_reps': Reps.most_common(),
                                                      'most_common_excercises': Excercise.most_common(),
-                                                     'gpx': gpx})
+                                                     'gpx': gpx,
+                                                     'moving_time': datetime.timedelta(seconds=moving_data.moving_time)})
 
 
 @login_required
