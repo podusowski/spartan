@@ -1,0 +1,3 @@
+[submodule "external/gpxpy"]
+	path = external/gpxpy
+	url = https://github.com/tkrajina/gpxpy.git

@@ -55,6 +55,9 @@ def finish_workout(request, training_session_id):
 @login_required
 def workout(request, training_session_id):
     workout = Workout.objects.get(pk=training_session_id, user=request.user)
+
+    from .gpxpy import gpx
+
     return render(request, 'training/workout.html', {'workout': workout,
                                                      'most_common_reps': Reps.most_common(),
                                                      'most_common_excercises': Excercise.most_common()})

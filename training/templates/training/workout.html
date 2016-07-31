@@ -19,7 +19,7 @@
 <script src="{% static 'training/stopwatch.js' %}"></script>
 
 {% if workout.is_gpx %}
-    <h2>gpx workout</h2>
+    {% include 'training/workout_gpx.inc.html' %}
 {% endif %}
 
 {%if workout.live%}
