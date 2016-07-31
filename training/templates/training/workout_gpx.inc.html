@@ -1,11 +1,11 @@
 {% load training_format %}
 
-<h2>summary</h2>
+<h2>summary of {{ gpx.type }}</h2>
 <section>
     <dl>
         <dt>started</dt><dd>{{ gpx.start_time }}</dd>
         <dt>distance</dt><dd>{{ gpx.length_2d }} (3d: {{ gpx.length_3d }})</dd>
         <dt>time</dt><dd>{{ gpx.duration }}</dd>
-        <dt>moving time</dt><dd>{{ gpx.moving_time }}secs</dd>
+        <dt>moving time</dt><dd>{{ gpx.moving_time }}</dd>
     </dl>
 </section>

@@ -5,10 +5,10 @@ from . import models
 
 def parse(xml):
     gpx = gpxpy.parse(xml)
+    track = gpx.tracks[0]
     segment = gpx.tracks[0].segments[0]
 
     moving_time, stopped_time, moving_distance, stopped_distance, max_speed = segment.get_moving_data()
-
     start_time, end_time = segment.get_time_bounds()
 
     return {'moving_time': datetime.timedelta(seconds=moving_time),
@@ -16,7 +16,8 @@ def parse(xml):
             'length_3d': int(segment.length_3d()),
             'start_time': start_time,
             'end_time': end_time,
-            'duration': end_time - start_time}
+            'duration': end_time - start_time,
+            'type': track.type}
 
 def save_gpx(request):
     workout = models.Workout(user=request.user)
