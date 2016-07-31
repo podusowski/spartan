@@ -3,7 +3,9 @@
 <h2>summary</h2>
 <section>
     <dl>
-        <dt>time</dt><dd>{{ gpx.duration }}secs</dd>
+        <dt>started</dt><dd>{{ gpx.start_time }}</dd>
+        <dt>distance</dt><dd>{{ gpx.length_2d }} (3d: {{ gpx.length_3d }})</dd>
+        <dt>time</dt><dd>{{ gpx.duration }}</dd>
         <dt>moving time</dt><dd>{{ gpx.moving_time }}secs</dd>
     </dl>
 </section>
