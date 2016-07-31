@@ -4,7 +4,7 @@
 <script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
 
-<h2>summary of {{ gpx.type }}</h2>
+<h2>{{ gpx.type }}, {{ gpx.start_time }}</h2>
 <section>
     <dl><dt>started</dt><dd>{{ gpx.start_time }}</dd></dl>
     <dl><dt>distance</dt><dd>{{ gpx.length_2d|distance }}</dd></dl>
@@ -13,7 +13,6 @@
     <dl><dt>moving time</dt><dd>{{ gpx.moving_time }}</dd></dl>
 </section>
 
-<h2>map</h2>
 <section>
     <div id="map" style="height: 350px"></div>
 </section>

@@ -294,7 +294,6 @@ dl
     {
         display: block;
         width: 100%;
-        padding-bottom: 0.2em;
         border-bottom: 1px solid #222;
         vertical-align: middle;
         white-space: nowrap;
@@ -309,7 +308,6 @@ dl
         display: block;
         vertical-align: middle;
         @include text2;
-        padding-top: 0.3em;
     }
 }
 
@@ -324,29 +322,6 @@ ul
     }
 }
 
-dl.number
-{
-    overflow: hidden;
-
-    dt
-    {
-        display: inline;
-        float: none;
-        font-size: smaller;
-        white-space: nowrap;
-        vertical-align: top;
-        margin-right: 0.3em;
-    }
-
-    dd
-    {
-        @include important-value;
-        display: inline-block;
-        float: none;
-        margin-right: 1em;
-    }
-}
-
 section
 {
     @include fancy_box($background-color);
@@ -355,7 +330,10 @@ section
 
 nav
 {
-    @include box;
+    background-color: lighten($background-color, 5%);
+    border-bottom: 1px dashed lighten($background-color, 8%);
+    margin-bottom: 1em;
+    padding: 0.5em;
 
     a
     {
