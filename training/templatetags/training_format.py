@@ -34,3 +34,7 @@ def project(value, key):
 @register.filter()
 def js_list(value):
     return ', '.join(map(lambda x: '"{}"'.format(x), value))
+
+@register.filter()
+def distance(meters):
+    return '{}km'.format(round(meters / 1000, 2));
