@@ -23,4 +23,5 @@ urlpatterns = [
     url('^workout/(?P<training_session_id>[0-9]+)/$', views.workout, name='workout'),
     url('^add_excercise/(?P<training_session_id>[0-9]+)/$', views.add_excercise, name='add_excercise'),
     url('^add_reps/(?P<excercise_id>[0-9]+)/$', views.add_reps, name='add_reps'),
+    url('^upload_gpx/$', views.upload_gpx, name='upload_gpx'),
 ]

@@ -99,3 +99,12 @@ def delete_workout(request, workout_id):
     workout = Workout.objects.get(pk=workout_id, user=request.user)
     workout.delete()
     return redirect('dashboard')
+
+
+@login_required
+def upload_gpx(request):
+    if request.method == "POST":
+        workout = GpxWorkout(gpx=request.FILES['gpx'])
+        return redirect('dashboard')
+    else:
+        return render(request, 'training/upload_gpx.html')

@@ -6,3 +6,4 @@ from django.db.models import Sum
 
 class GpxWorkout(models.Model):
     user = models.ForeignKey(User)
+    gpx = models.FileField(upload_to='gpx')
