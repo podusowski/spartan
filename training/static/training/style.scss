@@ -136,6 +136,7 @@ table
     td a
     {
         display: block;
+        padding: 0.3em;
         @include text2;
     }
 
@@ -143,12 +144,13 @@ table
     {
         background-color: lighten($background-color, 10%);
         @include text1;
+        padding: 0.3em;
+        text-align: left;
     }
 
     td
     {
-        @include box_borders;
-        padding: 0.3em;
+        border-bottom: 1px solid lighten($background-color, 5%);
     }
 
     tr:hover
