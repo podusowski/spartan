@@ -9,8 +9,8 @@ def parse(xml):
     start_time, end_time = segment.get_time_bounds()
 
     return {'moving_time': moving_time,
-            'length_2d': segment.length_2d(),
-            'length_3d': segment.length_3d(),
+            'length_2d': int(segment.length_2d()),
+            'length_3d': int(segment.length_3d()),
             'start_time': start_time,
             'end_time': end_time,
             'duration': end_time - start_time}
