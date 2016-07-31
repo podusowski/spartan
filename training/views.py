@@ -63,6 +63,7 @@ def workout(request, training_session_id):
         gpx_file = workout.gpx_set.get().gpx
         if os.path.isfile(gpx_file.path):
             gpx_data = gpx.parse(gpx_file.read().decode('utf-8'))
+            gpx_data['gpxurl'] = gpx_file.url
 
     return render(request, 'training/workout.html', {'workout': workout,
                                                      'most_common_reps': Reps.most_common(),
