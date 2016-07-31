@@ -1,4 +1,7 @@
+import datetime
+
 from . import gpxpy
+from . import models
 
 def parse(xml):
     gpx = gpxpy.parse(xml)
@@ -8,9 +11,15 @@ def parse(xml):
 
     start_time, end_time = segment.get_time_bounds()
 
-    return {'moving_time': moving_time,
+    return {'moving_time': datetime.timedelta(seconds=moving_time),
             'length_2d': int(segment.length_2d()),
             'length_3d': int(segment.length_3d()),
             'start_time': start_time,
             'end_time': end_time,
             'duration': end_time - start_time}
+
+def save_gpx(request):
+    workout = models.Workout(user=request.user)
+    workout.save()
+    gpx = models.Gpx(workout=workout, gpx=request.FILES['gpxfile'])
+    gpx.save()
