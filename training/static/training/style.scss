@@ -116,7 +116,8 @@ p
 
 @mixin box
 {
-    background: linear-gradient(135deg, lighten($background-color, 10%) 0%, darken($background-color, 10%) 100%);
+    background-color: lighten($background-color, 5%);
+    background: linear-gradient(135deg, lighten($background-color, 8%) 0%, darken($background-color, 10%) 100%);
     @include box_borders;
     padding: 0.5em;
     overflow: auto;
