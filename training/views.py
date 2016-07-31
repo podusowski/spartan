@@ -112,7 +112,7 @@ def upload_gpx(request):
     if request.method == "POST":
         form = UploadGpxForm(request.POST, request.FILES)
         if form.is_valid():
-            workout = GpxWorkout(gpx=request.FILES['gpxfile'])
+            workout = Gpx(gpx=request.FILES['gpxfile'])
             return redirect('dashboard')
         else:
             return render(request, 'training/upload_gpx.html', {'form': form})
