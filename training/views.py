@@ -101,10 +101,21 @@ def delete_workout(request, workout_id):
     return redirect('dashboard')
 
 
+from django import forms
+
+class UploadGpxForm(forms.Form):
+    gpxfile = forms.FileField(label='Select a file')
+
+
 @login_required
 def upload_gpx(request):
     if request.method == "POST":
-        workout = GpxWorkout(gpx=request.FILES['gpx'])
-        return redirect('dashboard')
+        form = UploadGpxForm(request.POST, request.FILES)
+        if form.is_valid():
+            workout = GpxWorkout(gpx=request.FILES['gpxfile'])
+            return redirect('dashboard')
+        else:
+            return render(request, 'training/upload_gpx.html', {'form': form})
     else:
-        return render(request, 'training/upload_gpx.html')
+        form = UploadGpxForm()
+        return render(request, 'training/upload_gpx.html', {'form': form})
