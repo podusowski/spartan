@@ -7,14 +7,15 @@
 <h2>summary of {{ gpx.type }}</h2>
 <section>
     <dl><dt>started</dt><dd>{{ gpx.start_time }}</dd></dl>
-    <dl><dt>distance</dt><dd>{{ gpx.length_2d|distance }} <span class="note">3D: {{ gpx.length_3d | distance }}</span></dd></dl>
+    <dl><dt>distance</dt><dd>{{ gpx.length_2d|distance }}</dd></dl>
+    <dl><dt>distance 3d</dt><dd>{{ gpx.length_3d|distance }}</dd></dl>
     <dl><dt>time</dt><dd>{{ gpx.duration }}</dd></dl>
     <dl><dt>moving time</dt><dd>{{ gpx.moving_time }}</dd></dl>
 </section>
 
 <h2>map</h2>
 <section>
-    <div id="map" style="height: 400px"></div>
+    <div id="map" style="height: 350px"></div>
 </section>
 
 <script>
