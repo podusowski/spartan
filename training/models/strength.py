@@ -96,3 +96,6 @@ class Reps(models.Model):
 class Gpx(models.Model):
     workout = models.ForeignKey(Workout)
     gpx = models.FileField(upload_to='gpx')
+    activity_type = models.CharField(max_length=20)
+    length_2d = models.IntegerField()
+    length_3d = models.IntegerField()
