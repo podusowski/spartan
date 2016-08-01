@@ -16,14 +16,14 @@
         <dl><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
         <dl><dt>total reps</dt><dd>{{workout.total_reps}}</dd></dl>
     </section>
-{%endif%}
+{% endif %}
 
 <h2>excercises</h2>
 <section>
 {%for excercise in workout.excercise_set.all%}
     <dl class="excercise vertical">
         <dt>
-            <span class="name">{{excercise.name}}</span>
+            {{excercise.name}}
 
             {% if forloop.last and not workout.finished %}
                 <span id="excercise_duration" class="note">{{excercise.duration|duration}}</span>
@@ -43,7 +43,7 @@
                     <li>{{reps.reps}}</li>
                 {% endfor %}
 
-                {% if excercise.total_reps > 0 %}
+                {% if excercise.reps_set.count > 1 %}
                     <li><strong>{{excercise.total_reps}}</strong></li>
                 {% endif %}
             </ul>
@@ -55,29 +55,21 @@
                     });
                 </script>
             {% endif %}
+        </dd>
+        <dd>
+            {% if forloop.last and not workout.finished %}
+                <div class="excercise">
+                    <form action="{% url 'add_reps' excercise.id %}" method="post" id="add_reps">
+                        {% csrf_token %}
+                        <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" required />
+                        <input type="submit" value="add" />
+                    </form>
 
-
-    </dd>
-    <dd>
-
-
-    {% if forloop.last and not workout.finished %}
-        <div class="excercise">
-            <form action="{% url 'add_reps' excercise.id %}" method="post" id="add_reps">
-                {% csrf_token %}
-                <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" required />
-                <input type="submit" value="add" />
-            </form>
-
-            {% for rep,_ in most_common_reps|slice:":4" %}
-                <a href="javascript:add_reps({{ rep }});">+{{ rep }}</a>
-            {% endfor %}
-        </div>
-    {%endif%}
-
-
-
-
+                    {% for rep,_ in most_common_reps|slice:":4" %}
+                        <a href="javascript:add_reps({{ rep }});">+{{ rep }}</a>
+                    {% endfor %}
+                </div>
+            {%endif%}
         </dd>
     </dl>
 {%empty%}
