@@ -53,7 +53,7 @@ class Workout(models.Model):
 
     def volume(self):
         if self.is_gpx():
-            return self.gpx_set.get().length_2d
+            return '{}km'.format(round(self.gpx_set.get().length_2d / 1000, 2))
         else:
             return self.total_reps()
 
