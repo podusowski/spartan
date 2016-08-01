@@ -80,7 +80,13 @@
 
         </dd>
     </dl>
+{%empty%}
+    excersice is not started until you add first excercise
+{%endfor%}
+</section>
 
+
+{% if not workout.finished %}
     <script>
         function add_reps(num) {
             $('#add_reps input[name=reps]').val(num);
@@ -93,12 +99,6 @@
         }
     </script>
 
-{%empty%}
-    excersice is not started until you add first excercise
-{%endfor%}
-</section>
-
-{% if not workout.finished %}
     <h2>start new excercise</h2>
     <section class="excercise">
         <form action="{% url 'add_excercise' workout.id %}" method="post" id="start_excercise">
@@ -120,8 +120,10 @@
     </section>
 {% endif %}
 
+{% if workout.live %}
 <script>
     $(document).ready(function() {
         stopwatch("stopwatch", new Date("{{workout.started.isoformat}}"));
     });
 </script>
+{% endif %}
