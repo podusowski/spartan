@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from . import gpxpy
 from . import models
@@ -25,3 +26,8 @@ def save_gpx(request):
     workout.save()
     gpx = models.Gpx(workout=workout, gpx=request.FILES['gpxfile'])
     gpx.save()
+
+    if os.path.isfile(gpx.gpx.path):
+        parsed = gpxpy.parse(gpx.gpx.read().decode('utf-8'))
+        workout.started, workout.finished = parsed.get_time_bounds()
+        workout.save()
