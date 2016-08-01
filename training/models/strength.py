@@ -99,3 +99,7 @@ class Gpx(models.Model):
     activity_type = models.CharField(max_length=20)
     length_2d = models.IntegerField()
     length_3d = models.IntegerField()
+
+    def speed_or_pace(self):
+        m_per_s = self.length_2d / self.workout.duration().total_seconds()
+        return '{}min/km'.format(round(16.666666666667 / m_per_s, 2))
