@@ -51,6 +51,18 @@ class Workout(models.Model):
         else:
             return datetime.timedelta()
 
+    def volume(self):
+        if self.is_gpx():
+            return self.gpx_set.get().length_2d
+        else:
+            return self.total_reps()
+
+    def type(self):
+        if self.is_gpx():
+            return self.gpx_set.get().activity_type
+        else:
+            return 'STRENGTH'
+
     def utd(self):
         """ userfriendly training data string """
         return '\n'.join(map(lambda x: x.utd(), self.excercise_set.all()))
