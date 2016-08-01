@@ -37,5 +37,11 @@ def reps_per_week(request, weeks_number):
 
     return list(map(reps_in_range, _week_range(weeks_number)))
 
+
 def total_reps(request):
     return Reps.objects.filter(excercise__workout__user=request.user).aggregate(Sum('reps'))['reps__sum']
+
+
+def total_km(request):
+    meters = Gpx.objects.filter(workout__user=request.user).aggregate(Sum('length_2d'))['length_2d__sum']
+    return '{}km'.format(round(meters / 1000, 2))
