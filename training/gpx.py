@@ -25,9 +25,14 @@ def save_gpx(request):
     workout = models.Workout(user=request.user)
     workout.save()
     gpx = models.Gpx(workout=workout, gpx=request.FILES['gpxfile'])
-    gpx.save()
 
-    if os.path.isfile(gpx.gpx.path):
-        parsed = gpxpy.parse(gpx.gpx.read().decode('utf-8'))
-        workout.started, workout.finished = parsed.get_time_bounds()
-        workout.save()
+    parsed = gpxpy.parse(gpx.gpx.read().decode('utf-8'))
+
+    workout.started, workout.finished = parsed.get_time_bounds()
+    workout.save()
+
+    gpx.activity_type = parsed.tracks[0].type
+    gpx.length_2d = int(parsed.length_2d())
+    gpx.length_3d = int(parsed.length_3d())
+
+    gpx.save()

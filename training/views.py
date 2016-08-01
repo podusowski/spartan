@@ -58,17 +58,16 @@ def finish_workout(request, training_session_id):
 def workout(request, training_session_id):
     workout = Workout.objects.get(pk=training_session_id, user=request.user)
 
-    gpx_data = None
-    if workout.is_gpx():
-        gpx_file = workout.gpx_set.get().gpx
-        if os.path.isfile(gpx_file.path):
-            gpx_data = gpx.parse(gpx_file.read().decode('utf-8'))
-            gpx_data['gpxurl'] = gpx_file.url
+    gpx = None
+    try:
+        gpx = workout.gpx_set.get()
+    except:
+        pass
 
     return render(request, 'training/workout.html', {'workout': workout,
                                                      'most_common_reps': Reps.most_common(),
                                                      'most_common_excercises': Excercise.most_common(),
-                                                     'gpx': gpx_data})
+                                                     'gpx': gpx})
 
 
 @login_required

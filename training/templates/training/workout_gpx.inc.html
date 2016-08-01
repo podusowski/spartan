@@ -4,13 +4,11 @@
 <script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
 
-<h2>{{ gpx.type }}, {{ gpx.start_time }}</h2>
+<h2>{{ gpx.activity_type }}, {{ workout.started }}</h2>
 <section>
-    <dl><dt>started</dt><dd>{{ gpx.start_time }}</dd></dl>
     <dl><dt>distance</dt><dd>{{ gpx.length_2d|distance }}</dd></dl>
     <dl><dt>distance 3d</dt><dd>{{ gpx.length_3d|distance }}</dd></dl>
-    <dl><dt>time</dt><dd>{{ gpx.duration }}</dd></dl>
-    <dl><dt>moving time</dt><dd>{{ gpx.moving_time }}</dd></dl>
+    <dl><dt>time</dt><dd>{{ workout.duration }}</dd></dl>
 </section>
 
 <section>
@@ -24,7 +22,7 @@
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var runLayer = omnivore.gpx('{{ gpx.gpxurl }}')
+    var runLayer = omnivore.gpx('{{ gpx.gpx.url }}')
         .on('ready', function() {
                 map.fitBounds(runLayer.getBounds());
         }).addTo(map);
