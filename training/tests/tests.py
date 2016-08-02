@@ -1,7 +1,8 @@
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import AnonymousUser, User
-from .models import Workout, Excercise
-from . import views
+
+from training.models import Workout, Excercise
+from training import views
 
 
 class ViewsTestCase(TestCase):
