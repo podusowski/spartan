@@ -61,3 +61,14 @@ class ViewsTestCase(TestCase):
         self._add_reps(crunches, "20")
 
         self._finish_workout(workout)
+
+
+class ViewsTestCase(TestCase):
+    def setUp(self):
+        self.request_factory = RequestFactory()
+        self.user = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
+
+    def gpx_should_be_properly_imported(self):
+        request = self.request_factory.get('')
+        request.user = self.user
+
