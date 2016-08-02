@@ -64,7 +64,7 @@ class ViewsTestCase(TestCase):
         self._finish_workout(workout)
 
 
-class ViewsTestCase(TestCase):
+class GpxTestCase(TestCase):
     def setUp(self):
         self.request_factory = RequestFactory()
         self.user = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
