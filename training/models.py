@@ -115,7 +115,12 @@ class Gpx(models.Model):
     length_3d = models.IntegerField()
 
     def speed_or_pace(self):
-        m_per_s = self.length_2d / self.workout.duration().total_seconds()
+        m_per_s = 0
+        try:
+            m_per_s = self.length_2d / self.workout.duration().total_seconds()
+        except:
+            pass
+
         return units.mpkm_from_mps(m_per_s)
 
 
