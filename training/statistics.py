@@ -3,6 +3,7 @@ import datetime
 from django.db.models import Sum
 
 from .models import *
+from . import units
 
 
 def previous_workouts(request):
@@ -44,4 +45,4 @@ def total_reps(request):
 
 def total_km(request):
     meters = Gpx.objects.filter(workout__user=request.user).aggregate(Sum('length_2d'))['length_2d__sum']
-    return '{}km'.format(round(meters / 1000, 2))
+    return units.km_from_m(meters)

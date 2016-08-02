@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.template import defaultfilters
 from django.db.models import Sum
 
+from .. import units
+
 class Workout(models.Model):
     user = models.ForeignKey(User)
     started = models.DateTimeField(null=True, default=None)
@@ -53,7 +55,7 @@ class Workout(models.Model):
 
     def volume(self):
         if self.is_gpx():
-            return '{}km'.format(round(self.gpx_set.get().length_2d / 1000, 2))
+            return units.km_from_m(self.gpx_set.get().length_2d)
         else:
             return self.total_reps()
 
@@ -114,4 +116,4 @@ class Gpx(models.Model):
 
     def speed_or_pace(self):
         m_per_s = self.length_2d / self.workout.duration().total_seconds()
-        return '{}min/km'.format(round(16.666666666667 / m_per_s, 2))
+        return units.mpkm_from_mps(m_per_s)
