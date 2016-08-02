@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.template import defaultfilters
 from django.db.models import Sum
 
-from .. import units
+from . import units
 
 class Workout(models.Model):
     user = models.ForeignKey(User)
@@ -117,3 +117,10 @@ class Gpx(models.Model):
     def speed_or_pace(self):
         m_per_s = self.length_2d / self.workout.duration().total_seconds()
         return units.mpkm_from_mps(m_per_s)
+
+
+class GpxTrackPoint(models.Model):
+    gpx = models.ForeignKey(Gpx)
+    lat = models.DecimalField(max_digits=10, decimal_places=8)
+    log = models.DecimalField(max_digits=11, decimal_places=8)
+    time = models.DateTimeField()
