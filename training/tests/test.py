@@ -64,12 +64,22 @@ class ViewsTestCase(TestCase):
         self._finish_workout(workout)
 
 
+import os
+from training import gpx
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+
 class GpxTestCase(TestCase):
     def setUp(self):
         self.request_factory = RequestFactory()
         self.user = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
 
-    def gpx_should_be_properly_imported(self):
+    def test_gpx_should_be_properly_imported(self):
         request = self.request_factory.get('')
         request.user = self.user
 
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        GPX_FILE = os.path.join(BASE_DIR, "3p_simplest.gpx")
+        request.FILES['gpxfile'] = SimpleUploadedFile('workout.gpx', open(GPX_FILE, 'rb').read())
+
+        gpx.save_gpx(request)
