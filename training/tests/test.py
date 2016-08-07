@@ -1,3 +1,6 @@
+import datetime
+import pytz
+
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import AnonymousUser, User
 
@@ -83,3 +86,12 @@ class GpxTestCase(TestCase):
         request.FILES['gpxfile'] = SimpleUploadedFile('workout.gpx', open(GPX_FILE, 'rb').read())
 
         gpx.save_gpx(request)
+
+        workout = Workout.objects.get()
+        self.assertTrue(workout.is_gpx());
+        self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc), workout.started)
+        self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc), workout.finished)
+
+        gpx_workout = workout.gpx_set.get()
+        self.assertEqual("RUNNING", gpx_workout.activity_type)
+        self.assertEqual(100, gpx_workout.length_2d)
