@@ -77,17 +77,19 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 class GpxTestCase(TestCase):
     def setUp(self):
         self.request_factory = RequestFactory()
+        self.request = self.request_factory.get('')
         self.user = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
+        self.request.user = self.user
 
-    def test_gpx_should_be_properly_imported(self):
-        request = self.request_factory.get('')
-        request.user = self.user
-
+    def _make_simple_upload_file(self, filename):
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        GPX_FILE = os.path.join(BASE_DIR, "3p_simplest.gpx")
-        request.FILES['gpxfile'] = SimpleUploadedFile('workout.gpx', open(GPX_FILE, 'rb').read())
+        GPX_FILE = os.path.join(BASE_DIR, filename)
+        return SimpleUploadedFile('workout.gpx', open(GPX_FILE, 'rb').read())
 
-        gpx.save_gpx(request)
+    def test_make_sure_basic_stuff_is_imported_from_gpx(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
+
+        gpx.save_gpx(self.request)
 
         workout = Workout.objects.get()
         self.assertTrue(workout.is_gpx());
@@ -98,6 +100,11 @@ class GpxTestCase(TestCase):
         self.assertEqual("RUNNING", gpx_workout.activity_type)
         self.assertEqual(4, gpx_workout.length_2d)
         self.assertEqual(10, gpx_workout.length_3d)
+
+    def test_make_sure_points_are_imported_from_gpx(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
+
+        gpx.save_gpx(self.request)
 
         points = models.GpxTrackPoint.objects.all()
         self.assertEqual(3, len(points))
