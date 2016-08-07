@@ -103,10 +103,10 @@ class GpxTestCase(TestCase):
         self.assertEqual(3, len(points))
 
         self.assertEqual((Decimal('51.05772623'), Decimal('16.99809956'), datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc)),
-                         (points[0].lat, points[0].log, points[0].time))
+                         (points[0].lat, points[0].lon, points[0].time))
 
         self.assertEqual((Decimal('51.05773386'), Decimal('16.99807215'), datetime.datetime(2016, 7, 30, 6, 22, 6, tzinfo=pytz.utc)),
-                         (points[1].lat, points[1].log, points[1].time))
+                         (points[1].lat, points[1].lon, points[1].time))
 
         self.assertEqual((Decimal('51.05774031'), Decimal('16.99804198'), datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc)),
-                         (points[2].lat, points[2].log, points[2].time))
+                         (points[2].lat, points[2].lon, points[2].time))
