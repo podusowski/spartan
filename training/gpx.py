@@ -20,7 +20,9 @@ def save_gpx(request):
 
     gpx.save()
 
-    #for track in parsed.tracks:
-    #    for segment in track.segments:
-    #        for point in segment.points:
-    #            gpx.gpx_track_point_set.create(lat=
+    for track in parsed.tracks:
+        for segment in track.segments:
+            for point in segment.points:
+                gpx.gpxtrackpoint_set.create(lat=point.latitude,
+                                             log=point.longitude,
+                                             time=point.time)

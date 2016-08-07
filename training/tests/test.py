@@ -1,9 +1,11 @@
 import datetime
 import pytz
+from decimal import Decimal
 
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import AnonymousUser, User
 
+from training import models
 from training.models import Workout, Excercise
 from training import views
 
@@ -96,3 +98,15 @@ class GpxTestCase(TestCase):
         self.assertEqual("RUNNING", gpx_workout.activity_type)
         self.assertEqual(4, gpx_workout.length_2d)
         self.assertEqual(10, gpx_workout.length_3d)
+
+        points = models.GpxTrackPoint.objects.all()
+        self.assertEqual(3, len(points))
+
+        self.assertEqual((Decimal('51.05772623'), Decimal('16.99809956'), datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc)),
+                         (points[0].lat, points[0].log, points[0].time))
+
+        self.assertEqual((Decimal('51.05773386'), Decimal('16.99807215'), datetime.datetime(2016, 7, 30, 6, 22, 6, tzinfo=pytz.utc)),
+                         (points[1].lat, points[1].log, points[1].time))
+
+        self.assertEqual((Decimal('51.05774031'), Decimal('16.99804198'), datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc)),
+                         (points[2].lat, points[2].log, points[2].time))
