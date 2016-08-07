@@ -4,15 +4,15 @@
     <type>RUNNING</type>
     <trkseg>
       <trkpt lat="51.05772622860968" lon="16.998099563643336">
-        <ele>106.8</ele>
+        <ele>100</ele>
         <time>2016-07-30T06:22:05Z</time>
       </trkpt>
       <trkpt lat="51.05773385614157" lon="16.998072154819965">
-        <ele>107.8</ele>
+        <ele>105</ele>
         <time>2016-07-30T06:22:06Z</time>
       </trkpt>
       <trkpt lat="51.05774031020701" lon="16.998041979968548">
-        <ele>108.8</ele>
+        <ele>110</ele>
         <time>2016-07-30T06:22:07Z</time>
       </trkpt>
     </trkseg>

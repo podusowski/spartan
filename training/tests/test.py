@@ -94,4 +94,5 @@ class GpxTestCase(TestCase):
 
         gpx_workout = workout.gpx_set.get()
         self.assertEqual("RUNNING", gpx_workout.activity_type)
-        self.assertEqual(100, gpx_workout.length_2d)
+        self.assertEqual(4, gpx_workout.length_2d)
+        self.assertEqual(10, gpx_workout.length_3d)
