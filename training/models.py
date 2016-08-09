@@ -128,4 +128,6 @@ class GpxTrackPoint(models.Model):
     gpx = models.ForeignKey(Gpx)
     lat = models.DecimalField(max_digits=10, decimal_places=8)
     lon = models.DecimalField(max_digits=11, decimal_places=8)
+    hr = models.IntegerField(null=True, default=None)
+    cad = models.IntegerField(null=True, default=None)
     time = models.DateTimeField()

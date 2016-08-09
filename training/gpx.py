@@ -20,9 +20,12 @@ def save_gpx(request):
 
     gpx.save()
 
+    print("track")
+
     for track in parsed.tracks:
         for segment in track.segments:
             for point in segment.points:
+                print("dupa" + point.extensions.__repr__())
                 gpx.gpxtrackpoint_set.create(lat=point.latitude,
                                              lon=point.longitude,
                                              time=point.time)
