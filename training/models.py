@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Count
 from django.contrib.auth.models import User
 from django.template import defaultfilters
-from django.db.models import Sum
+from django.db.models import Sum, Avg
 
 from . import units
 
@@ -113,6 +113,13 @@ class Gpx(models.Model):
     activity_type = models.CharField(max_length=20)
     length_2d = models.IntegerField()
     length_3d = models.IntegerField()
+
+    def average_hr(self):
+        avg_hr = self.gpxtrackpoint_set.aggregate(Avg('hr'))['hr__avg']
+        if avg_hr:
+            return round(avg_hr)
+        else:
+            return None
 
     def speed_or_pace(self):
         m_per_s = 0
