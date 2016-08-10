@@ -25,7 +25,21 @@ def save_gpx(request):
     for track in parsed.tracks:
         for segment in track.segments:
             for point in segment.points:
-                print("dupa" + point.extensions.__repr__())
+
+                hr = None
+                try:
+                    hr = point.extensions['hr']
+                except:
+                    pass
+
+                cad = None
+                try:
+                    cad = point.extensions['cad']
+                except:
+                    pass
+
                 gpx.gpxtrackpoint_set.create(lat=point.latitude,
                                              lon=point.longitude,
+                                             hr=hr,
+                                             cad=cad,
                                              time=point.time)

@@ -118,7 +118,7 @@ class GpxTestCase(TestCase):
         self.assertEqual((Decimal('51.05774031'), Decimal('16.99804198'), datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc)),
                          (points[2].lat, points[2].lon, points[2].time))
 
-    def test_make_sure_hr_data_is_imported_from_gpx(self):
+    def test_make_sure_hr_and_cad_data_is_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_hr_cad.gpx")
 
         gpx.save_gpx(self.request)
@@ -128,3 +128,7 @@ class GpxTestCase(TestCase):
         self.assertEqual(100, points[0].hr)
         self.assertEqual(110, points[1].hr)
         self.assertEqual(120, points[2].hr)
+
+        self.assertEqual(60, points[0].cad)
+        self.assertEqual(70, points[1].cad)
+        self.assertEqual(80, points[2].cad)
