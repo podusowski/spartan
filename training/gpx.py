@@ -20,8 +20,6 @@ def save_gpx(request):
 
     gpx.save()
 
-    print("track")
-
     for track in parsed.tracks:
         for segment in track.segments:
             for point in segment.points:
