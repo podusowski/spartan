@@ -115,6 +115,15 @@ class Gpx(models.Model):
     length_2d = models.IntegerField()
     length_3d = models.IntegerField()
 
+    def polyline_json(self):
+        def take_coords(point):
+            return float(point.lat), float(point.lon)
+
+        points = map(take_coords, self.gpxtrackpoint_set.all())
+
+        import json
+        return json.dumps(list(points))
+
     def average_hr(self):
         avg_hr = self.gpxtrackpoint_set.aggregate(Avg('hr'))['hr__avg']
         if avg_hr:
