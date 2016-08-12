@@ -1,9 +1,9 @@
-import datetime
 import os
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.http import HttpResponse
+from django.utils import timezone
 
 from .models import *
 from .statistics import *
@@ -47,7 +47,7 @@ def finish_workout(request, training_session_id):
 
     try:
         current_excercise = workout.excercise_set.order_by('-pk')[0]
-        current_excercise.time_finished = datetime.datetime.now()
+        current_excercise.time_finished = timezone.now()
         current_excercise.save()
     except:
         pass
@@ -77,7 +77,7 @@ def add_excercise(request, training_session_id):
 
     try:
         current_excercise = workout.excercise_set.order_by('-pk')[0]
-        current_excercise.time_finished = datetime.datetime.now()
+        current_excercise.time_finished = timezone.now()
         current_excercise.save()
     except:
         pass
@@ -89,7 +89,7 @@ def add_excercise(request, training_session_id):
         pass
     workout.save()
 
-    excercise.time_started = datetime.datetime.now()
+    excercise.time_started = timezone.now()
     excercise.save()
 
     return redirect('workout', training_session_id)
@@ -100,7 +100,7 @@ def add_reps(request, excercise_id):
     s = Excercise.objects.get(pk=excercise_id, workout__user=request.user)
     s.reps_set.create(reps=request.POST['reps'])
 
-    s.time_updated = datetime.datetime.now()
+    s.time_updated = timezone.now()
     s.save()
     return redirect('workout', s.workout.id)
 

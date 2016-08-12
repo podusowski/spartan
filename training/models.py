@@ -4,6 +4,7 @@ from django.db.models import Count
 from django.contrib.auth.models import User
 from django.template import defaultfilters
 from django.db.models import Sum, Avg
+from django.utils import timezone
 
 from . import units
 
@@ -33,7 +34,7 @@ class Workout(models.Model):
         if self.finished is not None:
             raise RuntimeError("tried to start already finished session")
 
-        self.started = datetime.datetime.now()
+        self.started = timezone.now()
 
     def finish(self):
         if self.started is None:
@@ -42,7 +43,7 @@ class Workout(models.Model):
         if self.finished is not None:
             raise RuntimeError("tried to finish already finished session")
 
-        self.finished = datetime.datetime.now()
+        self.finished = timezone.now()
 
     def total_reps(self):
         return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or '-'
