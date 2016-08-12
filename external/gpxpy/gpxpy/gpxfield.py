@@ -38,7 +38,9 @@ def parse_time(string):
         string = string.split('.')[0]
     for date_format in mod_gpx.DATE_FORMATS:
         try:
-            return mod_datetime.datetime.strptime(string, date_format)
+            t = mod_datetime.datetime.strptime(string, date_format)
+            import pytz
+            return t.replace(tzinfo=pytz.utc)
         except ValueError:
             pass
     raise mod_gpx.GPXException('Invalid time: %s' % string)
@@ -256,7 +258,6 @@ class GPXExtensionsField(AbstractGPXField):
 
         for child in children:
             sub_children = parser.get_children(child)
-            print(sub_children)
             try:
                 for sub_child in sub_children:
                     name = drop_tag(parser.get_node_name(sub_child))
