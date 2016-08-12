@@ -2,7 +2,6 @@
 
 <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
 <script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
 
 <h2>{{ gpx.activity_type }}, {{ workout.started }}</h2>
 <section>
@@ -24,8 +23,7 @@
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var runLayer = omnivore.gpx('{{ gpx.gpx.url }}')
-        .on('ready', function() {
-                map.fitBounds(runLayer.getBounds());
-        }).addTo(map);
+    var polyline = L.polyline({{ gpx.polyline_json }}, {color: 'red'}).addTo(map);
+    map.fitBounds(polyline.getBounds());
 </script>
+
