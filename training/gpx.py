@@ -5,19 +5,17 @@ from . import gpxpy
 from . import models
 
 def save_gpx(request):
-    workout = models.Workout(user=request.user)
-    workout.save()
-    gpx = models.Gpx(workout=workout, gpx=request.FILES['gpxfile'])
+    parsed = gpxpy.parse(request.FILES['gpxfile'].read().decode('utf-8'))
 
-    parsed = gpxpy.parse(gpx.gpx.read().decode('utf-8'))
+    started, finished = parsed.get_time_bounds()
 
-    workout.started, workout.finished = parsed.get_time_bounds()
+    workout = models.Workout(user=request.user, started=started, finished=finished)
     workout.save()
 
+    gpx = models.Gpx(workout=workout)
     gpx.activity_type = parsed.tracks[0].type
     gpx.length_2d = int(parsed.length_2d())
     gpx.length_3d = int(parsed.length_3d())
-
     gpx.save()
 
     for track in parsed.tracks:

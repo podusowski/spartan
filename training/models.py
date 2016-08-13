@@ -110,7 +110,6 @@ class Reps(models.Model):
 
 class Gpx(models.Model):
     workout = models.ForeignKey(Workout)
-    gpx = models.FileField(upload_to='gpx')
     activity_type = models.CharField(max_length=20)
     length_2d = models.IntegerField()
     length_3d = models.IntegerField()
@@ -145,6 +144,6 @@ class GpxTrackPoint(models.Model):
     gpx = models.ForeignKey(Gpx)
     lat = models.DecimalField(max_digits=10, decimal_places=8)
     lon = models.DecimalField(max_digits=11, decimal_places=8)
-    hr = models.IntegerField(null=True, default=None)
-    cad = models.IntegerField(null=True, default=None)
+    hr = models.PositiveSmallIntegerField(null=True, default=None)
+    cad = models.PositiveSmallIntegerField(null=True, default=None)
     time = models.DateTimeField()
