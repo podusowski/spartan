@@ -38,7 +38,7 @@
         </dt>
 
         <dd>
-            <ul>
+            <ul class="reps">
                 {% for reps in excercise.reps_set.all %}
                     <li>{{reps.reps}}</li>
                 {% endfor %}
@@ -99,7 +99,7 @@
             <input type="submit" value="start" />
         </form>
 
-        {%for excercise,_ in most_common_excercises|slice:":4"%}
+        {%for excercise,_ in most_common_excercises|slice:":20"%}
             <a href="javascript:start_excercise('{{ excercise }}')">{{ excercise }}</a>
         {%endfor%}
     </section>

@@ -193,6 +193,11 @@ label,
     vertical-align: middle;
 }
 
+.reps
+{
+    font-size: larger;
+}
+
 @mixin important-value
 {
     background-color: $secondary_color;
@@ -226,6 +231,7 @@ strong
 
 form
 {
+    margin-top: 0.5em;
     margin-right: 0.5em;
     display: inline-block;
     width: auto;
