@@ -28,33 +28,21 @@ def save_gpx(request):
         raise WorkoutAlreadyExists()
 
     started, finished = parsed.get_time_bounds()
-    workout = models.Workout(user=request.user, started=started, finished=finished)
-    workout.save()
 
-    gpx = models.Gpx(workout=workout)
-    gpx.activity_type = parsed.tracks[0].type
-    gpx.length_2d = int(parsed.length_2d())
-    gpx.length_3d = int(parsed.length_3d())
-    gpx.save()
+    workout = models.Workout.objects.create(user=request.user,
+                                            started=started,
+                                            finished=finished)
+
+    gpx = models.Gpx.objects.create(workout=workout,
+                                    activity_type = parsed.tracks[0].type,
+                                    length_2d = int(parsed.length_2d()),
+                                    length_3d = int(parsed.length_3d()))
 
     for track in parsed.tracks:
         for segment in track.segments:
             for point in segment.points:
-
-                hr = None
-                try:
-                    hr = point.extensions['hr']
-                except:
-                    pass
-
-                cad = None
-                try:
-                    cad = point.extensions['cad']
-                except:
-                    pass
-
                 gpx.gpxtrackpoint_set.create(lat=point.latitude,
                                              lon=point.longitude,
-                                             hr=hr,
-                                             cad=cad,
+                                             hr=point.extensions.get('hr', None),
+                                             cad=point.extensions.get('cad', None),
                                              time=point.time)
