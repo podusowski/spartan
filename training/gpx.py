@@ -1,14 +1,33 @@
 import datetime
 import os
+import logging
 
 from . import gpxpy
 from . import models
 
-def save_gpx(request):
-    parsed = gpxpy.parse(request.FILES['gpxfile'].read().decode('utf-8'))
+class WorkoutAlreadyExists(Exception):
+    pass
 
+def _workout_already_exists(request, parsed):
     started, finished = parsed.get_time_bounds()
 
+    try:
+        models.Workout.objects.get(user=request.user, started=started, finished=finished)
+        logging.debug("workout already exists")
+        return True
+    except:
+        logging.debug("workout not there")
+        return False
+
+def save_gpx(request):
+    logging.debug("saving gpx")
+
+    parsed = gpxpy.parse(request.FILES['gpxfile'].read().decode('utf-8'))
+
+    if _workout_already_exists(request, parsed):
+        raise WorkoutAlreadyExists()
+
+    started, finished = parsed.get_time_bounds()
     workout = models.Workout(user=request.user, started=started, finished=finished)
     workout.save()
 

@@ -132,3 +132,11 @@ class GpxTestCase(TestCase):
         self.assertEqual(60, points[0].cad)
         self.assertEqual(70, points[1].cad)
         self.assertEqual(80, points[2].cad)
+
+    def test_detect_already_existing_equal_workout(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
+        gpx.save_gpx(self.request)
+
+        with self.assertRaises(gpx.WorkoutAlreadyExists):
+            self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
+            gpx.save_gpx(self.request)
