@@ -8,28 +8,34 @@ from . import models
 class WorkoutAlreadyExists(Exception):
     pass
 
-def _workout_already_exists(request, parsed):
+def _workout_already_exists(user, parsed):
     started, finished = parsed.get_time_bounds()
 
     try:
-        models.Workout.objects.get(user=request.user, started=started, finished=finished)
+        models.Workout.objects.get(user=user, started=started, finished=finished)
         logging.debug("workout already exists")
         return True
     except:
         logging.debug("workout not there")
         return False
 
-def save_gpx(request):
+
+def upload_gpx(request):
+    content = request.FILES['gpxfile'].read().decode('utf-8')
+    save_gpx(request.user, content)
+
+
+def save_gpx(user, content):
     logging.debug("saving gpx")
 
-    parsed = gpxpy.parse(request.FILES['gpxfile'].read().decode('utf-8'))
+    parsed = gpxpy.parse(content)
 
-    if _workout_already_exists(request, parsed):
+    if _workout_already_exists(user, parsed):
         raise WorkoutAlreadyExists()
 
     started, finished = parsed.get_time_bounds()
 
-    workout = models.Workout.objects.create(user=request.user,
+    workout = models.Workout.objects.create(user=user,
                                             started=started,
                                             finished=finished)
 

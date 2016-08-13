@@ -89,7 +89,7 @@ class GpxTestCase(TestCase):
     def test_make_sure_basic_stuff_is_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
 
-        gpx.save_gpx(self.request)
+        gpx.upload_gpx(self.request)
 
         workout = Workout.objects.get()
         self.assertTrue(workout.is_gpx());
@@ -104,7 +104,7 @@ class GpxTestCase(TestCase):
     def test_make_sure_2d_points_are_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
 
-        gpx.save_gpx(self.request)
+        gpx.upload_gpx(self.request)
 
         points = models.GpxTrackPoint.objects.all()
         self.assertEqual(3, len(points))
@@ -121,7 +121,7 @@ class GpxTestCase(TestCase):
     def test_make_sure_hr_and_cad_data_is_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_hr_cad.gpx")
 
-        gpx.save_gpx(self.request)
+        gpx.upload_gpx(self.request)
 
         points = models.GpxTrackPoint.objects.all()
 
@@ -135,8 +135,8 @@ class GpxTestCase(TestCase):
 
     def test_detect_already_existing_equal_workout(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
-        gpx.save_gpx(self.request)
+        gpx.upload_gpx(self.request)
 
         with self.assertRaises(gpx.WorkoutAlreadyExists):
             self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
-            gpx.save_gpx(self.request)
+            gpx.upload_gpx(self.request)
