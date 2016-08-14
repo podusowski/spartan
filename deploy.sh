@@ -50,7 +50,8 @@ function help()
 actions=$@
 
 if [ -z "$actions" ]; then
-    actions="print_warning pull_www make_virtualenv"
+    # yes, virtualenv is made twice
+    actions="print_warning make_virtualenv pull_www make_virtualenv"
 fi
 
 for action in $actions; do
