@@ -35,12 +35,6 @@ function pull_www()
     service apache2 start
 }
 
-function enable_virtualenv()
-{
-    virtualenv -p python3 env
-    . env/bin/activate
-}
-
 function update_virtualenv()
 {
     pip install -r requirements.txt
@@ -51,10 +45,13 @@ function help()
     grep '^function .*()' $0
 }
 
+# this wont work inside a function
+. env/bin/activate
+
 actions=$@
 
 if [ -z "$actions" ]; then
-    actions="print_warning enable_virtualenv pull_www update_virtualenv"
+    actions="print_warning pull_www update_virtualenv"
 fi
 
 for action in $actions; do
