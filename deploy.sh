@@ -35,10 +35,14 @@ function pull_www()
     service apache2 start
 }
 
-function make_virtualenv()
+function enable_virtualenv()
 {
     virtualenv -p python3 env
     . env/bin/activate
+}
+
+function update_virtualenv()
+{
     pip install -r requirements.txt
 }
 
@@ -50,8 +54,7 @@ function help()
 actions=$@
 
 if [ -z "$actions" ]; then
-    # yes, virtualenv is made twice
-    actions="print_warning make_virtualenv pull_www make_virtualenv"
+    actions="print_warning enable_virtualenv pull_www update_virtualenv"
 fi
 
 for action in $actions; do
