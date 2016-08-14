@@ -33,9 +33,11 @@ function pull_www()
     service apache2 start
 }
 
-function apt()
+function make_virtualenv()
 {
-    echo
+    virtualenv -p python3 env
+    . env/bin/activate
+    pip install -r requirements.txt
 }
 
 function help()
@@ -46,7 +48,7 @@ function help()
 actions=$@
 
 if [ -z "$actions" ]; then
-    actions="print_warning pull_www"
+    actions="print_warning pull_www make_virtualenv"
 fi
 
 for action in $actions; do
