@@ -29,9 +29,9 @@ function pull_www()
     expect_www_wd
 
     service apache2 stop
-    sudo -E -u www-data bash -c 'git pull'
-    sudo -E -u www-data bash -c './manage.py migrate'
-    sudo -E -u www-data bash -c './manage.py collectstatic --noinput'
+    sudo -E -u www-data bash -c ". env/bin/activate && git pull && ./manage.py migrate && ./manage.py collectstatic --noinput"
+#    sudo -E -u www-data bash -c './manage.py migrate'
+#    sudo -E -u www-data bash -c './manage.py collectstatic --noinput'
     service apache2 start
 }
 
