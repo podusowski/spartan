@@ -31,7 +31,7 @@ function pull_www()
     service apache2 stop
     sudo -u www-data bash -c 'git pull'
     sudo -u www-data bash -c './manage.py migrate'
-    sudo -u www-data bash -c './manage.py collectstatic'
+    sudo -u www-data bash -c './manage.py collectstatic --noinput'
     service apache2 start
 }
 
