@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function expect_root()
 {
     if [ `id -u` -ne 0 ]; then
