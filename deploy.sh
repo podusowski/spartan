@@ -11,6 +11,8 @@ if ! pwd | grep '/var/www'; then
     exit 1
 fi
 
+apt-get install apache2 supervisor
+
 service apache2 stop
 
 if [ ! -e env ]; then
