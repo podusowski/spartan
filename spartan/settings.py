@@ -76,11 +76,13 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_ROOT = BASE_DIR + '/static/'
-STATIC_URL = '/static/'
+FILES_DIR = "_files/"
 
-MEDIA_ROOT = BASE_DIR + '/media/'
-MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, FILES_DIR, 'static/')
+STATIC_URL = os.path.join("/", FILES_DIR, 'static/')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, FILES_DIR, 'media/')
+MEDIA_URL = os.path.join("/", FILES_DIR, 'media/')
 
 LOGIN_REDIRECT_URL = '/dashboard'
 LOGIN_URL = '/login'
