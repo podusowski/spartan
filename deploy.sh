@@ -1,33 +1,39 @@
 #!/bin/bash
 
-# asserts
-if [ `id -u` -ne 0 ]; then
-    echo you should be root to do this
+set -e
+set -u
+
+function die() {
+    echo $@
     exit 1
-fi
+}
 
-if ! pwd | grep '/var/www'; then
-    echo "it seems you are outside apache directory"
-    exit 1
-fi
+test `id -u` -eq 0 || die "need to be root"
 
-apt-get install apache2 supervisor
+base=`pwd`
+production_dir="/var/www/spartan/"
+production_archive="$base/_deploy.tar"
+production_user="www-data"
+apache_sites_available_dir="/etc/apache2/sites-available/"
 
+test -e $apache_sites_available_dir || die "can't locate apache sites directory"
+
+git archive --output $production_archive HEAD
+
+pushd $production_dir
 service apache2 stop
 
-if [ ! -e env ]; then
-    virtualenv env
-fi
+sudo -E -u $production_user bash << EOF
+    tar xvf $production_archive
+    virtualenv -p python3 env
+    source env/bin/activate
+    pip install -r requirements.txt
+    ./manage.py migrate
+    ./manage.py collectstatic --noinput
+EOF
 
-. env/bin/activate
-
-sudo -E -u www-data bash -c ". env/bin/activate &&\
-                             git pull &&\
-                             ./manage.py migrate &&\
-                             rm static/ -rf &&\
-                             ./manage.py collectstatic --noinput"
-
-cp 000-default.conf /etc/apache2/sites-available/
-pip install -r requirements.txt
-
+cp 000-default.conf $apache_sites_available_dir
 service apache2 start
+popd
+
+rm $production_archive
