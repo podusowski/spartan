@@ -18,8 +18,8 @@ function print_warning()
 function expect_www_wd()
 {
     if ! pwd | grep '/var/www'; then
-        echo 'it seems you are outside apache directory (at least as far as I can say), hit enter if you are sure if this is the right place'
-        read line
+        echo "it seems you are outside apache directory"
+        exit 1
     fi
 }
 
