@@ -23,6 +23,11 @@ function expect_www_wd()
     fi
 }
 
+function update_apache()
+{
+    cp 000-default.conf /etc/apache2/sites-available/
+}
+
 function pull_www()
 {
     expect_root
@@ -34,6 +39,9 @@ function pull_www()
                                  ./manage.py migrate &&\
                                  rm static/ -rf &&\
                                  ./manage.py collectstatic --noinput"
+
+    update_apache
+
     service apache2 start
 }
 
