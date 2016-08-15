@@ -17,7 +17,7 @@ service apache2 stop
 
 if [ ! -e env ]; then
     virtualenv env
-else
+fi
 
 . env/bin/activate
 
