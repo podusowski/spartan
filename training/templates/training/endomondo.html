@@ -5,15 +5,15 @@
 <h2>connect with <a href="http://www.endomondo.com">endomondo</a></h2>
 <section>
     {% if key %}
-    <form action="{% url 'endomondo' %}" method="post">
-        {% csrf_token %}
-        <ul>
-            {{form.as_ul}}
-        </ul>
-        <input type="submit" value="connect" />
-    </form>
+        <form action="{% url 'endomondo' %}" method="post">
+            {% csrf_token %}
+            <ul>
+                {{form.as_ul}}
+            </ul>
+            <input type="submit" value="connect" />
+        </form>
     {% else %}
-    <p>Your account is connected to Endomondo.</p>
+        <p>Your account is connected to Endomondo.</p>
     {% endif %}
 </section>
 
