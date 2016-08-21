@@ -147,3 +147,9 @@ class GpxTrackPoint(models.Model):
     hr = models.PositiveSmallIntegerField(null=True, default=None)
     cad = models.PositiveSmallIntegerField(null=True, default=None)
     time = models.DateTimeField()
+
+
+class AuthKeys(models.Model):
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=200)
+    key = models.CharField(max_length=200)

@@ -131,3 +131,29 @@ def upload_gpx(request):
     else:
         form = UploadGpxForm()
         return render(request, 'training/upload_gpx.html', {'form': form})
+
+
+class ConnectWithEndomondoForm(forms.Form):
+    email = forms.CharField(label='e-mail')
+    password = forms.CharField(label='password', widget=forms.PasswordInput())
+
+
+import endoapi.endomondo
+
+
+@login_required
+def endomondo(request):
+    if request.method == "POST":
+        endomondo = endoapi.endomondo.Endomondo(email=request.POST["email"], password=request.POST["password"])
+        token = endomondo.token
+        AuthKeys.objects.create(user=request.user, name="endomondo", key=token)
+        return redirect('endomondo')
+    else:
+        key = None
+        try:
+            key = AuthKeys.objects.get(user=request.user, name="endomondo")
+        except:
+            pass
+
+        form = ConnectWithEndomondoForm()
+        return render(request, 'training/endomondo.html', {'form': form, 'key': key})
