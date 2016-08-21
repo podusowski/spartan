@@ -1,2 +1,2 @@
 # spartan
-Strenth training on Garmin Connect
+Web activity tracker for strength and cardio (GPS tracked) activities.
