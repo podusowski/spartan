@@ -146,7 +146,7 @@ def endomondo(request):
     if request.method == "POST":
         endomondo = endoapi.endomondo.Endomondo(email=request.POST["email"], password=request.POST["password"])
         token = endomondo.token
-        AuthKeys.objects.create(user=request.user, name="endomondo", key=token)
+        AuthKeys.objects.update_or_create(defaults={'key': token}, user=request.user, name="endomondo")
         return redirect('endomondo')
     else:
         key = None
@@ -157,3 +157,9 @@ def endomondo(request):
 
         form = ConnectWithEndomondoForm()
         return render(request, 'training/endomondo.html', {'form': form, 'key': key})
+
+
+@login_required
+def disconnect_endomondo(request):
+    AuthKeys.objects.get(user=request.user, name="endomondo").delete()
+    return redirect('endomondo')

@@ -25,4 +25,5 @@ urlpatterns = [
     url('^add_reps/(?P<excercise_id>[0-9]+)/$', views.add_reps, name='add_reps'),
     url('^upload_gpx/$', views.upload_gpx, name='upload_gpx'),
     url('^endomondo/$', views.endomondo, name='endomondo'),
+    url('^disconnect_endomondo/$', views.disconnect_endomondo , name='disconnect_endomondo'),
 ]

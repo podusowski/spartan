@@ -5,6 +5,9 @@
 <h2>connect with <a href="http://www.endomondo.com">endomondo</a></h2>
 <section>
     {% if key %}
+        <p>Your account is connected to Endomondo.</p>
+        <p><a href="{% url 'disconnect_endomondo' %}" onclick="return confirm('are you sure you want to do this?')">disconnect me</a></p>
+    {% else %}
         <form action="{% url 'endomondo' %}" method="post">
             {% csrf_token %}
             <ul>
@@ -12,8 +15,6 @@
             </ul>
             <input type="submit" value="connect" />
         </form>
-    {% else %}
-        <p>Your account is connected to Endomondo.</p>
     {% endif %}
 </section>
 
