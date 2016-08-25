@@ -158,8 +158,10 @@ def endomondo(request):
         form = ConnectWithEndomondoForm()
         return render(request, 'training/endomondo.html', {'form': form, 'key': key})
 
+from django.db import transaction
 
 @login_required
+@transaction.atomic
 def synchronize_endomondo(request):
     key = AuthKeys.objects.get(user=request.user, name="endomondo")
     endomondo = endoapi.endomondo.Endomondo(token=key.key)
@@ -174,12 +176,13 @@ def synchronize_endomondo(request):
                                  length_2d = 0,
                                  length_3d = 0)
 
-    for point in endomondo_workout.points:
-        gpx.gpxtrackpoint_set.create(lat=point['lat'],
-                                     lon=point['lon'],
-                                     hr=None,
-                                     cad=None,
-                                     time=point['time'])
+        for point in endomondo_workout.points:
+            gpx.gpxtrackpoint_set.create(lat=point['lat'],
+                                         lon=point['lon'],
+                                         hr=None,
+                                         cad=None,
+                                         time=point['time'])
+
     return redirect('endomondo')
 
 
