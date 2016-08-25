@@ -7,6 +7,7 @@
     {% if key %}
         <p>Your account is connected to Endomondo.</p>
         <p><a href="{% url 'disconnect_endomondo' %}" onclick="return confirm('are you sure you want to do this?')">disconnect me</a></p>
+        <p><a href="{% url 'synchronize_endomondo' %}" >synchronize</a> (this may take minutes)</p>
     {% else %}
         <form action="{% url 'endomondo' %}" method="post">
             {% csrf_token %}

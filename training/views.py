@@ -160,6 +160,30 @@ def endomondo(request):
 
 
 @login_required
+def synchronize_endomondo(request):
+    key = AuthKeys.objects.get(user=request.user, name="endomondo")
+    endomondo = endoapi.endomondo.Endomondo(token=key.key)
+
+    for endomondo_workout in endomondo.get_workouts():
+        workout = Workout.objects.create(user=request.user,
+                                         started=None,
+                                         finished=None)
+
+        gpx = Gpx.objects.create(workout=workout,
+                                 activity_type = endomondo_workout.sport,
+                                 length_2d = 0,
+                                 length_3d = 0)
+
+    for point in endomondo_workout.points:
+        gpx.gpxtrackpoint_set.create(lat=point['lat'],
+                                     lon=point['lon'],
+                                     hr=None,
+                                     cad=None,
+                                     time=point['time'])
+    return redirect('endomondo')
+
+
+@login_required
 def disconnect_endomondo(request):
     AuthKeys.objects.get(user=request.user, name="endomondo").delete()
     return redirect('endomondo')
