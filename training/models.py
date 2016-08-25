@@ -13,6 +13,9 @@ class Workout(models.Model):
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
 
+    def __str__(self):
+        return "{} at {}".format(self.type(), self.started)
+
     def is_gpx(self):
         return len(self.gpx_set.all()) > 0
 
