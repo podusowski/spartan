@@ -138,9 +138,6 @@ class ConnectWithEndomondoForm(forms.Form):
     password = forms.CharField(label='password', widget=forms.PasswordInput())
 
 
-import endoapi.endomondo
-
-
 @login_required
 def endomondo(request):
     if request.method == "POST":
@@ -160,5 +157,5 @@ def synchronize_endomondo(request):
 
 @login_required
 def disconnect_endomondo(request):
-    AuthKeys.objects.get(user=request.user, name="endomondo").delete()
+    gpx.disconnect_endomondo(request.user)
     return redirect('endomondo')
