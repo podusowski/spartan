@@ -6,7 +6,7 @@ def mpkm_from_mps(m_per_s):
 
 def km_from_m(m):
     if m is None:
-        return 0
+        return None
     elif m > 1000:
         return '{}km'.format(round(m / 1000, 2))
     else:

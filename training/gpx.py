@@ -72,8 +72,7 @@ def synchronize_endomondo(user):
 
         gpx = models.Gpx.objects.create(workout=workout,
                                         activity_type = endomondo_workout.sport,
-                                        length_2d = 0,
-                                        length_3d = 0)
+                                        length_2d = endomondo_workout.distance)
 
         for point in endomondo_workout.points:
             gpx.gpxtrackpoint_set.create(lat=point['lat'],

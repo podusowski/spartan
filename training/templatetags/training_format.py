@@ -35,6 +35,9 @@ def project(value, key):
 def js_list(value):
     return ', '.join(map(lambda x: '"{}"'.format(x), value))
 
+
+import training.units
+
 @register.filter()
 def distance(meters):
-    return '{}km'.format(round(meters / 1000, 2));
+    return training.units.km_from_m(meters)
