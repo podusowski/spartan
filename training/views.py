@@ -144,45 +144,17 @@ import endoapi.endomondo
 @login_required
 def endomondo(request):
     if request.method == "POST":
-        endomondo = endoapi.endomondo.Endomondo(email=request.POST["email"], password=request.POST["password"])
-        token = endomondo.token
-        AuthKeys.objects.update_or_create(defaults={'key': token}, user=request.user, name="endomondo")
+        gpx.connect_to_endomondo(request.user, request.POST["email"], request.POST["password"])
         return redirect('endomondo')
     else:
-        key = None
-        try:
-            key = AuthKeys.objects.get(user=request.user, name="endomondo")
-        except:
-            pass
-
+        key = gpx.endomondo_key(request.user)
         form = ConnectWithEndomondoForm()
         return render(request, 'training/endomondo.html', {'form': form, 'key': key})
 
-from django.db import transaction
 
 @login_required
-@transaction.atomic
 def synchronize_endomondo(request):
-    key = AuthKeys.objects.get(user=request.user, name="endomondo")
-    endomondo = endoapi.endomondo.Endomondo(token=key.key)
-
-    for endomondo_workout in endomondo.get_workouts():
-        workout = Workout.objects.create(user=request.user,
-                                         started=None,
-                                         finished=None)
-
-        gpx = Gpx.objects.create(workout=workout,
-                                 activity_type = endomondo_workout.sport,
-                                 length_2d = 0,
-                                 length_3d = 0)
-
-        for point in endomondo_workout.points:
-            gpx.gpxtrackpoint_set.create(lat=point['lat'],
-                                         lon=point['lon'],
-                                         hr=point.get('hr', None),
-                                         cad=point.get('cad', None),
-                                         time=point['time'])
-
+    gpx.synchronize_endomondo(request.user)
     return redirect('endomondo')
 
 

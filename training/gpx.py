@@ -2,6 +2,8 @@ import datetime
 import os
 import logging
 
+from django.db import transaction
+
 from . import gpxpy
 from . import models
 
@@ -52,3 +54,41 @@ def save_gpx(user, content):
                                              hr=point.extensions.get('hr', None),
                                              cad=point.extensions.get('cad', None),
                                              time=point.time)
+
+import endoapi
+
+@transaction.atomic
+def synchronize_endomondo(user):
+    key = AuthKeys.objects.get(user=user, name="endomondo")
+    endomondo = endoapi.endomondo.Endomondo(token=key.key)
+
+    for endomondo_workout in endomondo.get_workouts():
+        workout = Workout.objects.create(user=user,
+                                         started=None,
+                                         finished=None)
+
+        gpx = Gpx.objects.create(workout=workout,
+                                 activity_type = endomondo_workout.sport,
+                                 length_2d = 0,
+                                 length_3d = 0)
+
+        for point in endomondo_workout.points:
+            gpx.gpxtrackpoint_set.create(lat=point['lat'],
+                                         lon=point['lon'],
+                                         hr=point.get('hr', None),
+                                         cad=point.get('cad', None),
+                                         time=point['time'])
+
+def connect_to_endomondo(user, email, password):
+    endomondo = endoapi.endomondo.Endomondo(email=email, password=password)
+    token = endomondo.token
+    models.AuthKeys.objects.update_or_create(defaults={'key': token}, user=user, name="endomondo")
+
+def endomondo_key(user):
+    try:
+        return models.AuthKeys.objects.get(user=user, name="endomondo")
+    except:
+        return None
+
+def disconnect_endomondo(user):
+    models.AuthKeys.objects.get(user=user, name="endomondo").delete()
