@@ -115,7 +115,7 @@ class Gpx(models.Model):
     workout = models.ForeignKey(Workout)
     activity_type = models.CharField(max_length=20)
     length_2d = models.IntegerField()
-    length_3d = models.IntegerField()
+    length_3d = models.IntegerField(null=True, default=None)
 
     def polyline_json(self):
         def take_coords(point):
