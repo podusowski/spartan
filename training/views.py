@@ -179,8 +179,8 @@ def synchronize_endomondo(request):
         for point in endomondo_workout.points:
             gpx.gpxtrackpoint_set.create(lat=point['lat'],
                                          lon=point['lon'],
-                                         hr=None,
-                                         cad=None,
+                                         hr=point.get('hr', None),
+                                         cad=point.get('cad', None),
                                          time=point['time'])
 
     return redirect('endomondo')
