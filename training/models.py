@@ -156,3 +156,8 @@ class AuthKeys(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=200)
     key = models.CharField(max_length=200)
+
+
+class EndomondoWorkout(models.Model):
+    endomondo_id = models.IntegerField()
+    workout = models.ForeignKey(Workout)
