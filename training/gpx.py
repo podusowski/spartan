@@ -10,9 +10,7 @@ from . import models
 class WorkoutAlreadyExists(Exception):
     pass
 
-def _workout_already_exists(user, parsed):
-    started, finished = parsed.get_time_bounds()
-
+def _workout_already_exists(user, started, finished):
     try:
         models.Workout.objects.get(user=user, started=started, finished=finished)
         logging.debug("workout already exists")
@@ -32,7 +30,8 @@ def save_gpx(user, content):
 
     parsed = gpxpy.parse(content)
 
-    if _workout_already_exists(user, parsed):
+    started, finished = parsed.get_time_bounds()
+    if _workout_already_exists(user, started, finished):
         raise WorkoutAlreadyExists()
 
     started, finished = parsed.get_time_bounds()
@@ -57,29 +56,36 @@ def save_gpx(user, content):
 
 import endoapi.endomondo
 
+@transaction.atomic
+def _import_endomondo_workout(user, endomondo_workout):
+    workout = models.Workout.objects.create(user=user,
+                                            started=endomondo_workout.start_time,
+                                            finished=endomondo_workout.start_time + endomondo_workout.duration)
+
+    models.EndomondoWorkout.objects.create(workout=workout,
+                                        endomondo_id=endomondo_workout.id)
+
+    gpx = models.Gpx.objects.create(workout=workout,
+                                    activity_type = endomondo_workout.sport,
+                                    length_2d = endomondo_workout.distance)
+
+    for point in endomondo_workout.points:
+        gpx.gpxtrackpoint_set.create(lat=point['lat'],
+                                    lon=point['lon'],
+                                    hr=point.get('hr', None),
+                                    cad=point.get('cad', None),
+                                    time=point['time'])
+
+
 def synchronize_endomondo(user):
     key = models.AuthKeys.objects.get(user=user, name="endomondo")
     endomondo = endoapi.endomondo.Endomondo(token=key.key)
 
     for endomondo_workout in endomondo.get_workouts():
-        with transaction.atomic():
-            workout = models.Workout.objects.create(user=user,
-                                                    started=endomondo_workout.start_time,
-                                                    finished=endomondo_workout.start_time + endomondo_workout.duration)
-
-            models.EndomondoWorkout.objects.create(workout=workout,
-                                                endomondo_id=endomondo_workout.id)
-
-            gpx = models.Gpx.objects.create(workout=workout,
-                                            activity_type = endomondo_workout.sport,
-                                            length_2d = endomondo_workout.distance)
-
-            for point in endomondo_workout.points:
-                gpx.gpxtrackpoint_set.create(lat=point['lat'],
-                                            lon=point['lon'],
-                                            hr=point.get('hr', None),
-                                            cad=point.get('cad', None),
-                                            time=point['time'])
+        if not _workout_already_exists(user,
+                                       endomondo_workout.start_time,
+                                       endomondo_workout.start_time + endomondo_workout.duration):
+            _import_endomondo_workout(user, endomondo_workout)
 
 
 def connect_to_endomondo(user, email, password):
