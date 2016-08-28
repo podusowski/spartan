@@ -57,29 +57,29 @@ def save_gpx(user, content):
 
 import endoapi.endomondo
 
-@transaction.atomic
 def synchronize_endomondo(user):
     key = models.AuthKeys.objects.get(user=user, name="endomondo")
     endomondo = endoapi.endomondo.Endomondo(token=key.key)
 
     for endomondo_workout in endomondo.get_workouts():
-        workout = models.Workout.objects.create(user=user,
-                                                started=endomondo_workout.start_time,
-                                                finished=endomondo_workout.start_time + endomondo_workout.duration)
+        with transaction.atomic():
+            workout = models.Workout.objects.create(user=user,
+                                                    started=endomondo_workout.start_time,
+                                                    finished=endomondo_workout.start_time + endomondo_workout.duration)
 
-        models.EndomondoWorkout.objects.create(workout=workout,
-                                               endomondo_id=endomondo_workout.id)
+            models.EndomondoWorkout.objects.create(workout=workout,
+                                                endomondo_id=endomondo_workout.id)
 
-        gpx = models.Gpx.objects.create(workout=workout,
-                                        activity_type = endomondo_workout.sport,
-                                        length_2d = endomondo_workout.distance)
+            gpx = models.Gpx.objects.create(workout=workout,
+                                            activity_type = endomondo_workout.sport,
+                                            length_2d = endomondo_workout.distance)
 
-        for point in endomondo_workout.points:
-            gpx.gpxtrackpoint_set.create(lat=point['lat'],
-                                         lon=point['lon'],
-                                         hr=point.get('hr', None),
-                                         cad=point.get('cad', None),
-                                         time=point['time'])
+            for point in endomondo_workout.points:
+                gpx.gpxtrackpoint_set.create(lat=point['lat'],
+                                            lon=point['lon'],
+                                            hr=point.get('hr', None),
+                                            cad=point.get('cad', None),
+                                            time=point['time'])
 
 
 def connect_to_endomondo(user, email, password):
