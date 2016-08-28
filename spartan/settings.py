@@ -10,7 +10,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'sd2+&z(gsmltdd2!9-0r2ezj4m+dah3=t-r6^y!z!usc0@$nv5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -86,3 +85,8 @@ MEDIA_URL = os.path.join("/", FILES_DIR, 'media/')
 
 LOGIN_REDIRECT_URL = '/dashboard'
 LOGIN_URL = '/login'
+
+try:
+    from deployment_settings import *
+except:
+    from debug_settings import *
