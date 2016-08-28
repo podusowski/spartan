@@ -63,7 +63,7 @@ def _import_endomondo_workout(user, endomondo_workout):
                                             finished=endomondo_workout.start_time + endomondo_workout.duration)
 
     models.EndomondoWorkout.objects.create(workout=workout,
-                                        endomondo_id=endomondo_workout.id)
+                                           endomondo_id=endomondo_workout.id)
 
     gpx = models.Gpx.objects.create(workout=workout,
                                     activity_type = endomondo_workout.sport,
@@ -71,10 +71,10 @@ def _import_endomondo_workout(user, endomondo_workout):
 
     for point in endomondo_workout.points:
         gpx.gpxtrackpoint_set.create(lat=point['lat'],
-                                    lon=point['lon'],
-                                    hr=point.get('hr', None),
-                                    cad=point.get('cad', None),
-                                    time=point['time'])
+                                     lon=point['lon'],
+                                     hr=point.get('hr', None),
+                                     cad=point.get('cad', None),
+                                     time=point['time'])
 
 
 def synchronize_endomondo(user):
