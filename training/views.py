@@ -159,3 +159,9 @@ def synchronize_endomondo(request):
 def disconnect_endomondo(request):
     gpx.disconnect_endomondo(request.user)
     return redirect('endomondo')
+
+
+@login_required
+def purge_endomondo(request):
+    gpx.purge_endomondo_workouts(request.user)
+    return redirect('dashboard')

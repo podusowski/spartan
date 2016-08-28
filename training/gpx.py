@@ -97,3 +97,7 @@ def endomondo_key(user):
 
 def disconnect_endomondo(user):
     models.AuthKeys.objects.get(user=user, name="endomondo").delete()
+
+
+def purge_endomondo_workouts(user):
+    models.Workout.objects.filter(user=user, endomondoworkout__isnull=False).delete()
