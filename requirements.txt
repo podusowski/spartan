@@ -7,5 +7,6 @@ pytz==2016.6.1
 rcssmin==1.0.6
 rjsmin==1.0.12
 six==1.10.0
-git+https://github.com/podusowski/endoapi.git
 psycopg2
+git+https://github.com/podusowski/endoapi.git
+git+https://github.com/podusowski/gpxpy.git

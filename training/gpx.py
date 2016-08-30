@@ -4,7 +4,8 @@ import logging
 
 from django.db import transaction
 
-from . import gpxpy
+import gpxpy
+
 from . import models
 
 class WorkoutAlreadyExists(Exception):
