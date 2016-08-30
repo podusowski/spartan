@@ -121,7 +121,7 @@ class Gpx(models.Model):
         def take_coords(point):
             return float(point.lat), float(point.lon)
 
-        points = map(take_coords, self.gpxtrackpoint_set.all())
+        points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
 
         import json
         return json.dumps(list(points))
