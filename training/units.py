@@ -1,6 +1,9 @@
 def mpkm_from_mps(m_per_s):
     try:
-        return '{}min/km'.format(round(16.666666666667 / m_per_s, 2))
+        c = 16.666666666667
+        mpkm = int(c // m_per_s)
+        spkm = int((c / m_per_s - mpkm) * 60)
+        return '{}:{}min/km'.format(mpkm, spkm)
     except:
         return '-'
 

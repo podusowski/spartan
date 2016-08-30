@@ -77,7 +77,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, FILES_DIR, 'media/')
 MEDIA_URL = os.path.join("/", FILES_DIR, 'media/')
 
 LOGIN_REDIRECT_URL = '/dashboard'
-LOGIN_URL = '/login'
+LOGIN_URL = '/login/'
 
 try:
     from deployment_settings import *
