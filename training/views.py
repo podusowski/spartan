@@ -158,7 +158,7 @@ def synchronize_endomondo(request):
 @login_required
 def synchronize_endomondo_ajax(request):
     count = gpx.synchronize_endomondo(request.user, 10)
-    return JsonResponse({"imported_workout_count": count})
+    return JsonResponse({"imported_count": count})
 
 
 @login_required

@@ -2,13 +2,46 @@
 
 {% block content %}
 
+<script>
+    var _imported_count = 0;
+    var _loading_div = "<div class=\"loading\"> </div>";
+
+    function _set_status(text, loading=false) {
+        if (loading) {
+            text = _loading_div + " " + text;
+        }
+        $("#synchronization_status").html(text);
+    }
+
+    function _synchronize() {
+        $.getJSON("{% url 'synchronize_endomondo_ajax' %}", function(result) {
+            _imported_count += result.imported_count
+            _set_status("got " + _imported_count + " workouts, looking for more...", true);
+
+            if (result.imported_count > 0) {
+                _synchronize();
+            }
+            else {
+                _set_status("done, you can now see your workouts on the <a href=\"{% url 'dashboard' %}\">dashboard</a>");
+            }
+        });
+    }
+
+    function synchronize() {
+        _imported_count = 0;
+        _set_status("synchronizing (site must stay open)...", true);
+        _synchronize();
+    }
+</script>
+
 <h2>connect with <a href="http://www.endomondo.com">endomondo</a></h2>
 <section>
     {% if key %}
         <p>Your account is connected to Endomondo.</p>
-        <p><a href="{% url 'disconnect_endomondo' %}" onclick="return confirm('are you sure you want to do this?')">disconnect me</a></p>
-        <p><a href="{% url 'synchronize_endomondo' %}" >synchronize</a> (this may take minutes)</p>
-        <p><a href="{% url 'purge_endomondo' %}" >purge</a></p>
+        <a class="button" href="javascript:synchronize();">synchronize</a>
+        <a class="button" href="{% url 'disconnect_endomondo' %}" onclick="return confirm('are you sure you want to do this?')">disconnect me</a>
+        <a class="button" href="{% url 'purge_endomondo' %}" >purge</a>
+        <p><span class="note" id="synchronization_status"> </span></p>
     {% else %}
         <form action="{% url 'endomondo' %}" method="post">
             {% csrf_token %}

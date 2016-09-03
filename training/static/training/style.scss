@@ -352,10 +352,33 @@ nav
     }
 }
 
+.button
+{
+    @include button(darken($secondary_color, 10%))
+}
+
 .excercise a
 {
     @include button(darken($secondary_color, 10%))
     padding: 0.2em 0.5em 0.2em 0.5em;
     margin: 0.2em;
     border-radius: 0.3em;
+}
+
+.loading {
+    display: inline-block;
+    //background-color: darken($secondary_color, 10%);
+    width: 8px;
+    height: 8px;
+    margin: 0;
+    border-top: 2px solid lighten($primary_color, 30%);
+    border-left: 1px solid lighten($primary_color, 30%);
+    border-radius: 50%;
+    animation: spin 2000ms infinite linear;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
