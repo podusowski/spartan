@@ -37,11 +37,13 @@
 <h2>connect with <a href="http://www.endomondo.com">endomondo</a></h2>
 <section>
     {% if key %}
-        <p>Your account is connected to Endomondo.</p>
+        <p>Your account is connected to Endomondo and you can synchronize your workouts.</p>
         <a class="button" href="javascript:synchronize();">synchronize</a>
-        <a class="button" href="{% url 'disconnect_endomondo' %}" onclick="return confirm('are you sure you want to do this?')">disconnect me</a>
-        <a class="button" href="{% url 'purge_endomondo' %}" >purge</a>
         <p><span class="note" id="synchronization_status"> </span></p>
+
+        <p>or if you want, you can disconnect or delete all imported workouts (other workouts won't be touched and you can always re-synchronize)</p>
+        <a class="red_button" href="{% url 'disconnect_endomondo' %}" onclick="return confirm('are you sure you want to do this?')">disconnect me</a>
+        <a class="red_button" href="{% url 'purge_endomondo' %}" onclick="return confirm('are you sure you want to delete all imported workouts?')">purge</a>
     {% else %}
         <form action="{% url 'endomondo' %}" method="post">
             {% csrf_token %}

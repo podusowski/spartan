@@ -27,8 +27,10 @@ sudo -E -u $production_user bash << EOF
     tar xvf $production_archive
     virtualenv -p python3 env
     source env/bin/activate
-    pip install -r requirements.txt
+    pip install --upgrade -r requirements.txt
     ./manage.py migrate
+    rm -vrf $production_dir/_files/static
+    echo "static"
     ./manage.py collectstatic --noinput
 EOF
 

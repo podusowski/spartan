@@ -357,6 +357,16 @@ nav
     @include button(darken($secondary_color, 10%))
 }
 
+.red_button
+{
+    @include button(darken(red, 30%))
+}
+
+.green_button
+{
+    @include button(darken(green, 30%))
+}
+
 .excercise a
 {
     @include button(darken($secondary_color, 10%))
