@@ -10,3 +10,6 @@ DATABASES = {
 }
 
 DEBUG = True
+
+import logging
+logging.basicConfig(level=DEBUG)

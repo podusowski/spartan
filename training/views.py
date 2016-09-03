@@ -3,7 +3,7 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 
 from .models import *
@@ -153,6 +153,12 @@ def endomondo(request):
 def synchronize_endomondo(request):
     gpx.synchronize_endomondo(request.user)
     return redirect('endomondo')
+
+
+@login_required
+def synchronize_endomondo_ajax(request):
+    count = gpx.synchronize_endomondo(request.user, 10)
+    return JsonResponse({"imported_workout_count": count})
 
 
 @login_required

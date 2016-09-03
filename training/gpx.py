@@ -78,15 +78,40 @@ def _import_endomondo_workout(user, endomondo_workout):
                                      time=point['time'])
 
 
-def synchronize_endomondo(user):
+def _endomondo_time_bounds(user):
+    workouts = models.Workout.objects.filter(user=user,
+                                             endomondoworkout__isnull=False)
+
+    try:
+        latest_workout = workouts.latest("started")
+        earliest_workout = workouts.earliest("started")
+
+        return latest_workout.started, earliest_workout.started
+
+    except Exception as e:
+        logging.warn(str(e))
+        return None, None
+
+
+def synchronize_endomondo(user, max_results=None):
     key = models.AuthKeys.objects.get(user=user, name="endomondo")
     endomondo = endoapi.endomondo.Endomondo(token=key.key)
 
-    for endomondo_workout in endomondo.get_workouts():
+    newest, oldest = _endomondo_time_bounds(user)
+
+    endomondo_workouts = endomondo.fetch(max_results=max_results, before=oldest, after=newest)
+
+    count = 0
+    for endomondo_workout in endomondo_workouts:
         if not _workout_already_exists(user,
                                        endomondo_workout.start_time,
                                        endomondo_workout.start_time + endomondo_workout.duration):
-            _import_endomondo_workout(user, endomondo_workout)
+            try:
+                _import_endomondo_workout(user, endomondo_workout)
+            finally:
+                count = count + 1
+
+    return count
 
 
 def connect_to_endomondo(user, email, password):
