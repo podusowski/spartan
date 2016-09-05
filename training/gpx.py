@@ -108,8 +108,9 @@ def synchronize_endomondo(user, max_results=None):
                                        endomondo_workout.start_time + endomondo_workout.duration):
             try:
                 _import_endomondo_workout(user, endomondo_workout)
-            finally:
-                count = count + 1
+                count += 1
+            except:
+                pass
 
     return count
 

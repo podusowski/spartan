@@ -1,6 +1,7 @@
 import os
 import logging
 
+from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.http import HttpResponse, JsonResponse
@@ -157,6 +158,7 @@ def synchronize_endomondo(request):
 
 
 @login_required
+@never_cache
 def synchronize_endomondo_ajax(request):
     count = gpx.synchronize_endomondo(request.user, 10)
     return JsonResponse({"imported_count": count})

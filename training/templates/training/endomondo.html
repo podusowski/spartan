@@ -14,7 +14,7 @@
     }
 
     function _synchronize() {
-        $.getJSON("{% url 'synchronize_endomondo_ajax' %}", function(result) {
+        $.post("{% url 'synchronize_endomondo_ajax' %}", {csrfmiddlewaretoken: '{{ csrf_token }}'}, function(result, status) {
             _imported_count += result.imported_count
             _set_status("got " + _imported_count + " workouts, looking for more...", true);
 
@@ -24,7 +24,7 @@
             else {
                 _set_status("done, you can now see your workouts on the <a href=\"{% url 'dashboard' %}\">dashboard</a>");
             }
-        });
+        }, "json");
     }
 
     function synchronize() {
