@@ -1,4 +1,5 @@
 import datetime
+import logging
 import arrow
 
 from django.db.models import Sum
@@ -8,7 +9,7 @@ from . import units
 
 
 def workouts_time_bounds(user):
-    workouts = models.Workout.objects.filter(user=user)
+    workouts = Workout.objects.filter(user=user, started__isnull=False)
 
     try:
         latest_workout = workouts.latest("started")
@@ -22,6 +23,9 @@ def workouts_time_bounds(user):
 
 
 def week_range(number=None, end=None, start=datetime.datetime.utcnow()):
+    if number is None and end is None:
+        raise AttributeError("number or end parameter must be provided")
+
     week_start = arrow.get(start).floor('week').datetime
     week = datetime.timedelta(weeks=1)
     second = datetime.timedelta(seconds=1)
@@ -40,13 +44,28 @@ def week_range(number=None, end=None, start=datetime.datetime.utcnow()):
 
 
 def weeks(user):
-    start_time, end_time = workouts_time_bounds(user)
-    for week_bounds in week_range(end=end_time):
-        pass
+    def make_week(week_bounds):
+        start_time, end_time = week_bounds
+        workouts = previous_workouts(user, start_time, end_time)
+        return {'workouts': workouts}
+
+    _, end_time = workouts_time_bounds(user)
+
+    logging.debug("building weeks up to {}".format(end_time))
+
+    if end_time is None:
+        return []
+
+    return map(make_week, week_range(end=end_time))
 
 
-def previous_workouts(request):
-    return Workout.objects.filter(user=request.user).order_by('-started')
+def previous_workouts(user, begin=None, end=None):
+    if begin is not None and end is not None:
+        return Workout.objects.filter(user=user,
+                                      started__gt=begin,
+                                      started__lt=end).order_by('-started')
+    else:
+        return Workout.objects.filter(user=user).order_by('-started')
 
 
 def most_common_excercises(request):
