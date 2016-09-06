@@ -101,6 +101,9 @@ class Excercise(models.Model):
     def most_common():
         return Excercise.objects.values_list('name').annotate(count=Count('name')).order_by('-count')
 
+    class Meta:
+        ordering = ['time_started']
+
 
 class Reps(models.Model):
     excercise = models.ForeignKey(Excercise)
