@@ -1,4 +1,4 @@
-{%extends "training/base.html" %}
+{% extends "training/base.html" %}
 
 {% block nav %}
 <nav>
@@ -20,36 +20,33 @@
 
 {% load training_format %}
 
-<h2>history</h2>
-<section>
-    <table>
-        <tr>
-            <th>type</th>
-            <th>started</th>
-            <th>duration</th>
-            <th>volume</th>
-        </tr>
-        {% for workout in previous_workouts %}
-            <tr>
-                <td>
-                    <a href="{% url 'workout' workout.id %}">
-                        {{ workout.type }}
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'workout' workout.id %}">
-                        {% firstof workout.started 'not started' %}
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'workout' workout.id %}">
-                        {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
-                    </a>
-                </td>
-                <td><a href="{% url 'workout' workout.id %}">{{ workout.volume }}</a></td>
-            </tr>
-        {% endfor %}
-    </table>
-</section>
+{% for week in weeks %}
+    <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
+    <section>
+        {% if forloop.first %}
+            {% for workout in not_started_workouts %}
+                <a href="{% url 'workout' workout.id %}">
+                    <dl>
+                        <dt>{{ workout.type }}</dt><dd>not started</dd>
+                    </dl>
+                </a>
+            {% endfor %}
+        {% endif %}
 
-{%endblock%}
+        {% for workout in week.workouts reversed %}
+            <a href="{% url 'workout' workout.id %}">
+                <dl>
+                    <dt>{{ workout.started|date:"l" }} {{ workout.type }}</dt>
+                    <dd>
+                        {{ workout.volume }}
+                        <span class="note">
+                            {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
+                        </span>
+                    </dd>
+                </dl>
+            </a>
+        {% endfor %}
+    </section>
+{% endfor %}
+
+{% endblock %}

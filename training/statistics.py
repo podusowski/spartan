@@ -47,7 +47,9 @@ def weeks(user):
     def make_week(week_bounds):
         start_time, end_time = week_bounds
         workouts = previous_workouts(user, start_time, end_time)
-        return {'workouts': workouts}
+        return {'start_time': start_time,
+                'end_time': end_time,
+                'workouts': workouts}
 
     _, end_time = workouts_time_bounds(user)
 
@@ -57,6 +59,11 @@ def weeks(user):
         return []
 
     return map(make_week, week_range(end=end_time))
+
+
+def not_started_workouts(user):
+    return Workout.objects.filter(user=user,
+                                  started__isnull=True)
 
 
 def previous_workouts(user, begin=None, end=None):

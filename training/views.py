@@ -22,6 +22,7 @@ def index(request):
 @login_required
 def dashboard(request):
     return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts(request.user),
+                                                       'not_started_workouts': not_started_workouts(request.user),
                                                        'weeks': weeks(request.user),
                                                        'most_common_excercises': most_common_excercises(request),
                                                        'total_reps': total_reps(request),
