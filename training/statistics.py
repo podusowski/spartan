@@ -43,59 +43,56 @@ def week_range(number=None, end=None, start=datetime.datetime.utcnow()):
                 break
 
 
-def weeks(user):
-    def make_week(week_bounds):
-        start_time, end_time = week_bounds
-        workouts = previous_workouts(user, start_time, end_time)
-        return {'start_time': start_time,
-                'end_time': end_time,
-                'workouts': workouts}
+class Statistics:
+    def __init__(self, user):
+        self.user = user
 
-    _, end_time = workouts_time_bounds(user)
+    def total_reps(self):
+        return Reps.objects.filter(excercise__workout__user=self.user).aggregate(Sum('reps'))['reps__sum']
 
-    logging.debug("building weeks up to {}".format(end_time))
+    def total_km(self):
+        meters = Gpx.objects.filter(workout__user=self.user).aggregate(Sum('length_2d'))['length_2d__sum']
+        return units.km_from_m(meters)
 
-    if end_time is None:
-        return []
+    def weeks(self):
+        def make_week(week_bounds):
+            start_time, end_time = week_bounds
+            workouts = self.previous_workouts(start_time, end_time)
+            return {'start_time': start_time,
+                    'end_time': end_time,
+                    'workouts': workouts}
 
-    return map(make_week, week_range(end=end_time))
+        _, end_time = workouts_time_bounds(self.user)
 
+        logging.debug("building weeks up to {}".format(end_time))
 
-def not_started_workouts(user):
-    return Workout.objects.filter(user=user,
-                                  started__isnull=True)
+        if end_time is None:
+            return []
 
+        return map(make_week, week_range(end=end_time))
 
-def previous_workouts(user, begin=None, end=None):
-    if begin is not None and end is not None:
-        return Workout.objects.filter(user=user,
-                                      started__gt=begin,
-                                      started__lt=end).order_by('-started')
-    else:
-        return Workout.objects.filter(user=user).order_by('-started')
+    def reps_per_week(self):
+        def reps_in_range(time_range):
+            begin, end = time_range
+            reps = Reps.objects.filter(excercise__workout__user=self.user,
+                                       excercise__time_started__gt=begin,
+                                       excercise__time_started__lt=end).aggregate(Sum('reps'))['reps__sum']
 
+            return {'time': '{:%d.%m}'.format(end),
+                    'value': 0 if reps is None else reps}
 
-def most_common_excercises(request):
-    return Excercise.objects.filter(workout__user=request.user).values_list('name').annotate(count=Count('name')).order_by('-count')
+        return list(map(reps_in_range, week_range(5)))
 
+    def previous_workouts(self, begin=None, end=None):
+        if begin is not None and end is not None:
+            return Workout.objects.filter(user=self.user,
+                                          started__gt=begin,
+                                          started__lt=end).order_by('-started')
+        else:
+            return Workout.objects.filter(user=self.user).order_by('-started')
 
-def reps_per_week(request, weeks_number):
-    def reps_in_range(time_range):
-        begin, end = time_range
-        reps = Reps.objects.filter(excercise__workout__user=request.user,
-                                   excercise__time_started__gt=begin,
-                                   excercise__time_started__lt=end).aggregate(Sum('reps'))['reps__sum']
+    def not_started_workouts(self):
+        return Workout.objects.filter(user=self.user, started__isnull=True)
 
-        return {'time': '{:%d.%m}'.format(end),
-                'value': 0 if reps is None else reps}
-
-    return list(map(reps_in_range, week_range(weeks_number)))
-
-
-def total_reps(request):
-    return Reps.objects.filter(excercise__workout__user=request.user).aggregate(Sum('reps'))['reps__sum']
-
-
-def total_km(request):
-    meters = Gpx.objects.filter(workout__user=request.user).aggregate(Sum('length_2d'))['length_2d__sum']
-    return units.km_from_m(meters)
+    def most_common_excercises(self):
+        return Excercise.objects.filter(workout__user=self.user).values_list('name').annotate(count=Count('name')).order_by('-count')

@@ -14,8 +14,8 @@
         Chart.defaults.global.legend.display = false;
 
         {% load training_format %}
-        data = [{{ reps_per_week | project:"value" | join:"," }}];
-        labels = [{{ reps_per_week | project:"time" | js_list | safe }}];
+        data = [{{ statistics.reps_per_week | project:"value" | join:"," }}];
+        labels = [{{ statistics.reps_per_week | project:"time" | js_list | safe }}];
 
         ctx = $('#total_reps');
         chart = new Chart(ctx, {

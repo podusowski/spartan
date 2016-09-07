@@ -21,20 +21,12 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'training/dashboard.html', {'previous_workouts': previous_workouts(request.user),
-                                                       'not_started_workouts': not_started_workouts(request.user),
-                                                       'weeks': weeks(request.user),
-                                                       'most_common_excercises': most_common_excercises(request),
-                                                       'total_reps': total_reps(request),
-                                                       'total_km': total_km(request),
-                                                       'reps_per_week': reps_per_week(request, 5)})
+    return render(request, 'training/dashboard.html', {'statistics': Statistics(request.user)})
 
 
 @login_required
 def statistics(request):
-    return render(request, 'training/statistics.html', {'previous_workouts': previous_workouts(request.user),
-                                                        'most_common_excercises': most_common_excercises(request),
-                                                        'reps_per_week': reps_per_week(request, 5)})
+    return render(request, 'training/statistics.html', {'statistics': Statistics(request.user)})
 
 
 @login_required
@@ -71,7 +63,7 @@ def workout(request, training_session_id):
 
     return render(request, 'training/workout.html', {'workout': workout,
                                                      'most_common_reps': Reps.most_common(),
-                                                     'most_common_excercises': Excercise.most_common(),
+                                                     'statistics': Statistics(request.user),
                                                      'gpx': gpx})
 
 

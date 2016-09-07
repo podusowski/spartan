@@ -99,7 +99,7 @@
             <input type="submit" value="start" />
         </form>
 
-        {%for excercise,_ in most_common_excercises|slice:":20"%}
+        {%for excercise,_ in statistics.most_common_excercises|slice:":20"%}
             <a href="javascript:start_excercise('{{ excercise }}')">{{ excercise }}</a>
         {%endfor%}
     </section>

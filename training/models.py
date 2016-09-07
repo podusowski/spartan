@@ -97,10 +97,6 @@ class Excercise(models.Model):
     time_finished = models.DateTimeField(null=True, default=None)
     time_updated = models.DateTimeField(null=True, default=None)
 
-    @staticmethod
-    def most_common():
-        return Excercise.objects.values_list('name').annotate(count=Count('name')).order_by('-count')
-
     class Meta:
         ordering = ['time_started']
 
