@@ -23,6 +23,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'sass_processor',
+    'el_pagination',
 )
 
 MIDDLEWARE_CLASSES = (

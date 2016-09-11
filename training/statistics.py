@@ -69,7 +69,12 @@ class Statistics:
         if end_time is None:
             return []
 
-        return map(make_week, week_range(end=end_time))
+        result = list(map(make_week, week_range(end=end_time)))
+
+        if len(result) > 0:
+            result[0]['workouts'] = list(result[0]['workouts']) + list(self.not_started_workouts())
+
+        return result
 
     def reps_per_week(self):
         def reps_in_range(time_range):
