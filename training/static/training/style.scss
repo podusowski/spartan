@@ -392,3 +392,13 @@ nav
         transform: rotate(360deg);
     }
 }
+
+.endless_page_link,
+.endless_page_current {
+    @include text3;
+    padding: 0.5em;
+    margin: 0;
+    strong {
+        margin: 0;
+    }
+}
