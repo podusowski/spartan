@@ -21,9 +21,11 @@
 {% load training_format %}
 {% load el_pagination_tags %}
 
-{% paginate statistics.weeks as weeks %}
+{% paginate 4 statistics.weeks as weeks %}
 
-{% show_pages %}
+<section>
+    {% show_pages %}
+</section>
 
 {% for week in weeks %}
     <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
@@ -51,5 +53,9 @@
         {% endfor %}
     </section>
 {% endfor %}
+
+<section>
+    {% show_pages %}
+</section>
 
 {% endblock %}
