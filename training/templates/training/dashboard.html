@@ -21,6 +21,19 @@
 {% load training_format %}
 {% load el_pagination_tags %}
 
+{% if statistics.not_started_workouts %}
+    <h2>not started</h2>
+    <section>
+        {% for workout in statistics.not_started_workouts %}
+            <a href="{% url 'workout' workout.id %}">
+                <dl>
+                    <dt>{{ workout.type }}</dt><dd>not started</dd>
+                </dl>
+            </a>
+        {% endfor %}
+    </section>
+{% endif %}
+
 {% paginate 4 statistics.weeks as weeks %}
 
 <section>
@@ -31,25 +44,17 @@
     <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
     <section>
         {% for workout in week.workouts reversed %}
-            {% if not workout.started %}
-                <a href="{% url 'workout' workout.id %}">
-                    <dl>
-                        <dt>{{ workout.type }}</dt><dd>not started</dd>
-                    </dl>
-                </a>
-            {% else %}
-                <a href="{% url 'workout' workout.id %}">
-                    <dl>
-                        <dt>{{ workout.started|date:"l" }} {{ workout.type }}</dt>
-                        <dd>
-                            {{ workout.volume }}
-                            <span class="note">
-                                {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
-                            </span>
-                        </dd>
-                    </dl>
-                </a>
-            {% endif %}
+            <a href="{% url 'workout' workout.id %}">
+                <dl>
+                    <dt>{{ workout.started|date:"l" }} {{ workout.type }}</dt>
+                    <dd>
+                        {{ workout.volume }}
+                        <span class="note">
+                            {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
+                        </span>
+                    </dd>
+                </dl>
+            </a>
         {% endfor %}
     </section>
 {% endfor %}

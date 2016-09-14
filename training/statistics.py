@@ -22,7 +22,7 @@ def workouts_time_bounds(user):
         return None, None
 
 
-def week_range(number=None, end=None, start=datetime.datetime.utcnow()):
+def week_range(number:int=None, end=None, start=datetime.datetime.utcnow()):
     if number is None and end is None:
         raise AttributeError("number or end parameter must be provided")
 
@@ -43,6 +43,17 @@ def week_range(number=None, end=None, start=datetime.datetime.utcnow()):
                 break
 
 
+class Week:
+    def __init__(self, statistics, start_time, end_time):
+        self.statistics = statistics
+        self.start_time = start_time
+        self.end_time = end_time
+
+    @property
+    def workouts(self):
+        return self.statistics.previous_workouts(self.start_time, self.end_time)
+
+
 class Statistics:
     def __init__(self, user):
         self.user = user
@@ -55,12 +66,9 @@ class Statistics:
         return units.km_from_m(meters)
 
     def weeks(self):
+
         def make_week(week_bounds):
-            start_time, end_time = week_bounds
-            workouts = self.previous_workouts(start_time, end_time)
-            return {'start_time': start_time,
-                    'end_time': end_time,
-                    'workouts': workouts}
+            return Week(self, *week_bounds)
 
         _, end_time = workouts_time_bounds(self.user)
 
@@ -70,9 +78,6 @@ class Statistics:
             return []
 
         result = list(map(make_week, week_range(end=end_time)))
-
-        if len(result) > 0:
-            result[0]['workouts'] = list(result[0]['workouts']) + list(self.not_started_workouts())
 
         return result
 
