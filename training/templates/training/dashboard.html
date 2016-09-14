@@ -43,6 +43,30 @@
 {% for week in weeks %}
     <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
     <section>
+        {% for day in week.days %}
+            <div class="day-container">
+                <h3>{{ day.start_time|date:"l" }}</h3>
+                <div class="day">
+                    {% for workout in day.workouts %}
+                        <a href="{% url 'workout' workout.id %}">
+                            <dl>
+                                <dt>{{ workout.started|date:"h:m" }} {{ workout.type }}</dt>
+                                <dd>
+                                    {{ workout.volume }}
+                                    <span class="note">
+                                        {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
+                                    </span>
+                                </dd>
+                            </dl>
+                        </a>
+                    {% empty %}
+                        <span class="big-text">rest</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+{% comment %}
         {% for workout in week.workouts reversed %}
             <a href="{% url 'workout' workout.id %}">
                 <dl>
@@ -56,6 +80,7 @@
                 </dl>
             </a>
         {% endfor %}
+{% endcomment %}
     </section>
 {% endfor %}
 

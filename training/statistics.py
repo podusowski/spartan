@@ -43,6 +43,15 @@ def week_range(number:int=None, end=None, start=datetime.datetime.utcnow()):
                 break
 
 
+class Day:
+    def __init__(self, start_time):
+        self.start_time = start_time
+        self.workouts = []
+
+    def __repr__(self):
+        return str(self.workouts)
+
+
 class Week:
     def __init__(self, statistics, start_time, end_time):
         self.statistics = statistics
@@ -52,6 +61,23 @@ class Week:
     @property
     def workouts(self):
         return self.statistics.previous_workouts(self.start_time, self.end_time)
+
+    @property
+    def days(self):
+
+        def make_day(number):
+            start_time = self.start_time + datetime.timedelta(days=number)
+            return (number, Day(start_time))
+
+        result = dict(map(make_day, range(7)))
+
+        for workout in self.workouts:
+            day = workout.started.weekday()
+            result[day].workouts.append(workout)
+
+        logging.debug(str(result))
+
+        return result.values()
 
 
 class Statistics:

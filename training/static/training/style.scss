@@ -70,9 +70,9 @@ h2, h3, h4, h5
     margin: 10px 10px 0 10px;
 }
 
-section
+h3
 {
-    margin: 0 10px 10px 10px;
+    font-size: 60%;
 }
 
 p
@@ -335,8 +335,46 @@ ul
 
 section
 {
+    margin: 0 10px 10px 10px;
     @include fancy_box($background-color);
     @include text1;
+
+}
+
+section
+{
+    overflow: auto;
+}
+
+.day-container {
+    min-height: 5em;
+    vertical-align: top;
+}
+
+.day {
+    border: none;
+    margin: 0;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.big-text {
+    font-weight: 100;
+    color: darken($secondary_color, 10%);
+    text-transform: uppercase;
+    vertical-align: top;
+    display: inline-block;
+}
+
+h3
+{
+    background-color: lighten($primary_color, 0%);
+    padding: 0.5em;
+    margin: 0 10px 0 0;
+    color: white;
+    width: 8em;
+    display: inline-block;
+    text-align: right;
 }
 
 nav
