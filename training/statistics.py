@@ -91,7 +91,7 @@ class Statistics:
         meters = Gpx.objects.filter(workout__user=self.user).aggregate(Sum('length_2d'))['length_2d__sum']
         return units.km_from_m(meters)
 
-    def weeks(self):
+    def weeks(self, start=datetime.datetime.utcnow()):
 
         def make_week(week_bounds):
             return Week(self, *week_bounds)
@@ -103,7 +103,7 @@ class Statistics:
         if end_time is None:
             return []
 
-        result = list(map(make_week, week_range(end=end_time)))
+        result = list(map(make_week, week_range(start=start, end=end_time)))
 
         return result
 
