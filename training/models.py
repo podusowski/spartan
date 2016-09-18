@@ -15,7 +15,7 @@ class Workout(models.Model):
     finished = models.DateTimeField(null=True, default=None)
 
     def __str__(self):
-        return "{} at {}".format(self.type(), self.started)
+        return "{} at {}".format(self.workout_type, self.started)
 
     def is_gpx(self):
         return len(self.gpx_set.all()) > 0
@@ -63,12 +63,6 @@ class Workout(models.Model):
             return units.km_from_m(self.gpx_set.get().length_2d)
         else:
             return self.total_reps()
-
-    def type(self):
-        if self.is_gpx():
-            return self.gpx_set.get().activity_type
-        else:
-            return 'STRENGTH'
 
     def utd(self):
         """ userfriendly training data string """

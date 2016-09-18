@@ -27,7 +27,7 @@
         {% for workout in statistics.not_started_workouts %}
             <a href="{% url 'workout' workout.id %}">
                 <dl>
-                    <dt>{{ workout.type }}</dt><dd>not started</dd>
+                    <dt>{{ workout.workout_type }}</dt>
                 </dl>
             </a>
         {% endfor %}
@@ -65,22 +65,6 @@
                 </div>
             </div>
         {% endfor %}
-
-{% comment %}
-        {% for workout in week.workouts reversed %}
-            <a href="{% url 'workout' workout.id %}">
-                <dl>
-                    <dt>{{ workout.started|date:"l" }} {{ workout.type }}</dt>
-                    <dd>
-                        {{ workout.volume }}
-                        <span class="note">
-                            {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
-                        </span>
-                    </dd>
-                </dl>
-            </a>
-        {% endfor %}
-{% endcomment %}
     </section>
 {% endfor %}
 
