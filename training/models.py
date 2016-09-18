@@ -10,6 +10,7 @@ from . import units
 
 class Workout(models.Model):
     user = models.ForeignKey(User)
+    workout_type = models.CharField(max_length=20, null=False, default="strength")
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
 
