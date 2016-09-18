@@ -91,6 +91,13 @@ class Statistics:
         meters = Gpx.objects.filter(workout__user=self.user).aggregate(Sum('length_2d'))['length_2d__sum']
         return units.km_from_m(meters)
 
+    def most_popular_workouts(self):
+        return Workout.objects \
+                      .filter(user=self.user) \
+                      .values_list('workout_type') \
+                      .annotate(count=Count('workout_type')) \
+                      .order_by('-count')
+
     def weeks(self, start=datetime.datetime.utcnow()):
 
         def make_week(week_bounds):
