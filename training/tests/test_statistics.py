@@ -44,7 +44,7 @@ class StatisticsTestCase(TestCase):
                                       started=datetime.datetime(2016, 9, 3, 0, 0, 0, tzinfo=pytz.utc),
                                       finished=datetime.datetime(2016, 9, 3, 0, 0, 1, tzinfo=pytz.utc))
 
-        most_popular_workouts = self.statistics.most_popular_workouts()
+        most_popular_workouts = list(self.statistics.most_popular_workouts())
         self.assertEqual(2, len(most_popular_workouts))
-        self.assertEqual(("strength", 2), most_popular_workouts[0])
-        self.assertEqual(("pilates", 1), most_popular_workouts[1])
+        self.assertEqual(("strength", 2, 0), most_popular_workouts[0])
+        self.assertEqual(("pilates", 1, 0), most_popular_workouts[1])
