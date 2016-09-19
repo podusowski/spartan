@@ -31,10 +31,13 @@ class Volume:
             return km_from_m(self.meters)
 
     def __eq__(self, other):
-        return self.reps == other.reps
+        return self.reps == other.reps and self.meters == other.meters
 
     def __add__(self, other):
-        return Volume(reps=self.reps + other.reps)
+        if self.reps is not None:
+            return Volume(reps=self.reps + other.reps)
+        else:
+            return Volume(meters=self.meters + other.meters)
 
     def _valid(self):
         return (self.reps is None) != (self.meters is None)
