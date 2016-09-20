@@ -99,7 +99,6 @@ class GpxTestCase(TestCase):
         gpx_workout = workout.gpx_set.get()
         self.assertEqual("RUNNING", gpx_workout.activity_type)
         self.assertEqual(4, gpx_workout.length_2d)
-        self.assertEqual(10, gpx_workout.length_3d)
 
     def test_make_sure_2d_points_are_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
