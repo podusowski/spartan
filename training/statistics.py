@@ -67,9 +67,9 @@ class Week:
 
         def make_day(number):
             start_time = self.start_time + datetime.timedelta(days=number)
-            return (number, Day(start_time))
+            return Day(start_time)
 
-        result = dict(map(make_day, range(7)))
+        result = list(map(make_day, range(7)))
 
         for workout in self.workouts:
             day = workout.started.weekday()
@@ -77,7 +77,7 @@ class Week:
 
         logging.debug(str(result))
 
-        return result.values()
+        return reversed(result)
 
 
 class Statistics:
