@@ -60,22 +60,12 @@ class Workout(models.Model):
 
     def volume(self):
         if self.is_gpx():
-            return units.km_from_m(self.gpx_set.get().length_2d)
+            return units.Volume(meters=self.gpx_set.get().length_2d)
         else:
-            return self.total_reps()
-
-    def utd(self):
-        """ userfriendly training data string """
-        return '\n'.join(map(lambda x: x.utd(), self.excercise_set.all()))
+            return units.Volume(reps=self.total_reps())
 
 
 class Excercise(models.Model):
-    def utd(self):
-        """ userfriendly training data string """
-        reps = self.reps_set.all()
-        r = ' '.join(map(lambda x: str(x.reps), reps))
-        return ': '.join([self.name, r])
-
     def total_reps(self):
         reps = self.reps_set.all()
         return sum(map(lambda x: x.reps, reps))
