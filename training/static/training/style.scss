@@ -366,14 +366,12 @@ section
     display: inline-block;
 }
 
-h3
-{
-    background-color: lighten($primary_color, 0%);
-    padding: 0.5em;
-    margin: 0 10px 0 0;
-    color: white;
-    width: 8em;
+.day-name {
+    margin: 0 1em 0 0;
+    color: #aaa;
+    width: 2em;
     display: inline-block;
+    text-transform: uppercase;
     text-align: right;
 }
 
