@@ -59,6 +59,7 @@ import endoapi.endomondo
 @transaction.atomic
 def _import_endomondo_workout(user, endomondo_workout):
     workout = models.Workout.objects.create(user=user,
+                                            workout_type=endomondo_workout.sport,
                                             started=endomondo_workout.start_time,
                                             finished=endomondo_workout.start_time + endomondo_workout.duration)
 
