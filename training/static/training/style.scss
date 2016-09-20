@@ -322,28 +322,21 @@ dl.vertical
     display: block;
 }
 
-ul
-{
+ul {
     display: inline-block;
 
-    li
-    {
+    li {
         display: inline-block;
         margin-right: 0.5em;
     }
 }
 
-section
-{
+section {
     margin: 0 10px 10px 10px;
+    overflow: auto;
     @include fancy_box($background-color);
     @include text1;
 
-}
-
-section
-{
-    overflow: auto;
 }
 
 .day-container {
