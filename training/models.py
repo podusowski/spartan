@@ -94,6 +94,9 @@ class Reps(models.Model):
     def most_common():
         return Reps.objects.values_list('reps').annotate(rep_count=Count('reps')).order_by('-rep_count')
 
+    class Meta:
+        ordering = ['pk']
+
 
 class Gpx(models.Model):
     workout = models.ForeignKey(Workout)
