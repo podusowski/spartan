@@ -58,9 +58,13 @@ class Workout(models.Model):
         else:
             return datetime.timedelta()
 
+    def _total_distance(self):
+        ''' for gpx workouts '''
+        return self.gpx_set.get().length_2d
+
     def volume(self):
         if self.is_gpx():
-            return units.Volume(meters=self.gpx_set.get().length_2d)
+            return units.Volume(meters=self._total_distance())
         else:
             return units.Volume(reps=self.total_reps())
 
