@@ -49,7 +49,7 @@ class Workout(models.Model):
 
         self.finished = timezone.now()
 
-    def total_reps(self):
+    def _total_reps(self):
         return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or 0
 
     def duration(self):
@@ -66,7 +66,7 @@ class Workout(models.Model):
         if self.is_gpx():
             return units.Volume(meters=self._total_distance())
         else:
-            return units.Volume(reps=self.total_reps())
+            return units.Volume(reps=self._total_reps())
 
 
 class Excercise(models.Model):
