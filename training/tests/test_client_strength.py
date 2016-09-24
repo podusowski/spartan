@@ -9,34 +9,34 @@ class ClienStrengthTestCase(TestCase):
         user = User.objects.create_user(username='grzegorz', email='', password='z')
         self.client = Client()
 
-    def _expect_workout_page(self, workout_id, status_code=200):
-        response = self.client.get('/workout/{}'.format(workout_id), follow=True)
+    def _get(self, uri, status_code=200):
+        response = self.client.get(uri, follow=True)
         self.assertEqual(status_code, response.status_code)
+        return response
+
+    def _post(self, uri, data, status_code=200):
+        response = self.client.post(uri, data, follow=True)
+        self.assertEqual(status_code, response.status_code)
+        return response
+
+    def _expect_workout_page(self, workout_id, status_code=200):
+        return self._get('/workout/{}'.format(workout_id), status_code=status_code)
 
     def _expect_to_be_logged_in(self):
-        response = self.client.post('/login/', {'username': 'grzegorz', 'password': 'z'})
-        self.assertEqual(302, response.status_code)
-        self.assertEqual('/dashboard', response['Location'])
+        self._post('/login/', {'username': 'grzegorz', 'password': 'z'})
 
     def _expect_workout_to_be_created(self):
-        response = self.client.get('/start_workout', follow=True)
-        self.assertEqual(200, response.status_code)
-        self.assertIsNotNone(response.context['workout'])
+        workout = self._get('/start_workout').context['workout']
+        self._expect_workout_page(workout.id)
 
-        workout_id = response.context['workout'].id
-
-        self._expect_workout_page(workout_id)
-
-    def _expect_statistics_from_dashboard(self):
-        response = self.client.post('/dashboard', follow=True)
-        self.assertEqual(200, response.status_code)
-        return response.context['statistics']
+    def _get_statistics_from_dashboard(self):
+        return self._get('/dashboard').context['statistics']
 
     def test_create_workout_and_delete_it(self):
         self._expect_to_be_logged_in()
         self._expect_workout_to_be_created()
 
-        statistics = self._expect_statistics_from_dashboard()
+        statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
 
         response = self.client.post('/delete_workout/{}/'.format(workout.id), follow=True)
@@ -48,7 +48,7 @@ class ClienStrengthTestCase(TestCase):
         self._expect_to_be_logged_in()
         self._expect_workout_to_be_created()
 
-        statistics = self._expect_statistics_from_dashboard()
+        statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
 
         self.assertIsNone(workout.started)
@@ -57,7 +57,7 @@ class ClienStrengthTestCase(TestCase):
         response = self.client.post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'}, follow=True)
         self.assertEqual(200, response.status_code)
 
-        statistics = self._expect_statistics_from_dashboard()
+        statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
 
         self.assertIsNotNone(workout.started)
@@ -83,7 +83,7 @@ class ClienStrengthTestCase(TestCase):
         response = self.client.post('/finish_workout/{}'.format(workout.id), follow=True)
         self.assertEqual(200, response.status_code)
 
-        statistics = self._expect_statistics_from_dashboard()
+        statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
 
         self.assertIsNotNone(workout.started)
