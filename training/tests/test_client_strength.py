@@ -14,7 +14,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(status_code, response.status_code)
         return response
 
-    def _post(self, uri, data, status_code=200):
+    def _post(self, uri, data={}, status_code=200):
         response = self.client.post(uri, data, follow=True)
         self.assertEqual(status_code, response.status_code)
         return response
@@ -39,8 +39,7 @@ class ClienStrengthTestCase(TestCase):
         statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
 
-        response = self.client.post('/delete_workout/{}/'.format(workout.id), follow=True)
-        self.assertEqual(200, response.status_code)
+        self._post('/delete_workout/{}/'.format(workout.id))
 
         self._expect_workout_page(workout.id, status_code=404)
 
@@ -54,8 +53,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertIsNone(workout.started)
         self.assertIsNone(workout.finished)
 
-        response = self.client.post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'}, follow=True)
-        self.assertEqual(200, response.status_code)
+        self._post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
 
         statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
@@ -64,24 +62,19 @@ class ClienStrengthTestCase(TestCase):
         self.assertIsNone(workout.finished)
 
         excercise = workout.excercise_set.latest('pk')
-        response = self.client.post('/add_reps/{}/'.format(excercise.id), {'reps': '10'}, follow=True)
-        self.assertEqual(200, response.status_code)
 
-        response = self.client.post('/add_excercise/{}/'.format(workout.id), {'name': 'pull-up'}, follow=True)
-        self.assertEqual(200, response.status_code)
+        self._post('/add_reps/{}/'.format(excercise.id), {'reps': '10'})
+        self._post('/add_excercise/{}/'.format(workout.id), {'name': 'pull-up'})
 
         excercise = workout.excercise_set.latest('pk')
-        response = self.client.post('/add_reps/{}/'.format(excercise.id), {'reps': '5'}, follow=True)
-        self.assertEqual(200, response.status_code)
 
-        response = self.client.post('/add_reps/{}/'.format(excercise.id), {'reps': '5'}, follow=True)
-        self.assertEqual(200, response.status_code)
+        self._post('/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self._post('/add_reps/{}/'.format(excercise.id), {'reps': '5'})
 
         self.assertEqual(units.Volume(reps=20), workout.volume())
         self.assertEqual(20, statistics.total_reps())
 
-        response = self.client.post('/finish_workout/{}'.format(workout.id), follow=True)
-        self.assertEqual(200, response.status_code)
+        self._post('/finish_workout/{}'.format(workout.id))
 
         statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
