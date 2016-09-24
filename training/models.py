@@ -95,7 +95,11 @@ class Reps(models.Model):
 
     @staticmethod
     def most_common():
-        return Reps.objects.values_list('reps').annotate(rep_count=Count('reps')).order_by('-rep_count')
+        return Reps.objects \
+                   .values_list('reps') \
+                   .annotate(rep_count=Count('reps')) \
+                   .order_by('-reps') \
+                   .values_list('reps', flat=True)
 
     class Meta:
         ordering = ['pk']

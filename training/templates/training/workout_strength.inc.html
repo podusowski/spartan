@@ -65,7 +65,7 @@
                         <input type="submit" value="add" />
                     </form>
 
-                    {% for rep,_ in most_common_reps|slice:":4" %}
+                    {% for rep in most_common_reps|slice:":4" %}
                         <a href="javascript:add_reps({{ rep }});">+{{ rep }}</a>
                     {% endfor %}
                 </div>
