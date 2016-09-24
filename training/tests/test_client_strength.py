@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
-from training import models
+from training import models, units
 
 
 class ClienStrengthTestCase(TestCase):
@@ -29,12 +29,20 @@ class ClienStrengthTestCase(TestCase):
         response = self.client.post('/add_excercise/{}/'.format(workout_id), {'name': 'push-up'}, follow=True)
         self.assertEqual(200, response.status_code)
 
-        self._expect_workout_page(workout_id)
-
         response = self.client.post('/finish_workout/{}'.format(workout_id), follow=True)
         self.assertEqual(200, response.status_code)
 
-        self._expect_workout_page(workout_id)
+        response = self.client.post('/dashboard', follow=True)
+        self.assertEqual(200, response.status_code)
+        statistics = response.context['statistics']
+
+        workout = statistics.previous_workouts()[0]
+        self.assertIsNotNone(workout.started)
+        self.assertIsNotNone(workout.finished)
+
+        self.assertEqual(1, workout.excercise_set.count())
+
+        self.assertEqual(units.Volume(reps=0), workout.volume())
 
         response = self.client.post('/delete_workout/{}/'.format(workout_id), follow=True)
         self.assertEqual(200, response.status_code)

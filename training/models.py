@@ -50,7 +50,7 @@ class Workout(models.Model):
         self.finished = timezone.now()
 
     def total_reps(self):
-        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or '-'
+        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or 0
 
     def duration(self):
         if self.started is not None and self.finished is not None:
