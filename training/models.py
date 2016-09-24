@@ -71,8 +71,7 @@ class Workout(models.Model):
 
 class Excercise(models.Model):
     def total_reps(self):
-        reps = self.reps_set.all()
-        return sum(map(lambda x: x.reps, reps))
+        return self.reps_set.aggregate(Sum('reps'))['reps__sum'] or 0
 
     def duration(self):
         if self.time_started is not None and self.time_finished is not None:
