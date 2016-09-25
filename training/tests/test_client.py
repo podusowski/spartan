@@ -1,3 +1,5 @@
+import os
+
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
@@ -81,3 +83,16 @@ class ClienStrengthTestCase(TestCase):
 
         self.assertIsNotNone(workout.started)
         self.assertIsNotNone(workout.finished)
+
+    def test_gpx_import(self):
+        self._expect_to_be_logged_in()
+
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        GPX_FILE = os.path.join(BASE_DIR, "3p_simplest.gpx")
+
+        with open(GPX_FILE, 'r') as f:
+            self._post('/upload_gpx/', {'gpxfile': f})
+
+        statistics = self._get_statistics_from_dashboard()
+        self.assertTrue(statistics.previous_workouts().count() > 0)
+        workout = statistics.previous_workouts()[0]
