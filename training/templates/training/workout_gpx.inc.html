@@ -8,7 +8,10 @@
     <dl><dt>distance</dt><dd>{{ gpx.length_2d|distance }}</dd></dl>
     <dl><dt>time</dt><dd>{{ workout.duration }}</dd></dl>
     <dl><dt>pace</dt><dd>{{ gpx.speed_or_pace }}</dd></dl>
-    <dl><dt>avg hr</dt><dd>{{ gpx.average_hr }}</dd></dl>
+
+    {% if gpx.average_hr %}
+        <dl><dt>avg hr</dt><dd>{{ gpx.average_hr }}</dd></dl>
+    {% endif %}
 </section>
 
 <section>
@@ -22,7 +25,7 @@
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var polyline = L.polyline({{ gpx.polyline_json }}, {color: 'red'}).addTo(map);
+    var polyline = L.polyline({{ gpx.polyline }}, {color: 'red'}).addTo(map);
     map.fitBounds(polyline.getBounds());
 </script>
 

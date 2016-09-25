@@ -1,4 +1,6 @@
 import datetime
+import json
+
 from django.db import models
 from django.db.models import Count
 from django.contrib.auth.models import User
@@ -110,13 +112,12 @@ class Gpx(models.Model):
     activity_type = models.CharField(max_length=20)
     length_2d = models.IntegerField(null=True, default=None)
 
-    def polyline_json(self):
+    def polyline(self):
         def take_coords(point):
             return float(point.lat), float(point.lon)
 
         points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
 
-        import json
         return json.dumps(list(points))
 
     def average_hr(self):
