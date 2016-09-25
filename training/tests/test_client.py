@@ -1,9 +1,14 @@
 import os
+import datetime
+import pytz
 
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
 from training import models, units
+
+
+GPX_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class ClienStrengthTestCase(TestCase):
@@ -87,12 +92,35 @@ class ClienStrengthTestCase(TestCase):
     def test_gpx_import(self):
         self._expect_to_be_logged_in()
 
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        GPX_FILE = os.path.join(BASE_DIR, "3p_simplest.gpx")
+        gpx_file = os.path.join(GPX_DIR, "3p_simplest.gpx")
 
-        with open(GPX_FILE, 'r') as f:
+        with open(gpx_file, 'r') as f:
             self._post('/upload_gpx/', {'gpxfile': f})
 
         statistics = self._get_statistics_from_dashboard()
         self.assertTrue(statistics.previous_workouts().count() > 0)
         workout = statistics.previous_workouts()[0]
+
+        self.assertTrue(workout.is_gpx());
+        self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc), workout.started)
+        self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc), workout.finished)
+
+        gpx_workout = workout.gpx_set.get()
+        self.assertEqual("running", gpx_workout.activity_type.lower())
+        self.assertEqual(4, gpx_workout.length_2d)
+
+        self.assertEqual('4m', statistics.total_km())
+
+        gpx_file = os.path.join(GPX_DIR, "3p_simplest_2.gpx")
+
+        with open(gpx_file, 'r') as f:
+            self._post('/upload_gpx/', {'gpxfile': f})
+
+        self.assertEqual('8m', statistics.total_km())
+
+        gpx_file = os.path.join(GPX_DIR, "3p_cycling.gpx")
+
+        with open(gpx_file, 'r') as f:
+            self._post('/upload_gpx/', {'gpxfile': f})
+
+        self.assertEqual('12m', statistics.total_km())
