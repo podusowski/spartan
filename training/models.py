@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.template import defaultfilters
 from django.db.models import Sum, Avg
 from django.utils import timezone
+from django.contrib.gis.geos import GEOSGeometry, Point
 
 from . import units
 
@@ -119,6 +120,22 @@ class Gpx(models.Model):
         points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
 
         return json.dumps(list(points))
+
+    def hr_chart(self):
+        starting_time = self.gpxtrackpoint_set.first().time
+        def take_hr_in_time(point):
+            return {'time': float(round(((point.time - starting_time).total_seconds()/60.0),2)),
+                    'value': point.hr}
+
+        return list(map(take_hr_in_time, self.gpxtrackpoint_set.all().order_by('time')))
+
+    def cad_chart(self):
+        starting_time = self.gpxtrackpoint_set.first().time
+        def take_cad_in_time(point):
+            return {'time': float(round(((point.time - starting_time).total_seconds()/60.0),2)),
+                    'value': point.cad * 2}
+
+        return list(map(take_cad_in_time, self.gpxtrackpoint_set.all().order_by('time')))
 
     def average_hr(self):
         avg_hr = self.gpxtrackpoint_set.aggregate(Avg('hr'))['hr__avg']
