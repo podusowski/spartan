@@ -124,7 +124,8 @@ class Gpx(models.Model):
     def hr_chart(self):
         starting_time = self.gpxtrackpoint_set.first().time
         def take_hr_in_time(point):
-            return {'time': float(round(((point.time - starting_time).total_seconds()/60.0),2)),
+            delta_time_in_min = (point.time - starting_time).total_seconds() / 60.0
+            return {'time': round(delta_time_in_min, 0),
                     'value': point.hr}
 
         return list(map(take_hr_in_time, self.gpxtrackpoint_set.all().order_by('time')))
