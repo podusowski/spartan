@@ -316,30 +316,31 @@ section {
 .day-container {
     min-height: 5em;
     vertical-align: top;
-}
-
-.day {
-    border: none;
-    margin: 0;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.big-text {
-    font-weight: 100;
-    color: darken($secondary_color, 10%);
-    text-transform: uppercase;
-    vertical-align: top;
-    display: inline-block;
+    border-radius: 0.2em;
+    border-left: 2px solid $primary_color;
+    margin-bottom: 0.5em;
 }
 
 .day-name {
+    display: inline-block;
     margin: 0 1em 0 0;
     color: #aaa;
-    width: 2em;
-    display: inline-block;
+    width: 3em;
+    padding: 0.5em;
     text-transform: uppercase;
-    text-align: right;
+    font-size: smaller;
+}
+
+.day-content {
+    display: inline-block;
+    border: none;
+    margin: 0.5em;
+    vertical-align: top;
+
+    font-weight: 100;
+    color: #444;
+    text-transform: uppercase;
+    vertical-align: top;
 }
 
 nav

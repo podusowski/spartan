@@ -48,8 +48,10 @@
     <section>
         {% for day in week.days %}
             <div class="day-container">
-                <span class="day-name">{{ day.start_time|date:"D" }}</span>
-                <div class="day">
+                <div class="day-name">
+                    {{ day.start_time|date:"D" }}
+                </div>
+                <div class="day-content">
                     {% for workout in day.workouts %}
                         <a href="{% url 'workout' workout.id %}">
                             <dl>
@@ -63,7 +65,7 @@
                             </dl>
                         </a>
                     {% empty %}
-                        <span class="big-text">rest</span>
+                        rest
                     {% endfor %}
                 </div>
             </div>
