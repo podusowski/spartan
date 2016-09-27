@@ -218,20 +218,17 @@ strong
     }
 }
 
-form
-{
+form {
     margin-top: 0.5em;
     margin-right: 0.5em;
     display: inline-block;
     width: auto;
 
-    input[type="submit"]::-moz-focus-inner
-    {
+    input[type="submit"]::-moz-focus-inner {
         border: 0;
     }
 
-    input
-    {
+    input {
         padding: 0.2em;
         font-size: larger;
         font-weight: 100;
@@ -243,28 +240,24 @@ form
 
     input[type="text"],
     input[type="password"],
-    input[type="number"]
-    {
+    input[type="number"] {
         background: linear-gradient(0deg, lighten($background-color, 5%) 0%, darken($background-color, 5%) 100%);
         border: 1px solid black;
     }
 
-    input[type="submit"]
-    {
+    input[type="submit"] {
         @include button(#111);
         padding: 0.2em 0.5em 0.2em 0.5em;
     }
 
     input[type="number"] + input[type="submit"],
-    input[type="text"] + input[type="submit"]
-    {
+    input[type="text"] + input[type="submit"] {
         border: 1px solid black;
         border-left: 0;
         border-radius: 0 0.2em 0.2em 0;
     }
 
-    input[type="number"]
-    {
+    input[type="number"] {
         width: 4em;
     }
 }
