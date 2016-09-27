@@ -20,7 +20,6 @@ body
 
 a
 {
-    color: #aaa;
     text-decoration: none;
 }
 
@@ -84,7 +83,7 @@ p
 {
     color: #999;
     text-shadow: 1px 1px 1px #000;
-    font-weight: 100;
+    //font-weight: 100;
 }
 
 @mixin text2
@@ -102,31 +101,13 @@ p
     font-size: 0.7em;
 }
 
-@mixin box_borders
-{
-    border-left: 1px solid #222;
-    border-right: 1px solid #111;
-    border-top: 1px solid #222;
-    border-bottom: 1px solid #111;
-}
-
 @mixin fancy_box($color) {
     background-color: lighten($color, 5%);
     background: linear-gradient(135deg, lighten($color, 5%) 0%, darken($color, 2%) 100%);
     border: 1px solid lighten($color, 3%);
-    //border-image: linear-gradient(-135deg, lighten($color, 5%) 0%, darken($color, 2%) 100%);
     padding: 0.5em;
     overflow: auto;
     border-radius: .3em;
-}
-
-@mixin box
-{
-    background-color: lighten($background-color, 5%);
-    background: linear-gradient(135deg, lighten($background-color, 8%) 0%, darken($background-color, 10%) 100%);
-    @include box_borders;
-    padding: 0.5em;
-    overflow: auto;
 }
 
 .note
@@ -167,7 +148,6 @@ table
 }
 
 dt,
-.box,
 .name
 {
     @include text1;
@@ -215,18 +195,27 @@ strong
 
 @mixin button($color)
 {
-    @include text1;
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 100;
+    color: lighten($color, 70%);
+
     display: inline-block;
-    background-color: $color;
+
     background: linear-gradient(to top,
                                 lighten($color, 8%) 0%,
                                 darken($color, 8%) 100%);
+
     border-color: darken($color, 30%);
-    color: lighten($color, 70%);
     padding: 0.5em;
     border: 1px solid darken($color, 30%);
     border-radius: 0.2em;
-    color: lighten($color, 70%);
+
+    &:hover {
+        $darker: darken($color, 5%);
+        background: linear-gradient(to top,
+                                    lighten($darker, 8%) 0%,
+                                    darken($darker, 8%) 100%);
+    }
 }
 
 form
@@ -280,14 +269,9 @@ form
     }
 }
 
-.box
-{
-    @include box
-}
-
 dl
 {
-    @include fancy_box(lighten($background-color, 5%));
+    @include fancy_box(#222);
     margin-right: 0.5em;
     margin-bottom: 0.5em;
     overflow: hidden;
@@ -317,8 +301,7 @@ dl
     }
 }
 
-dl.vertical
-{
+dl.vertical {
     display: block;
 }
 
@@ -334,8 +317,9 @@ ul {
 section {
     margin: 0 10px 10px 10px;
     overflow: auto;
-    @include fancy_box($background-color);
-    @include text1;
+    //@include fancy_box($background-color);
+    //@include text1;
+    padding: 1em;
 }
 
 .day-container {
@@ -380,13 +364,12 @@ nav
     }
 }
 
-.button
-{
+.button {
     @include button(darken($secondary_color, 10%))
 }
 
-.red_button
-{
+.red_button,
+.dangerous {
     @include button(darken(red, 30%))
 }
 
@@ -395,8 +378,12 @@ nav
     @include button(darken(green, 30%))
 }
 
-.excercise a
-{
+.excercise {
+    border-left: 2px solid $primary_color;
+    border-radius: 0.2em;
+}
+
+.form-value-shortcut {
     @include button(darken($secondary_color, 10%))
     padding: 0.2em 0.5em 0.2em 0.5em;
     margin: 0.2em;
@@ -405,7 +392,6 @@ nav
 
 .loading {
     display: inline-block;
-    //background-color: darken($secondary_color, 10%);
     width: 8px;
     height: 8px;
     margin: 0;

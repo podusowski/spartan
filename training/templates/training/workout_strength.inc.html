@@ -21,8 +21,8 @@
 <h2>excercises</h2>
 <section>
 {% for excercise in workout.excercise_set.all %}
-    <dl class="excercise vertical">
-        <dt>
+    <div class="excercise">
+    <dl class="vertical">
             {{excercise.name}}
 
             {% if forloop.last and not workout.finished %}
@@ -35,9 +35,7 @@
             {% else %}
                 <span class="note">{{excercise.duration|duration}}</span>
             {% endif %}
-        </dt>
 
-        <dd>
             <ul class="reps">
                 {% for reps in excercise.reps_set.all %}
                     <li>{{reps.reps}}</li>
@@ -55,10 +53,8 @@
                     });
                 </script>
             {% endif %}
-        </dd>
-        <dd>
             {% if forloop.last and not workout.finished %}
-                <div class="excercise">
+                <div>
                     <form action="{% url 'add_reps' excercise.id %}" method="post" id="add_reps">
                         {% csrf_token %}
                         <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" required />
@@ -66,12 +62,11 @@
                     </form>
 
                     {% for rep in most_common_reps|slice:":4" %}
-                        <a href="javascript:add_reps({{ rep }});">+{{ rep }}</a>
+                        <a class="form-value-shortcut" href="javascript:add_reps({{ rep }});">+{{ rep }}</a>
                     {% endfor %}
                 </div>
             {%endif%}
-        </dd>
-    </dl>
+    </div>
 {%empty%}
     excersice is not started until you add first excercise
 {%endfor%}
@@ -92,7 +87,7 @@
     </script>
 
     <h2>start new excercise</h2>
-    <section class="excercise">
+    <section>
         <form action="{% url 'add_excercise' workout.id %}" method="post" id="start_excercise">
             {% csrf_token %}
             <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
@@ -100,7 +95,7 @@
         </form>
 
         {%for excercise,_ in statistics.most_common_excercises|slice:":20"%}
-            <a href="javascript:start_excercise('{{ excercise }}')">{{ excercise }}</a>
+            <a class="form-value-shortcut" href="javascript:start_excercise('{{ excercise }}')">{{ excercise }}</a>
         {%endfor%}
     </section>
 {% endif %}
