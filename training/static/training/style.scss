@@ -315,10 +315,8 @@ ul {
 }
 
 section {
-    margin: 0 10px 10px 10px;
+    margin: 0.1em;
     overflow: auto;
-    //@include fancy_box($background-color);
-    //@include text1;
     padding: 1em;
 }
 
