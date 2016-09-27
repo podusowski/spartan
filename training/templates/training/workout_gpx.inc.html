@@ -33,7 +33,7 @@
 
 <h2>HR and Cadence chart</h2>
 <section>
-    <canvas id="HR" width="7" height="1"></canvas>
+    <canvas id="HR" width="4" height="1"></canvas>
     <script>
         Chart.defaults.global.elements.rectangle.borderColor = 'rgba(207, 74, 8, 0.8)';
         Chart.defaults.global.elements.rectangle.backgroundColor = 'rgba(207, 74, 8, 0.8)';
@@ -51,6 +51,10 @@
         hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
         cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
         labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
+
+        avg_hr_data = new Array(hr_data.length);
+        avg_hr_data.fill({{ gpx.average_hr }});
+       
 
         ctx = $('#HR');
         chart = new Chart(ctx, {
@@ -72,6 +76,14 @@
                     fill: true,
                     pointRadius: 0,
                     data: cad_data
+                },
+                {
+                    borderColor: "rgba(153, 0, 0, 0.4)",
+                    backgroundColor: "rgba(153, 0, 0, 0)",
+                    label: "Avg Hr",
+                    fill: true,
+                    pointRadius: 0,
+                    data: avg_hr_data
                 }]
             },
             options: {
