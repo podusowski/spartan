@@ -5,7 +5,7 @@
     <section>
         <dl><dt>duration</dt><dd><span id="stopwatch">--:--</span></dd></dl>
         <dl><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
-        <dl><dt>total reps</dt><dd>{{workout.total_reps}}</dd></dl>
+        <dl><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     </section>
 {% endif %}
 
@@ -14,7 +14,7 @@
     <section>
         <dl><dt>started</dt><dd>{{workout.started}}</dd></dl>
         <dl><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
-        <dl><dt>total reps</dt><dd>{{workout.total_reps}}</dd></dl>
+        <dl><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     </section>
 {% endif %}
 
@@ -65,7 +65,7 @@
                         <input type="submit" value="add" />
                     </form>
 
-                    {% for rep,_ in most_common_reps|slice:":4" %}
+                    {% for rep in most_common_reps|slice:":4" %}
                         <a href="javascript:add_reps({{ rep }});">+{{ rep }}</a>
                     {% endfor %}
                 </div>
@@ -102,13 +102,6 @@
         {%for excercise,_ in statistics.most_common_excercises|slice:":20"%}
             <a href="javascript:start_excercise('{{ excercise }}')">{{ excercise }}</a>
         {%endfor%}
-    </section>
-{% endif %}
-
-{% if workout.finished %}
-    <h2>UTD string</h2>
-    <section>
-        <pre>{{ workout.utd }}</pre>
     </section>
 {% endif %}
 

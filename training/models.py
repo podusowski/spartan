@@ -1,4 +1,6 @@
 import datetime
+import json
+
 from django.db import models
 from django.db.models import Count
 from django.contrib.auth.models import User
@@ -50,8 +52,8 @@ class Workout(models.Model):
 
         self.finished = timezone.now()
 
-    def total_reps(self):
-        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or '-'
+    def _total_reps(self):
+        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or 0
 
     def duration(self):
         if self.started is not None and self.finished is not None:
@@ -59,27 +61,20 @@ class Workout(models.Model):
         else:
             return datetime.timedelta()
 
+    def _total_distance(self):
+        ''' for gpx workouts '''
+        return self.gpx_set.get().length_2d
+
     def volume(self):
         if self.is_gpx():
-            return units.km_from_m(self.gpx_set.get().length_2d)
+            return units.Volume(meters=self._total_distance())
         else:
-            return self.total_reps()
-
-    def utd(self):
-        """ userfriendly training data string """
-        return '\n'.join(map(lambda x: x.utd(), self.excercise_set.all()))
+            return units.Volume(reps=self._total_reps())
 
 
 class Excercise(models.Model):
-    def utd(self):
-        """ userfriendly training data string """
-        reps = self.reps_set.all()
-        r = ' '.join(map(lambda x: str(x.reps), reps))
-        return ': '.join([self.name, r])
-
     def total_reps(self):
-        reps = self.reps_set.all()
-        return sum(map(lambda x: x.reps, reps))
+        return self.reps_set.aggregate(Sum('reps'))['reps__sum'] or 0
 
     def duration(self):
         if self.time_started is not None and self.time_finished is not None:
@@ -103,22 +98,27 @@ class Reps(models.Model):
 
     @staticmethod
     def most_common():
-        return Reps.objects.values_list('reps').annotate(rep_count=Count('reps')).order_by('-rep_count')
+        return Reps.objects \
+                   .values_list('reps') \
+                   .annotate(rep_count=Count('reps')) \
+                   .order_by('-reps') \
+                   .values_list('reps', flat=True)
+
+    class Meta:
+        ordering = ['pk']
 
 
 class Gpx(models.Model):
     workout = models.ForeignKey(Workout)
     activity_type = models.CharField(max_length=20)
     length_2d = models.IntegerField(null=True, default=None)
-    length_3d = models.IntegerField(null=True, default=None)
 
-    def polyline_json(self):
+    def polyline(self):
         def take_coords(point):
             return float(point.lat), float(point.lon)
 
         points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
 
-        import json
         return json.dumps(list(points))
 
     def hr_chart(self):

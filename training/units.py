@@ -17,7 +17,7 @@ def km_from_m(m):
 
 
 class Volume:
-    def __init__(self, reps=None, meters=None):
+    def __init__(self, reps:int=None, meters:int=None):
         self.reps = reps
         self.meters = meters
 
@@ -29,6 +29,8 @@ class Volume:
             return str(self.reps)
         else:
             return km_from_m(self.meters)
+
+    __repr__ = __str__
 
     def __eq__(self, other):
         return self.reps == other.reps and self.meters == other.meters

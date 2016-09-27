@@ -3,6 +3,7 @@ import logging
 import arrow
 
 from django.db.models import Sum
+from django.utils import timezone
 
 from .models import *
 from . import units
@@ -22,7 +23,7 @@ def workouts_time_bounds(user):
         return None, None
 
 
-def week_range(number:int=None, end=None, start=datetime.datetime.utcnow()):
+def week_range(number:int=None, end=None, start=timezone.now()):
     if number is None and end is None:
         raise AttributeError("number or end parameter must be provided")
 
@@ -67,9 +68,9 @@ class Week:
 
         def make_day(number):
             start_time = self.start_time + datetime.timedelta(days=number)
-            return (number, Day(start_time))
+            return Day(start_time)
 
-        result = dict(map(make_day, range(7)))
+        result = list(map(make_day, range(7)))
 
         for workout in self.workouts:
             day = workout.started.weekday()
@@ -77,7 +78,7 @@ class Week:
 
         logging.debug(str(result))
 
-        return result.values()
+        return reversed(result)
 
 
 class Statistics:

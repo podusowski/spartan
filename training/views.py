@@ -53,7 +53,7 @@ def finish_workout(request, training_session_id):
 
 @login_required
 def workout(request, training_session_id):
-    workout = Workout.objects.get(pk=training_session_id, user=request.user)
+    workout = get_object_or_404(Workout, pk=training_session_id, user=request.user)
 
     gpx = None
     try:
