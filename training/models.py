@@ -131,9 +131,13 @@ class Gpx(models.Model):
 
     def cad_chart(self):
         starting_time = self.gpxtrackpoint_set.first().time
+
+        def try_mul(x, y):
+            return x * y if x is not None else 0
+
         def take_cad_in_time(point):
             return {'time': float(round(((point.time - starting_time).total_seconds()/60.0),2)),
-                    'value': point.cad * 2}
+                    'value': try_mul(point.cad, 2)}
 
         return list(map(take_cad_in_time, self.gpxtrackpoint_set.all().order_by('time')))
  
