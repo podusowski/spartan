@@ -25,7 +25,7 @@ a {
     font-size: 1.2em;
 
     background-color: $primary_color;
-    border-bottom: 3px solid darken($primary_color, 10%);
+//    border-bottom: 3px solid darken($primary_color, 10%);
 
     h1,
     h1 a {
@@ -162,10 +162,10 @@ label,
     vertical-align: middle;
 }
 
-.reps
-{
-    font-size: larger;
-}
+//.reps
+//{
+//    font-size: larger;
+//}
 
 @mixin important-value
 {
@@ -302,28 +302,32 @@ section {
     padding: 1em;
 }
 
-.day-container {
+.day-container, .excercise {
     min-height: 5em;
     vertical-align: top;
-    border-radius: 0.2em;
+    border-radius: 0.3em;
+    border: 1px solid #111;
     border-left: 2px solid $primary_color;
     margin-bottom: 0.5em;
+    background: linear-gradient(135deg, #111 0%, black 100%);
 }
 
-.day-name {
+.day-name, .excercise_title {
     display: inline-block;
     margin: 0 1em 0 0;
     color: #aaa;
-    width: 3em;
     padding: 0.5em;
     text-transform: uppercase;
     font-size: smaller;
 }
 
-.day-content {
-    display: inline-block;
+.day-name {
+    width: 3em;
+}
+
+.day-content, .excercise_content {
     border: none;
-    margin: 0.5em;
+    margin-left: 0.5em;
     vertical-align: top;
 
     font-weight: 100;
@@ -332,15 +336,21 @@ section {
     vertical-align: top;
 }
 
-nav
-{
+.day-content {
+    padding-top: 0.5em;
+    display: inline-block;
+}
+
+.excercise_content {
+    padding-bottom: 0.5em;
+}
+
+nav {
     background-color: lighten($background-color, 5%);
-    border-bottom: 1px dashed lighten($background-color, 8%);
     margin-bottom: 1em;
     padding: 0.5em;
 
-    a
-    {
+    a {
         @include button($secondary_color)
     }
 }
@@ -359,10 +369,10 @@ nav
     @include button(darken(green, 30%))
 }
 
-.excercise {
-    border-left: 2px solid $primary_color;
-    border-radius: 0.2em;
-}
+//.excercise {
+//    border-left: 2px solid $primary_color;
+//    border-radius: 0.2em;
+//}
 
 .form-value-shortcut {
     @include button(darken($secondary_color, 10%))
