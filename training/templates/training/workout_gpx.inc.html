@@ -27,3 +27,74 @@
     map.fitBounds(polyline.getBounds());
 </script>
 
+{% block content %}
+
+<h2>HR and Cadence chart</h2>
+<section>
+    <canvas id="HR" width="7" height="1"></canvas>
+    <script>
+        Chart.defaults.global.elements.rectangle.borderColor = 'rgba(207, 74, 8, 0.8)';
+        Chart.defaults.global.elements.rectangle.backgroundColor = 'rgba(207, 74, 8, 0.8)';
+
+        Chart.defaults.global.elements.line.borderColor = 'rgba(207, 74, 8, 0.8)';
+        Chart.defaults.global.elements.line.backgroundColor = 'rgba(207, 74, 8, 0.05)';
+        Chart.defaults.global.legend.display = true;
+
+        Chart.defaults.global.defaultFontColor = '#666';
+        Chart.defaults.global.defaultFontFamily = 'Helvetica';
+        Chart.defaults.global.defaultFontSize = 16;
+        Chart.defaults.global.defaultFontStyle = "Bold";
+
+        {% load training_format %}
+        hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
+        cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
+        labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
+
+        ctx = $('#HR');
+        chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    borderColor: "rgba(153, 0, 0, 0.8)",
+                    backgroundColor: "rgba(153, 0, 0, 0.00)",
+                    label: "Heart rate",
+                    fill: true,
+                    pointRadius: 0,
+                    data: hr_data
+                },
+                {
+                    borderColor: "rgba(0, 76, 153, 0.8)",
+                    backgroundColor: "rgba(0, 76, 153, 0.00)",
+                    label: "Cadence",
+                    fill: true,
+                    pointRadius: 0,
+                    data: cad_data
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: 'rgba(207, 74, 8, 0.1)'
+                        },
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: 'rgba(207, 74, 8, 0.1)'
+                        },
+                        ticks: {
+                            maxTicksLimit: 40
+                        }
+                    }],
+                }
+            }
+        });
+    </script>
+</section>
+
+{% endblock %}
+
