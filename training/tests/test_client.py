@@ -122,3 +122,14 @@ class ClienStrengthTestCase(TestCase):
 
         self._import_gpx('3p_cycling.gpx')
         self.assertEqual('12m', statistics.total_km())
+
+    def _import_gpx_and_check_activity_type(self, filename, activity_type):
+        self._import_gpx(filename)
+        workout = self._get_latest_workout_from_dashboard()
+        self.assertEqual(activity_type, workout.workout_type2())
+
+    def test_import_activity_type_from_gpx(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx_and_check_activity_type('3p_cycling.gpx', 'cycling')
+        self._import_gpx_and_check_activity_type('3p_simplest.gpx', 'running')

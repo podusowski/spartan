@@ -14,6 +14,11 @@ from . import units
 class Workout(models.Model):
     user = models.ForeignKey(User)
     workout_type = models.CharField(max_length=20, null=False, default="strength")
+
+    def workout_type2(self):
+        from_gpx = list(map(lambda x: x.activity_type.lower(), self.gpx_set.all()))
+        return from_gpx[0]
+
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
 
