@@ -68,22 +68,18 @@ p {
     padding: 0.2em;
 }
 
-@mixin text1
-{
+@mixin text1 {
     color: #999;
     text-shadow: 1px 1px 1px #000;
-    //font-weight: 100;
 }
 
-@mixin text2
-{
+@mixin text2 {
     color: white;
     text-shadow: 1px 1px 1px #000;
     font-weight: 100;
 }
 
-@mixin text3
-{
+@mixin text3 {
     color: lighten($primary_color, 30%);
     text-shadow: 1px 1px 1px #000;
     font-weight: 100;
@@ -251,8 +247,7 @@ form {
     }
 }
 
-dl
-{
+dl {
     @include fancy_box(#222);
     margin-right: 0.5em;
     margin-bottom: 0.5em;
@@ -262,11 +257,9 @@ dl
     font-size: smaller;
     min-width: 7em;
 
-    dt
-    {
+    dt {
         display: block;
         width: 100%;
-        //border-bottom: 1px solid #222;
         vertical-align: middle;
         white-space: nowrap;
         @include text1;
@@ -275,8 +268,7 @@ dl
         padding-bottom: -0.3em;
     }
 
-    dd
-    {
+    dd {
         display: block;
         vertical-align: middle;
         @include text2;
@@ -310,6 +302,14 @@ section {
     border-left: 2px solid $primary_color;
     margin-bottom: 0.5em;
     background: linear-gradient(135deg, #111 0%, black 100%);
+}
+
+.active_day {
+    border-left: 2px solid $primary_color;
+}
+
+.inactive_day {
+    border-left: 2px solid #333;
 }
 
 .day-name, .excercise_title {
