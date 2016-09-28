@@ -12,6 +12,9 @@
     {% if gpx.average_hr %}
         <dl><dt>avg hr</dt><dd>{{ gpx.average_hr }}</dd></dl>
     {% endif %}
+    {% if gpx.average_cad %}
+        <dl><dt>avg cadence</dt><dd>{{ gpx.average_cad }}</dd></dl>
+    {% endif %}
 </section>
 
 <section>
@@ -28,7 +31,8 @@
     var polyline = L.polyline({{ gpx.polyline }}, {color: 'red'}).addTo(map);
     map.fitBounds(polyline.getBounds());
 </script>
-
+ 
+{% if gpx.average_hr %}
 {% block content %}
 
 <h2>HR and Cadence chart</h2>
@@ -54,7 +58,6 @@
 
         avg_hr_data = new Array(hr_data.length);
         avg_hr_data.fill({{ gpx.average_hr }});
-       
 
         ctx = $('#HR');
         chart = new Chart(ctx, {
@@ -81,7 +84,7 @@
                 {
                     borderColor: "rgba(153, 0, 0, 0.4)",
                     backgroundColor: "rgba(153, 0, 0, 0)",
-                    label: "Avg Hr",
+                    label: "Avg HR",
                     fill: false,
                     pointRadius: 0,
                     data: avg_hr_data
@@ -112,4 +115,5 @@
 </section>
 
 {% endblock %}
+{% endif %}
 

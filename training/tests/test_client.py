@@ -122,3 +122,49 @@ class ClienStrengthTestCase(TestCase):
 
         self._import_gpx('3p_cycling.gpx')
         self.assertEqual('12m', statistics.total_km())
+
+    def test_generate_heart_rate_chart(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx('3p_hr_cad.gpx')
+
+        workout = self._get_latest_workout_from_dashboard()
+        gpx_workout = workout.gpx_set.get()
+        self.assertEqual(110, gpx_workout.average_hr())
+        expected_hr_data = [{'time': 0.0, 'value': 100},
+                            {'time': 0.0, 'value': 110},
+                            {'time': 0.0, 'value': 120}]
+        self.assertEqual(expected_hr_data, gpx_workout.hr_chart())
+
+    def test_do_not_generate_heart_rate_chart_when_no_measurements(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx('3p_simplest_2.gpx')
+
+        workout = self._get_latest_workout_from_dashboard()
+        gpx_workout = workout.gpx_set.get()
+        self.assertEqual(None, gpx_workout.average_hr())
+        self.assertEqual([], gpx_workout.hr_chart())   
+
+    def test_generate_cadence_chart(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx('3p_hr_cad.gpx')
+
+        workout = self._get_latest_workout_from_dashboard()
+        gpx_workout = workout.gpx_set.get()
+        self.assertEqual(70, gpx_workout.average_cad())
+        expected_cad_data = [{'time': 0.0, 'value': 120},
+                             {'time': 0.0, 'value': 140},
+                             {'time': 0.0, 'value': 160}]
+        self.assertEqual(expected_cad_data, gpx_workout.cad_chart())
+
+    def test_do_not_generate_cadence_chart_when_no_measurements(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx('3p_simplest_2.gpx')
+
+        workout = self._get_latest_workout_from_dashboard()
+        gpx_workout = workout.gpx_set.get()
+        self.assertEqual(None, gpx_workout.average_cad())
+        self.assertEqual([], gpx_workout.cad_chart())
