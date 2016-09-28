@@ -96,10 +96,10 @@ class Statistics:
         return 0
 
     def most_popular_workouts(self):
-        workouts = Workout.objects \
-                          .filter(user=self.user) \
-                          .values_list('workout_type') \
-                          .annotate(count=Count('workout_type')) \
+        workouts = Gpx.objects \
+                          .filter(workout__user=self.user) \
+                          .values_list('activity_type') \
+                          .annotate(count=Count('activity_type')) \
                           .order_by('-count')
 
         def decorate_with_volume(workout):

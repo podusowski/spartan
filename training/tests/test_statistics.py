@@ -29,20 +29,26 @@ class StatisticsTestCase(TestCase):
         self.assertEqual(1, len(days[3].workouts)) # thursday
 
     def test_most_popular_workout_types(self):
-        models.Workout.objects.create(user=self.user,
-                                      workout_type="strength",
-                                      started=datetime.datetime(2016, 9, 1, 0, 0, 0, tzinfo=pytz.utc),
-                                      finished=datetime.datetime(2016, 9, 1, 0, 0, 1, tzinfo=pytz.utc))
+        workout = models.Workout.objects.create(user=self.user,
+                                                started=datetime.datetime(2016, 9, 1, 0, 0, 0, tzinfo=pytz.utc),
+                                                finished=datetime.datetime(2016, 9, 1, 0, 0, 1, tzinfo=pytz.utc))
 
-        models.Workout.objects.create(user=self.user,
-                                      workout_type="strength",
-                                      started=datetime.datetime(2016, 9, 2, 0, 0, 0, tzinfo=pytz.utc),
-                                      finished=datetime.datetime(2016, 9, 2, 0, 0, 1, tzinfo=pytz.utc))
+        models.Gpx.objects.create(workout=workout,
+                                  activity_type="strength")
 
-        models.Workout.objects.create(user=self.user,
-                                      workout_type="pilates",
-                                      started=datetime.datetime(2016, 9, 3, 0, 0, 0, tzinfo=pytz.utc),
-                                      finished=datetime.datetime(2016, 9, 3, 0, 0, 1, tzinfo=pytz.utc))
+        workout = models.Workout.objects.create(user=self.user,
+                                                started=datetime.datetime(2016, 9, 2, 0, 0, 0, tzinfo=pytz.utc),
+                                                finished=datetime.datetime(2016, 9, 2, 0, 0, 1, tzinfo=pytz.utc))
+
+        models.Gpx.objects.create(workout=workout,
+                                  activity_type="strength")
+
+        workout = models.Workout.objects.create(user=self.user,
+                                                started=datetime.datetime(2016, 9, 3, 0, 0, 0, tzinfo=pytz.utc),
+                                                finished=datetime.datetime(2016, 9, 3, 0, 0, 1, tzinfo=pytz.utc))
+
+        models.Gpx.objects.create(workout=workout,
+                                  activity_type="pilates")
 
         most_popular_workouts = list(self.statistics.most_popular_workouts())
         self.assertEqual(2, len(most_popular_workouts))

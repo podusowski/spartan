@@ -126,7 +126,7 @@ class ClienStrengthTestCase(TestCase):
     def _import_gpx_and_check_activity_type(self, filename, activity_type):
         self._import_gpx(filename)
         workout = self._get_latest_workout_from_dashboard()
-        self.assertEqual(activity_type, workout.workout_type2())
+        self.assertEqual(activity_type, workout.workout_type)
 
     def test_import_activity_type_from_gpx(self):
         self._expect_to_be_logged_in()
@@ -139,4 +139,4 @@ class ClienStrengthTestCase(TestCase):
         self._expect_workout_to_be_created()
 
         workout = self._get_latest_workout_from_dashboard()
-        self.assertEqual('strength', workout.workout_type2())
+        self.assertEqual('strength', workout.workout_type)
