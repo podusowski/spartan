@@ -89,13 +89,15 @@ class ClienStrengthTestCase(TestCase):
         self.assertIsNotNone(workout.started)
         self.assertIsNotNone(workout.finished)
 
+    def _import_gpx(self, filename):
+        path = os.path.join(GPX_DIR, filename)
+        with open(path, 'r') as f:
+            self._post('/upload_gpx/', {'gpxfile': f})
+
     def test_gpx_import(self):
         self._expect_to_be_logged_in()
 
-        gpx_file = os.path.join(GPX_DIR, "3p_simplest.gpx")
-
-        with open(gpx_file, 'r') as f:
-            self._post('/upload_gpx/', {'gpxfile': f})
+        self._import_gpx('3p_simplest.gpx')
 
         statistics = self._get_statistics_from_dashboard()
         self.assertTrue(statistics.previous_workouts().count() > 0)
@@ -111,10 +113,7 @@ class ClienStrengthTestCase(TestCase):
 
         self.assertEqual('4m', statistics.total_km())
 
-        gpx_file = os.path.join(GPX_DIR, "3p_simplest_2.gpx")
-
-        with open(gpx_file, 'r') as f:
-            self._post('/upload_gpx/', {'gpxfile': f})
+        self._import_gpx('3p_simplest_2.gpx')
 
         self.assertEqual('8m', statistics.total_km())
 
