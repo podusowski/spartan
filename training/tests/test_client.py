@@ -94,14 +94,17 @@ class ClienStrengthTestCase(TestCase):
         with open(path, 'r') as f:
             self._post('/upload_gpx/', {'gpxfile': f})
 
+    def _get_latest_workout_from_dashboard(self):
+        statistics = self._get_statistics_from_dashboard()
+        self.assertTrue(statistics.previous_workouts().count() > 0)
+        return statistics.previous_workouts()[0]
+
     def test_gpx_import(self):
         self._expect_to_be_logged_in()
 
         self._import_gpx('3p_simplest.gpx')
 
-        statistics = self._get_statistics_from_dashboard()
-        self.assertTrue(statistics.previous_workouts().count() > 0)
-        workout = statistics.previous_workouts()[0]
+        workout = self._get_latest_workout_from_dashboard()
 
         self.assertTrue(workout.is_gpx());
         self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc), workout.started)
@@ -111,15 +114,11 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual("running", gpx_workout.activity_type.lower())
         self.assertEqual(4, gpx_workout.length_2d)
 
+        statistics = self._get_statistics_from_dashboard()
         self.assertEqual('4m', statistics.total_km())
 
         self._import_gpx('3p_simplest_2.gpx')
-
         self.assertEqual('8m', statistics.total_km())
 
-        gpx_file = os.path.join(GPX_DIR, "3p_cycling.gpx")
-
-        with open(gpx_file, 'r') as f:
-            self._post('/upload_gpx/', {'gpxfile': f})
-
+        self._import_gpx('3p_cycling.gpx')
         self.assertEqual('12m', statistics.total_km())
