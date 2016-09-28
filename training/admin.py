@@ -1,19 +1,26 @@
 from django.contrib import admin
+from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
+from training import models
 from .models import Workout, Excercise, Gpx
 
 
-class ExcerciseInline(admin.StackedInline):
-    model = Excercise
+class RepsInline(NestedStackedInline):
+    model = models.Reps
     extra = 1
 
 
-class GpxInline(admin.StackedInline):
-    model = Gpx
+class ExcerciseInline(NestedStackedInline):
+    model = models.Excercise
+    extra = 1
+    inlines = [RepsInline]
+
+
+class GpxInline(NestedStackedInline):
+    model = models.Gpx
     extra = 1
 
 
-class TrainingSessionAdmin(admin.ModelAdmin):
+@admin.register(models.Workout)
+class WorkoutAdmin(NestedModelAdmin):
     inlines = [ExcerciseInline, GpxInline]
 
-
-admin.site.register(Workout, TrainingSessionAdmin)
