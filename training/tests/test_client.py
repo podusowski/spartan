@@ -168,3 +168,21 @@ class ClienStrengthTestCase(TestCase):
         gpx_workout = workout.gpx_set.get()
         self.assertEqual(None, gpx_workout.average_cad())
         self.assertEqual([], gpx_workout.cad_chart())
+    
+    def _import_gpx_and_check_activity_type(self, filename, activity_type):
+        self._import_gpx(filename)
+        workout = self._get_latest_workout_from_dashboard()
+        self.assertEqual(activity_type, workout.workout_type)
+
+    def test_import_activity_type_from_gpx(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx_and_check_activity_type('3p_cycling.gpx', 'cycling')
+        self._import_gpx_and_check_activity_type('3p_simplest.gpx', 'running')
+
+    def test_strength_workout_type_when_starting_workout(self):
+        self._expect_to_be_logged_in()
+        self._expect_workout_to_be_created()
+
+        workout = self._get_latest_workout_from_dashboard()
+        self.assertEqual('strength', workout.workout_type)
