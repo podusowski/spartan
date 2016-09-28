@@ -133,3 +133,10 @@ class ClienStrengthTestCase(TestCase):
 
         self._import_gpx_and_check_activity_type('3p_cycling.gpx', 'cycling')
         self._import_gpx_and_check_activity_type('3p_simplest.gpx', 'running')
+
+    def test_strength_workout_type_when_starting_workout(self):
+        self._expect_to_be_logged_in()
+        self._expect_workout_to_be_created()
+
+        workout = self._get_latest_workout_from_dashboard()
+        self.assertEqual('strength', workout.workout_type2())

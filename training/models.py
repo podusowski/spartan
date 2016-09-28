@@ -17,7 +17,7 @@ class Workout(models.Model):
 
     def workout_type2(self):
         from_gpx = list(map(lambda x: x.activity_type.lower(), self.gpx_set.all()))
-        return from_gpx[0]
+        return from_gpx[0] if len(from_gpx) > 0 else 'strength'
 
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
