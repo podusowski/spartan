@@ -138,7 +138,7 @@ class Gpx(models.Model):
             return {'time': round(delta_time_in_min, 0),
                     'value': try_is_present(point.hr)}
             
-        return list(map(take_hr_in_time, self.gpxtrackpoint_set.all().order_by('time'))) if self.average_hr() is not None else list() 
+        return list(map(take_hr_in_time, self.gpxtrackpoint_set.all().order_by('time'))) if self.average_hr() is not None else None 
 
     def cad_chart(self):
         def get_starting_time():
@@ -152,7 +152,7 @@ class Gpx(models.Model):
             return {'time': round(delta_time_in_min, 0),
                     'value': try_mul(point.cad, 2)}
 
-        return list(map(take_cad_in_time, self.gpxtrackpoint_set.all().order_by('time'))) if self.average_cad() is not None else list()
+        return list(map(take_cad_in_time, self.gpxtrackpoint_set.all().order_by('time'))) if self.average_cad() is not None else None
  
     def average_hr(self):
         avg_hr = self.gpxtrackpoint_set.aggregate(Avg('hr'))['hr__avg']

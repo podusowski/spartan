@@ -52,12 +52,26 @@
         Chart.defaults.global.defaultFontStyle = "Bold";
 
         {% load training_format %}
-        hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
-        cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
-        labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
 
-        avg_hr_data = new Array(hr_data.length);
-        avg_hr_data.fill({{ gpx.average_hr }});
+        hr_data = [];
+        labels = [];
+        cad_data = [];
+        avg_hr_data = [];
+
+        {% if gpx.hr_chart %}
+            hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
+            labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
+        {% endif %}
+
+        {% if gpx.cad_chart %}
+            cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
+            labels = [{{ gpx.cad_chart | project:"time" | join:"," }}];
+        {% endif %}
+
+        {% if gpx.average_hr %}
+            avg_hr_data = new Array(hr_data.length);
+            avg_hr_data.fill({{ gpx.average_hr }});
+        {% endif %}
 
         ctx = $('#HR');
         chart = new Chart(ctx, {
