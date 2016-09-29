@@ -145,14 +145,13 @@ class Gpx(models.Model):
                     'value': try_mul(point.cad, 2)}
 
         return list(map(take_cad_in_time, self.gpxtrackpoint_set.all().order_by('time')))
- 
 
     def average_hr(self):
         avg_hr = self.gpxtrackpoint_set.aggregate(Avg('hr'))['hr__avg']
         if avg_hr:
             return round(avg_hr)
         else:
-            return None 
+            return None
 
     def speed_or_pace(self):
         m_per_s = 0
