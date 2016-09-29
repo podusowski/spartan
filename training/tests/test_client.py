@@ -168,7 +168,25 @@ class ClienStrengthTestCase(TestCase):
         gpx_workout = workout.gpx_set.get()
         self.assertEqual(None, gpx_workout.average_cad())
         self.assertEqual([], gpx_workout.cad_chart())
-    
+   
+    def test_do_not_generate_charst_when_gpx_without_points(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx('3p_without_points.gpx')
+
+        workout = self._get_latest_workout_from_dashboard()
+        self.assertTrue(workout.is_gpx());
+
+        gpx_workout = workout.gpx_set.get()
+        self.assertEqual(0, gpx_workout.length_2d)
+        self.assertEqual(None, gpx_workout.average_cad())
+        self.assertEqual(None, gpx_workout.average_hr())
+        self.assertEqual([], gpx_workout.cad_chart())
+        self.assertEqual([], gpx_workout.hr_chart())
+
+        statistics = self._get_statistics_from_dashboard()
+        self.assertEqual('0m', statistics.total_km())
+
     def _import_gpx_and_check_activity_type(self, filename, activity_type):
         self._import_gpx(filename)
         workout = self._get_latest_workout_from_dashboard()

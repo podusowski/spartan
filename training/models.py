@@ -127,27 +127,28 @@ class Gpx(models.Model):
         return json.dumps(list(points))
 
     def hr_chart(self):
-        starting_time = self.gpxtrackpoint_set.first().time
+        def get_starting_time():
+            return 0 if self.gpxtrackpoint_set.first() is None else self.gpxtrackpoint_set.first().time
 
         def try_is_present(hr):
             return hr if hr is not None else 0
 
         def take_hr_in_time(point):
-            delta_time_in_min = (point.time - starting_time).total_seconds() / 60.0
+            delta_time_in_min = (point.time - get_starting_time()).total_seconds() / 60.0
             return {'time': round(delta_time_in_min, 0),
                     'value': try_is_present(point.hr)}
-
             
         return list(map(take_hr_in_time, self.gpxtrackpoint_set.all().order_by('time'))) if self.average_hr() is not None else list() 
 
     def cad_chart(self):
-        starting_time = self.gpxtrackpoint_set.first().time
+        def get_starting_time():
+            return 0 if self.gpxtrackpoint_set.first() is None else self.gpxtrackpoint_set.first().time
 
         def try_mul(x, y):
             return x * y if x is not None else 0
 
         def take_cad_in_time(point):
-            delta_time_in_min = (point.time - starting_time).total_seconds() / 60.0
+            delta_time_in_min = (point.time - get_starting_time()).total_seconds() / 60.0
             return {'time': round(delta_time_in_min, 0),
                     'value': try_mul(point.cad, 2)}
 
