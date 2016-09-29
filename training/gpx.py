@@ -59,7 +59,6 @@ import endoapi.endomondo
 @transaction.atomic
 def _import_endomondo_workout(user, endomondo_workout):
     workout = models.Workout.objects.create(user=user,
-                                            workout_type=endomondo_workout.sport,
                                             started=endomondo_workout.start_time,
                                             finished=endomondo_workout.start_time + endomondo_workout.duration)
 
@@ -109,9 +108,10 @@ def synchronize_endomondo(user, max_results=None):
             try:
                 _import_endomondo_workout(user, endomondo_workout)
                 count += 1
-            except:
-                pass
+            except Exception as e:
+                logging.exception('error during workout import')
 
+    logging.debug('imported {} workouts'.format(count))
     return count
 
 

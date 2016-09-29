@@ -57,14 +57,14 @@ class Workout(models.Model):
 
         self.finished = timezone.now()
 
-    def _total_reps(self):
-        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or 0
-
     def duration(self):
         if self.started is not None and self.finished is not None:
             return self.finished - self.started
         else:
             return datetime.timedelta()
+
+    def _total_reps(self):
+        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or 0
 
     def _total_distance(self):
         ''' for gpx workouts '''
@@ -153,7 +153,6 @@ class Gpx(models.Model):
 
         return list(map(take_cad_in_time, self.gpxtrackpoint_set.all().order_by('time'))) if self.average_cad() is not None else list()
  
-
     def average_hr(self):
         avg_hr = self.gpxtrackpoint_set.aggregate(Avg('hr'))['hr__avg']
         if avg_hr:
