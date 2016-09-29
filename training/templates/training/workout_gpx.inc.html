@@ -12,6 +12,9 @@
     {% if gpx.average_hr %}
         <dl><dt>avg hr</dt><dd>{{ gpx.average_hr }}</dd></dl>
     {% endif %}
+    {% if gpx.average_cad %}
+        <dl><dt>avg cadence</dt><dd>{{ gpx.average_cad }}</dd></dl>
+    {% endif %}
 </section>
 
 <section>
@@ -28,7 +31,8 @@
     var polyline = L.polyline({{ gpx.polyline }}, {color: 'red'}).addTo(map);
     map.fitBounds(polyline.getBounds());
 </script>
-
+ 
+{% if gpx.average_hr %}
 {% block content %}
 
 <h2>HR and Cadence chart</h2>
@@ -42,19 +46,32 @@
         Chart.defaults.global.elements.line.backgroundColor = 'rgba(207, 74, 8, 0.05)';
         Chart.defaults.global.legend.display = true;
 
-        Chart.defaults.global.defaultFontColor = '#666';
+        Chart.defaults.global.defaultFontColor = 'rgba(160, 160, 160, 0.8)';
         Chart.defaults.global.defaultFontFamily = 'Helvetica';
         Chart.defaults.global.defaultFontSize = 16;
         Chart.defaults.global.defaultFontStyle = "Bold";
 
         {% load training_format %}
-        hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
-        cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
-        labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
 
-        avg_hr_data = new Array(hr_data.length);
-        avg_hr_data.fill({{ gpx.average_hr }});
-       
+        hr_data = [];
+        labels = [];
+        cad_data = [];
+        avg_hr_data = [];
+
+        {% if gpx.hr_chart %}
+            hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
+            labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
+        {% endif %}
+
+        {% if gpx.cad_chart %}
+            cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
+            labels = [{{ gpx.cad_chart | project:"time" | join:"," }}];
+        {% endif %}
+
+        {% if gpx.average_hr %}
+            avg_hr_data = new Array(hr_data.length);
+            avg_hr_data.fill({{ gpx.average_hr }});
+        {% endif %}
 
         ctx = $('#HR');
         chart = new Chart(ctx, {
@@ -63,15 +80,16 @@
                 labels: labels,
                 datasets: [{
                     borderColor: "rgba(153, 0, 0, 0.8)",
-                    backgroundColor: "rgba(153, 0, 0, 0.00)",
+                    backgroundColor: "rgba(153, 0, 0, 0.1)",
                     label: "Heart rate",
                     fill: true,
+                    cubicInterpolationMode: "monotone",
                     pointRadius: 0,
                     data: hr_data
                 },
                 {
                     borderColor: "rgba(0, 76, 153, 0.8)",
-                    backgroundColor: "rgba(0, 76, 153, 0.00)",
+                    backgroundColor: "rgba(0, 76, 153, 0.1)",
                     label: "Cadence",
                     fill: true,
                     pointRadius: 0,
@@ -80,8 +98,8 @@
                 {
                     borderColor: "rgba(153, 0, 0, 0.4)",
                     backgroundColor: "rgba(153, 0, 0, 0)",
-                    label: "Avg Hr",
-                    fill: true,
+                    label: "Avg HR",
+                    fill: false,
                     pointRadius: 0,
                     data: avg_hr_data
                 }]
@@ -90,7 +108,7 @@
                 scales: {
                     yAxes: [{
                         gridLines: {
-                            color: 'rgba(207, 74, 8, 0.1)'
+                            color: "rgba(207, 74, 8, 0.1)"
                         },
                         ticks: {
                             beginAtZero: false
@@ -98,10 +116,10 @@
                     }],
                     xAxes: [{
                         gridLines: {
-                            color: 'rgba(207, 74, 8, 0.1)'
+                            color: "rgba(207, 74, 8, 0.1)"
                         },
                         ticks: {
-                            maxTicksLimit: 40
+                            maxTicksLimit: 15
                         }
                     }],
                 }
@@ -111,4 +129,5 @@
 </section>
 
 {% endblock %}
+{% endif %}
 
