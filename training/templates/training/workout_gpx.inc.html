@@ -56,14 +56,15 @@
 
         {% load training_format %}
 
-        hr_data = [];
+	var points = {{ gpx.points_as_json|safe }};
+        var hr_data = points.map(function (point){ return point.hr; }); 
+
         labels = [];
         cad_data = [];
         avg_hr_data = [];
         avg_cad_data = [];
 
         {% if gpx.hr_chart %}
-            hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
             labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
         {% endif %}
 
