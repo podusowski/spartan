@@ -123,29 +123,6 @@ class ClienStrengthTestCase(TestCase):
         self._import_gpx('3p_cycling.gpx')
         self.assertEqual('12m', statistics.total_km())
 
-    def test_generate_heart_rate_chart(self):
-        self._expect_to_be_logged_in()
-
-        self._import_gpx('3p_hr_cad.gpx')
-
-        workout = self._get_latest_workout_from_dashboard()
-        gpx_workout = workout.gpx_set.get()
-        self.assertEqual(110, gpx_workout.average_hr())
-        expected_hr_data = [{'time': 0.0, 'value': 100},
-                            {'time': 0.0, 'value': 110},
-                            {'time': 0.0, 'value': 120}]
-        self.assertEqual(expected_hr_data, gpx_workout.hr_chart())
-
-    def test_do_not_generate_heart_rate_chart_when_no_measurements(self):
-        self._expect_to_be_logged_in()
-
-        self._import_gpx('3p_simplest_2.gpx')
-
-        workout = self._get_latest_workout_from_dashboard()
-        gpx_workout = workout.gpx_set.get()
-        self.assertEqual(None, gpx_workout.average_hr())
-        self.assertEqual(None, gpx_workout.hr_chart())   
-
     def test_generate_cadence_chart(self):
         self._expect_to_be_logged_in()
 
@@ -169,24 +146,6 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(None, gpx_workout.average_cad())
         self.assertEqual(None, gpx_workout.cad_chart())
    
-    def test_do_not_generate_charst_when_gpx_without_points(self):
-        self._expect_to_be_logged_in()
-
-        self._import_gpx('3p_without_points.gpx')
-
-        workout = self._get_latest_workout_from_dashboard()
-        self.assertTrue(workout.is_gpx());
-
-        gpx_workout = workout.gpx_set.get()
-        self.assertEqual(0, gpx_workout.length_2d)
-        self.assertEqual(None, gpx_workout.average_cad())
-        self.assertEqual(None, gpx_workout.average_hr())
-        self.assertEqual(None, gpx_workout.cad_chart())
-        self.assertEqual(None, gpx_workout.hr_chart())
-
-        statistics = self._get_statistics_from_dashboard()
-        self.assertEqual('0m', statistics.total_km())
-
     def _import_gpx_and_check_activity_type(self, filename, activity_type):
         self._import_gpx(filename)
         workout = self._get_latest_workout_from_dashboard()
