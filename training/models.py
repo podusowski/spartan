@@ -126,6 +126,14 @@ class Gpx(models.Model):
 
         return json.dumps(list(points))
 
+    def points_as_json(self):
+        def take_coords(point):
+            return {'lat': float(point.lat), 'lon': float(point.lon)}
+
+        points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
+
+        return json.dumps(list(points))
+
     def hr_chart(self):
         def get_starting_time():
             return 0 if self.gpxtrackpoint_set.first() is None else self.gpxtrackpoint_set.first().time

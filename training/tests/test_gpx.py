@@ -1,6 +1,7 @@
 import os
 import datetime
 import pytz
+import json
 from decimal import Decimal
 
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -36,6 +37,20 @@ class GpxTestCase(TestCase):
         gpx_workout = workout.gpx_set.get()
         self.assertEqual("RUNNING", gpx_workout.activity_type)
         self.assertEqual(4, gpx_workout.length_2d)
+
+    def test_exporting_gpx_points_as_json(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
+
+        gpx.upload_gpx(self.request)
+
+        workout = models.Workout.objects.get()
+        gpx_workout = workout.gpx_set.get()
+
+        expected_points = [{'lat': 51.05772623, 'lon': 16.99809956},
+                           {'lat': 51.05773386, 'lon': 16.99807215},
+                           {'lat': 51.05774031, 'lon': 16.99804198}]
+
+        self.assertEqual(expected_points, json.loads(gpx_workout.points_as_json()))
 
     def test_make_sure_2d_points_are_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
