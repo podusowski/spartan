@@ -55,6 +55,17 @@ class GpxTestCase(TestCase):
 
         self.assertEqual(expected_points, json.loads(gpx_workout.points_as_json()))
 
+    def test_calculation_of_average_heart_rate_and_cadence(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_hr_cad.gpx")
+
+        gpx.upload_gpx(self.request)
+
+        workout = models.Workout.objects.get()
+        gpx_workout = workout.gpx_set.get()
+
+        self.assertEqual(110, gpx_workout.average_hr())
+        self.assertEqual(70, gpx_workout.average_cad())
+
     def test_make_sure_2d_points_are_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
 
