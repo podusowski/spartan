@@ -118,14 +118,6 @@ class Gpx(models.Model):
     activity_type = models.CharField(max_length=20)
     length_2d = models.IntegerField(null=True, default=None)
 
-    def polyline(self):
-        def take_coords(point):
-            return float(point.lat), float(point.lon)
-
-        points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
-
-        return json.dumps(list(points))
-
     def points_as_json(self):
         def take_coords(point):
             return {'lat': float(point.lat), 'lon': float(point.lon)}
