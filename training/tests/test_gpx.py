@@ -39,16 +39,16 @@ class GpxTestCase(TestCase):
         self.assertEqual(4, gpx_workout.length_2d)
 
     def test_exporting_gpx_points_as_json(self):
-        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_hr_cad.gpx")
 
         gpx.upload_gpx(self.request)
 
         workout = models.Workout.objects.get()
         gpx_workout = workout.gpx_set.get()
 
-        expected_points = [{'lat': 51.05772623, 'lon': 16.99809956},
-                           {'lat': 51.05773386, 'lon': 16.99807215},
-                           {'lat': 51.05774031, 'lon': 16.99804198}]
+        expected_points = [{'lat': 51.05772623, 'lon': 16.99809956, 'hr': 100},
+                           {'lat': 51.05773386, 'lon': 16.99807215, 'hr': 110},
+                           {'lat': 51.05774031, 'lon': 16.99804198, 'hr': 120}]
 
         self.assertEqual(expected_points, json.loads(gpx_workout.points_as_json()))
 

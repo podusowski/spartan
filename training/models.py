@@ -120,7 +120,7 @@ class Gpx(models.Model):
 
     def points_as_json(self):
         def take_coords(point):
-            return {'lat': float(point.lat), 'lon': float(point.lon)}
+            return {'lat': float(point.lat), 'lon': float(point.lon), 'hr': point.hr}
 
         points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
 
