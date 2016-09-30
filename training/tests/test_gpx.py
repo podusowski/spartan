@@ -46,9 +46,9 @@ class GpxTestCase(TestCase):
         workout = models.Workout.objects.get()
         gpx_workout = workout.gpx_set.get()
 
-        expected_points = [{'lat': 51.05772623, 'lon': 16.99809956, 'hr': 100},
-                           {'lat': 51.05773386, 'lon': 16.99807215, 'hr': 110},
-                           {'lat': 51.05774031, 'lon': 16.99804198, 'hr': 120}]
+        expected_points = [{'lat': 51.05772623, 'lon': 16.99809956, 'hr': 100, 'cad': 60},
+                           {'lat': 51.05773386, 'lon': 16.99807215, 'hr': 110, 'cad': 70},
+                           {'lat': 51.05774031, 'lon': 16.99804198, 'hr': 120, 'cad': 80}]
 
         self.assertEqual(expected_points, json.loads(gpx_workout.points_as_json()))
 
