@@ -28,7 +28,10 @@
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var polyline = L.polyline({{ gpx.polyline }}, {color: 'red'}).addTo(map);
+    var points = {{ gpx.points_as_json|safe }};
+    var polyline_points = points.map(function (point){ return [point.lat, point.lon]; });
+
+    var polyline = L.polyline(polyline_points, {color: 'red'}).addTo(map);
     map.fitBounds(polyline.getBounds());
 </script>
  
