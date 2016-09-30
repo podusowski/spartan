@@ -58,19 +58,20 @@
 
 	var points = {{ gpx.points_as_json|safe }};
         var hr_data = points.map(function (point){ return point.hr; });
-	var cad_data = points.map(function (point){ return point.cad; }); 
+	var cad_data = points.map(function (point){ return point.cad; });
+	var one_minute_in_milliseconds = 1000.0*60.0;
+	var time_data = points.map(function (point)
+		{
+			var started_time = new Date(points[0].time).getTime();
+			var actual_time = new Date(point.time).getTime();
+			var delta_time_in_ms = actual_time - started_time;
+			const one_minute_in_ms = 1000 * 60;
 
-        labels = [];
+			return Math.floor(delta_time_in_ms / one_minute_in_ms);
+		});
+
         avg_hr_data = [];
         avg_cad_data = [];
-
-        {% if gpx.hr_chart %}
-            labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
-        {% endif %}
-
-        {% if gpx.cad_chart %}
-            labels = [{{ gpx.cad_chart | project:"time" | join:"," }}];
-        {% endif %}
 
         {% if gpx.average_hr %}
             avg_hr_data = new Array(hr_data.length);
@@ -86,7 +87,7 @@
         chart = new Chart(ctx, {
             type: "line",
             data: {
-                labels: labels,
+                labels: time_data,
                 datasets: [{
                     borderColor: "rgba(153, 0, 0, 0.8)",
                     backgroundColor: "rgba(153, 0, 0, 0.1)",
@@ -118,7 +119,7 @@
                     label: "Avg cad",
                     fill: false,
                     pointRadius: 0,
-                    data: avg_hr_data
+                    data: avg_cad_data
                 }]
             },
             options: {
