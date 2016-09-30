@@ -57,10 +57,10 @@
         {% load training_format %}
 
 	var points = {{ gpx.points_as_json|safe }};
-        var hr_data = points.map(function (point){ return point.hr; }); 
+        var hr_data = points.map(function (point){ return point.hr; });
+	var cad_data = points.map(function (point){ return point.cad; }); 
 
         labels = [];
-        cad_data = [];
         avg_hr_data = [];
         avg_cad_data = [];
 
@@ -69,7 +69,6 @@
         {% endif %}
 
         {% if gpx.cad_chart %}
-            cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
             labels = [{{ gpx.cad_chart | project:"time" | join:"," }}];
         {% endif %}
 
