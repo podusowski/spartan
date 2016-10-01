@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from django.template import defaultfilters
 from django.db.models import Sum, Avg
 from django.utils import timezone
-from django.contrib.gis.geos import GEOSGeometry, Point
 
 from . import units
 
