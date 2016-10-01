@@ -112,7 +112,7 @@ class ClienStrengthTestCase(TestCase):
 
         gpx_workout = workout.gpx_set.get()
         self.assertEqual("running", gpx_workout.activity_type.lower())
-        self.assertEqual(4, gpx_workout.length_2d)
+        self.assertEqual(4, gpx_workout.distance)
 
         statistics = self._get_statistics_from_dashboard()
         self.assertEqual('4m', statistics.total_km())

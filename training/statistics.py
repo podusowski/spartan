@@ -89,7 +89,7 @@ class Statistics:
         return Reps.objects.filter(excercise__workout__user=self.user).aggregate(Sum('reps'))['reps__sum']
 
     def total_km(self):
-        meters = Gpx.objects.filter(workout__user=self.user).aggregate(Sum('length_2d'))['length_2d__sum']
+        meters = Gpx.objects.filter(workout__user=self.user).aggregate(Sum('distance'))['distance__sum']
         return units.km_from_m(meters)
 
     def _volume(self, workout_type):

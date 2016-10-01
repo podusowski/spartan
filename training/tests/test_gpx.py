@@ -36,7 +36,7 @@ class GpxTestCase(TestCase):
 
         gpx_workout = workout.gpx_set.get()
         self.assertEqual("RUNNING", gpx_workout.activity_type)
-        self.assertEqual(4, gpx_workout.length_2d)
+        self.assertEqual(4, gpx_workout.distance)
 
     def test_exporting_gpx_points_as_json(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_hr_cad.gpx")

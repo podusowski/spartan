@@ -67,7 +67,7 @@ class Workout(models.Model):
 
     def _total_distance(self):
         ''' for gpx workouts '''
-        return self.gpx_set.get().length_2d
+        return self.gpx_set.get().distance
 
     def volume(self):
         if self.is_gpx():
@@ -115,7 +115,7 @@ class Reps(models.Model):
 class Gpx(models.Model):
     workout = models.ForeignKey(Workout)
     activity_type = models.CharField(max_length=20)
-    length_2d = models.IntegerField(null=True, default=None)
+    distance = models.IntegerField(null=True, default=None)
 
     def points_as_json(self):
         def take_coords(point):
@@ -142,7 +142,7 @@ class Gpx(models.Model):
     def speed_or_pace(self):
         m_per_s = 0
         try:
-            m_per_s = self.length_2d / self.workout.duration().total_seconds()
+            m_per_s = self.distance / self.workout.duration().total_seconds()
         except:
             pass
 

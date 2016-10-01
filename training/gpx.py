@@ -43,7 +43,7 @@ def save_gpx(user, content):
 
     gpx = models.Gpx.objects.create(workout=workout,
                                     activity_type = parsed.tracks[0].type,
-                                    length_2d = int(parsed.length_2d()))
+                                    distance = int(parsed.length_2d()))
 
     for track in parsed.tracks:
         for segment in track.segments:
@@ -66,8 +66,8 @@ def _import_endomondo_workout(user, endomondo_workout):
                                            endomondo_id=endomondo_workout.id)
 
     gpx = models.Gpx.objects.create(workout=workout,
-                                    activity_type = endomondo_workout.sport,
-                                    length_2d = endomondo_workout.distance)
+                                    activity_type=endomondo_workout.sport,
+                                    distance=endomondo_workout.distance)
 
     for point in endomondo_workout.points:
         gpx.gpxtrackpoint_set.create(lat=point['lat'],
