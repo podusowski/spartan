@@ -28,16 +28,18 @@
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var polyline = L.polyline({{ gpx.polyline }}, {color: 'red'}).addTo(map);
+    var points = {{ gpx.points_as_json|safe }};
+    var polyline_points = points.map(function (point){ return [point.lat, point.lon]; });
+
+    var polyline = L.polyline(polyline_points, {color: 'red'}).addTo(map);
     map.fitBounds(polyline.getBounds());
 </script>
  
 {% if gpx.average_hr %}
 {% block content %}
 
-<h2>HR and Cadence chart</h2>
 <section>
-    <canvas id="HR" width="4" height="1"></canvas>
+    <canvas id="charts" width="12" height="1"></canvas>
     <script>
         Chart.defaults.global.elements.rectangle.borderColor = 'rgba(207, 74, 8, 0.8)';
         Chart.defaults.global.elements.rectangle.backgroundColor = 'rgba(207, 74, 8, 0.8)';
@@ -45,39 +47,47 @@
         Chart.defaults.global.elements.line.borderColor = 'rgba(207, 74, 8, 0.8)';
         Chart.defaults.global.elements.line.backgroundColor = 'rgba(207, 74, 8, 0.05)';
         Chart.defaults.global.legend.display = true;
+        Chart.defaults.global.legend.position = "right";
 
         Chart.defaults.global.defaultFontColor = 'rgba(160, 160, 160, 0.8)';
         Chart.defaults.global.defaultFontFamily = 'Helvetica';
-        Chart.defaults.global.defaultFontSize = 16;
+        Chart.defaults.global.defaultFontSize = 12;
         Chart.defaults.global.defaultFontStyle = "Bold";
 
         {% load training_format %}
 
-        hr_data = [];
-        labels = [];
-        cad_data = [];
+	var points = {{ gpx.points_as_json|safe }};
+        var hr_data = points.map(function (point){ return point.hr; });
+	var cad_data = points.map(function (point){ return point.cad; });
+	var one_minute_in_milliseconds = 1000.0*60.0;
+	var time_data = points.map(function (point)
+		{
+			var started_time = new Date(points[0].time).getTime();
+			var actual_time = new Date(point.time).getTime();
+			var delta_time_in_ms = actual_time - started_time;
+			const one_minute_in_ms = 1000 * 60;
+
+			return Math.floor(delta_time_in_ms / one_minute_in_ms);
+		});
+
         avg_hr_data = [];
-
-        {% if gpx.hr_chart %}
-            hr_data = [{{ gpx.hr_chart | project:"value" | join:"," }}];
-            labels = [{{ gpx.hr_chart | project:"time" | join:"," }}];
-        {% endif %}
-
-        {% if gpx.cad_chart %}
-            cad_data = [{{ gpx.cad_chart | project:"value" | join:"," }}];
-            labels = [{{ gpx.cad_chart | project:"time" | join:"," }}];
-        {% endif %}
+        avg_cad_data = [];
 
         {% if gpx.average_hr %}
             avg_hr_data = new Array(hr_data.length);
             avg_hr_data.fill({{ gpx.average_hr }});
         {% endif %}
 
-        ctx = $('#HR');
+        {% if gpx.average_cad %}
+            avg_cad_data = new Array(cad_data.length);
+            avg_cad_data.fill({{ gpx.average_cad }});
+        {% endif %}
+
+        ctx = $('#charts');
         chart = new Chart(ctx, {
             type: "line",
             data: {
-                labels: labels,
+                labels: time_data,
                 datasets: [{
                     borderColor: "rgba(153, 0, 0, 0.8)",
                     backgroundColor: "rgba(153, 0, 0, 0.1)",
@@ -88,6 +98,14 @@
                     data: hr_data
                 },
                 {
+                    borderColor: "rgba(153, 0, 0, 0.4)",
+                    backgroundColor: "rgba(153, 0, 0, 0)",
+                    label: "Avg HR",
+                    fill: false,
+                    pointRadius: 0,
+                    data: avg_hr_data
+                },
+                {
                     borderColor: "rgba(0, 76, 153, 0.8)",
                     backgroundColor: "rgba(0, 76, 153, 0.1)",
                     label: "Cadence",
@@ -96,12 +114,12 @@
                     data: cad_data
                 },
                 {
-                    borderColor: "rgba(153, 0, 0, 0.4)",
-                    backgroundColor: "rgba(153, 0, 0, 0)",
-                    label: "Avg HR",
+                    borderColor: "rgba(0, 76, 153, 0.4)",
+                    backgroundColor: "rgba(0, 76, 153, 0)",
+                    label: "Avg cad",
                     fill: false,
                     pointRadius: 0,
-                    data: avg_hr_data
+                    data: avg_cad_data
                 }]
             },
             options: {
@@ -119,12 +137,14 @@
                             color: "rgba(207, 74, 8, 0.1)"
                         },
                         ticks: {
-                            maxTicksLimit: 15
+                            maxTicksLimit: 15,
+                            minRotation: 0, 
+                            maxRotation: 0
                         }
                     }],
                 }
             }
-        });
+        }); 
     </script>
 </section>
 

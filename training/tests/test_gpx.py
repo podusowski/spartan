@@ -1,6 +1,7 @@
 import os
 import datetime
 import pytz
+import json
 from decimal import Decimal
 
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -36,6 +37,45 @@ class GpxTestCase(TestCase):
         gpx_workout = workout.gpx_set.get()
         self.assertEqual("RUNNING", gpx_workout.activity_type)
         self.assertEqual(4, gpx_workout.length_2d)
+
+    def test_exporting_gpx_points_as_json(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_hr_cad.gpx")
+
+        gpx.upload_gpx(self.request)
+
+        workout = models.Workout.objects.get()
+        gpx_workout = workout.gpx_set.get()
+
+        expected_points = [{'lat': 51.05772623, 'lon': 16.99809956, 'hr': 100, 'cad': 60,
+			    'time': datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc).isoformat()},
+                           {'lat': 51.05773386, 'lon': 16.99807215, 'hr': 110, 'cad': 70,
+			    'time': datetime.datetime(2016, 7, 30, 6, 22, 6, tzinfo=pytz.utc).isoformat()},
+                           {'lat': 51.05774031, 'lon': 16.99804198, 'hr': 120, 'cad': 80,
+                            'time': datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc).isoformat()}]
+
+        self.assertEqual(expected_points, json.loads(gpx_workout.points_as_json()))
+
+    def test_calculation_of_average_heart_rate_and_cadence(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_hr_cad.gpx")
+
+        gpx.upload_gpx(self.request)
+
+        workout = models.Workout.objects.get()
+        gpx_workout = workout.gpx_set.get()
+
+        self.assertEqual(110, gpx_workout.average_hr())
+        self.assertEqual(70, gpx_workout.average_cad())
+
+    def test_calculation_of_average_heart_rate_and_cadence_if_gpx_is_without_meas(self):
+        self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
+
+        gpx.upload_gpx(self.request)
+
+        workout = models.Workout.objects.get()
+        gpx_workout = workout.gpx_set.get()
+
+        self.assertEqual(None, gpx_workout.average_hr())
+        self.assertEqual(None, gpx_workout.average_cad())
 
     def test_make_sure_2d_points_are_imported_from_gpx(self):
         self.request.FILES['gpxfile'] = self._make_simple_upload_file("3p_simplest.gpx")
