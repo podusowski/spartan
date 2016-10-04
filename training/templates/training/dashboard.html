@@ -13,9 +13,6 @@
 
 <h2>quick stats</h2>
 <section>
-    <dl><dt>total reps</dt><dd>{{ statistics.total_reps }}</dd></dl>
-    <dl><dt>total km</dt><dd>{{ statistics.total_km }}</dd></dl>
-
     {% for workout_type,count,volume in statistics.most_popular_workouts %}
         <dl>
             <dt>{{ workout_type }} <strong>{{ count }}</strong></dt>
