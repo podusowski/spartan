@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from .models import *
 from . import units
+from . import dates
 
 
 def workouts_time_bounds(user):
@@ -21,27 +22,6 @@ def workouts_time_bounds(user):
     except Exception as e:
         logging.warn(str(e))
         return None, None
-
-
-def week_range(number:int=None, end=None, start=timezone.now()):
-    if number is None and end is None:
-        raise AttributeError("number or end parameter must be provided")
-
-    week_start = arrow.get(start).floor('week').datetime
-    week = datetime.timedelta(weeks=1)
-    second = datetime.timedelta(seconds=1)
-
-    while True:
-        yield (week_start, week_start + week - second)
-        week_start -= week
-
-        if end is not None and week_start < end:
-            break
-
-        if number is not None:
-            number -= 1
-            if number <= 0:
-                break
 
 
 class Day:
@@ -146,7 +126,7 @@ class Statistics:
         if end_time is None:
             return []
 
-        result = list(map(make_week, week_range(start=start, end=end_time)))
+        result = list(map(make_week, dates.week_range(start=start, end=end_time)))
 
         return result
 
