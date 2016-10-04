@@ -93,8 +93,10 @@ class Statistics:
         return units.km_from_m(meters)
 
     def _total_distance(self, workout_type):
-        return Gpx.objects.filter(workout__user=self.user,
-                                  activity_type=workout_type).aggregate(value=Sum('distance'))['value']
+        meters = Gpx.objects.filter(workout__user=self.user,
+                                    activity_type=workout_type).aggregate(value=Sum('distance'))['value']
+
+        return units.Volume(meters=meters)
 
     def most_popular_workouts(self):
         gps_workouts = Gpx.objects \
