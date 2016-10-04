@@ -119,11 +119,15 @@ class Statistics:
 
         def decorate_with_volume(workout):
             workout_type, count = workout
-            return workout_type.lower(), count, self._total_distance(workout_type)
+            return {'name': workout_type.lower(),
+                    'count': count,
+                    'volume': self._total_distance(workout_type)}
 
         def decorate_strength_workout(workout):
             excercise_name, count = workout
-            return excercise_name.lower(), count, self._total_reps(excercise_name)
+            return {'name': excercise_name.lower(),
+                    'count': count,
+                    'volume': self._total_reps(excercise_name)}
 
         return list(map(decorate_with_volume, gps_workouts)) + list(map(decorate_strength_workout, strength_workouts))
 

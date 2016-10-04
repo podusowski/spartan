@@ -13,10 +13,10 @@
 
 <h2>quick stats</h2>
 <section>
-    {% for workout_type,count,volume in statistics.most_popular_workouts %}
+    {% for excercise in statistics.most_popular_workouts %}
         <dl>
-            <dt>{{ workout_type }} <strong>{{ count }}</strong></dt>
-            <dd>{{ volume }}</dd>
+            <dt>{{ excercise.name }} <strong>{{ excercise.count }}</strong></dt>
+            <dd>{{ excercise.volume }}</dd>
         </dl>
     {% endfor %}
 </section>
