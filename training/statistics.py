@@ -93,7 +93,8 @@ class Statistics:
         return units.km_from_m(meters)
 
     def _volume(self, workout_type):
-        return 0
+        return Gpx.objects.filter(workout__user=self.user,
+                                  activity_type=workout_type).aggregate(value=Sum('distance'))['value']
 
     def most_popular_workouts(self):
         gps_workouts = Gpx.objects \
@@ -104,9 +105,9 @@ class Statistics:
 
         def decorate_with_volume(workout):
             workout_type, count = workout
-            return workout_type, count, self._volume(workout_type)
+            return workout_type.lower(), count, self._volume(workout_type)
 
-        return map(decorate_with_volume, gps_workouts)
+        return list(map(decorate_with_volume, gps_workouts))
 
     def weeks(self, start=datetime.datetime.utcnow()):
 

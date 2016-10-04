@@ -140,3 +140,18 @@ class ClienStrengthTestCase(TestCase):
 
         workout = self._get_latest_workout_from_dashboard()
         self.assertEqual('strength', workout.workout_type)
+
+    def test_most_popular_excercises(self):
+        self._expect_to_be_logged_in()
+
+        self._import_gpx('3p_simplest.gpx')
+        self._import_gpx('3p_simplest_2.gpx')
+        self._import_gpx('3p_without_points.gpx')
+
+        self._import_gpx('3p_cycling.gpx')
+
+        statistics = self._get_statistics_from_dashboard()
+        excercises = statistics.most_popular_workouts()
+
+        self.assertEqual(('running', 3, 8), excercises[0])
+        self.assertEqual(('cycling', 1, 4), excercises[1])
