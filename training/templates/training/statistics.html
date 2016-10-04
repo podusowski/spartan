@@ -2,43 +2,22 @@
 
 {% block content %}
 
-<h2>total reps</h2>
+<h2>excercises you did most</h2>
 <section>
-    <canvas id="total_reps" width="100" height="30"></canvas>
-    <script>
-        Chart.defaults.global.elements.rectangle.borderColor = 'rgba(207, 74, 8, 0.8)';
-        Chart.defaults.global.elements.rectangle.backgroundColor = 'rgba(207, 74, 8, 0.8)';
-
-        Chart.defaults.global.elements.line.borderColor = 'rgba(207, 74, 8, 0.8)';
-        Chart.defaults.global.elements.line.backgroundColor = 'rgba(207, 74, 8, 0.05)';
-        Chart.defaults.global.legend.display = false;
-
-        {% load training_format %}
-        data = [{{ statistics.reps_per_week | project:"value" | join:"," }}];
-        labels = [{{ statistics.reps_per_week | project:"time" | js_list | safe }}];
-
-        ctx = $('#total_reps');
-        chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    tension: 0,
-                    label: "reps",
-                    data: data
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
-        });
-    </script>
+    <table>
+    <tr>
+        <th>name</th>
+        <th>count</th>
+        <th>volume</th>
+    </tr>
+    {% for excercise in statistics.most_popular_workouts %}
+        <tr>
+            <td>{{ excercise.name }}</td>
+            <td>{{ excercise.count }}</td>
+            <td>{{ excercise.volume }}</td>
+        </tr>
+    {% endfor %}
+    </table>
 </section>
 
 {% endblock %}

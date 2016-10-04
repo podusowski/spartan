@@ -140,7 +140,7 @@ class Statistics:
             return {'time': '{:%d.%m}'.format(end),
                     'value': 0 if reps is None else reps}
 
-        return list(map(reps_in_range, week_range(5)))
+        return list(map(reps_in_range, dates.week_range(5)))
 
     def previous_workouts(self, begin=None, end=None):
         if begin is not None and end is not None:
