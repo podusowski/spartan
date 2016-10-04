@@ -96,7 +96,7 @@ class Statistics:
         return 0
 
     def most_popular_workouts(self):
-        workouts = Gpx.objects \
+        gps_workouts = Gpx.objects \
                           .filter(workout__user=self.user) \
                           .values_list('activity_type') \
                           .annotate(count=Count('activity_type')) \
@@ -106,7 +106,7 @@ class Statistics:
             workout_type, count = workout
             return workout_type, count, self._volume(workout_type)
 
-        return map(decorate_with_volume, workouts)
+        return map(decorate_with_volume, gps_workouts)
 
     def weeks(self, start=datetime.datetime.utcnow()):
 

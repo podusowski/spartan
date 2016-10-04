@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 
 from django.db import models
 from django.db.models import Count
@@ -118,26 +119,26 @@ class Gpx(models.Model):
     distance = models.IntegerField(null=True, default=None)
 
     def points_as_json(self):
-        def take_coords(point):
-            return {'lat': float(point.lat), 'lon': float(point.lon), 'hr': point.hr, 'cad': point.cad, 'time': point.time.isoformat()}
+        def make_point(point):
+            return {'lat': float(point.lat),
+                    'lon': float(point.lon),
+                    'hr': point.hr,
+                    'cad': point.cad,
+                    'time': point.time.isoformat()}
 
-        points = map(take_coords, self.gpxtrackpoint_set.all().order_by('time'))
+        points = map(make_point, self.gpxtrackpoint_set.all().order_by('time'))
 
         return json.dumps(list(points))
 
+    def _average(self, name):
+        avg = self.gpxtrackpoint_set.aggregate(value=Avg(name))['value']
+        return None if avg is None else round(avg)
+
     def average_hr(self):
-        avg_hr = self.gpxtrackpoint_set.aggregate(Avg('hr'))['hr__avg']
-        if avg_hr:
-            return round(avg_hr)
-        else:
-            return None
+        return self._average('hr')
 
     def average_cad(self):
-        avg_cad = self.gpxtrackpoint_set.aggregate(Avg('cad'))['cad__avg']
-        if avg_cad:
-            return round(avg_cad)
-        else:
-            return None
+        return self._average('cad')
 
     def speed_or_pace(self):
         m_per_s = 0
