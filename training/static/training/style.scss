@@ -74,16 +74,11 @@ a {
 }
 
 h2, h3, h4, h5 {
-    padding: 0.2em;
+    margin: 0 0.5em 0.3em 0.5em;
     color: darken($primary_color, 10%);
     font-weight: 100;
     font-size: 1.2em;
-    padding-left: 0.5em;
     text-transform: uppercase;
-}
-
-h2, h3, h4, h5 {
-    margin: 10px 10px 0 10px;
 }
 
 h3 {
@@ -276,9 +271,9 @@ ul {
 }
 
 section {
-    margin: 0.1em;
+    margin: 0 0.5em 1em 0.5em;
     overflow: auto;
-    padding: 1em;
+    padding: 0;
 }
 
 .day-container, .excercise {
