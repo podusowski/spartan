@@ -113,10 +113,25 @@ class Reps(models.Model):
         ordering = ['pk']
 
 
+from django.db import models
+from django.utils.six import with_metaclass
+
+
+class SportField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        super(SportField, self).__init__(*args, **kwargs)
+
+    def get_prep_value(self, value):
+        return super(SportField, self).get_prep_value(value).lower()
+
+
 class Gpx(models.Model):
     workout = models.ForeignKey(Workout)
-    activity_type = models.CharField(max_length=20)
+    activity_type = SportField(max_length=20)
     distance = models.IntegerField(null=True, default=None)
+
+    def clean():
+        self.activity_type = self.activity_type.lower()
 
     def points_as_json(self):
         def make_point(point):

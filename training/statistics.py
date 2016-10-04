@@ -76,7 +76,7 @@ class Statistics:
         meters = Gpx.objects.filter(workout__user=self.user,
                                     activity_type=workout_type).aggregate(value=Sum('distance'))['value']
 
-        return units.Volume(meters=meters)
+        return units.Volume(meters=meters if meters else 0)
 
     def _total_reps(self, excercise_name):
         reps = Reps.objects.filter(excercise__workout__user=self.user,
