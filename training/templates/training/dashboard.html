@@ -17,7 +17,10 @@
     <dl><dt>total km</dt><dd>{{ statistics.total_km }}</dd></dl>
 
     {% for workout_type,count,volume in statistics.most_popular_workouts %}
-        <dl><dt>{{ workout_type }} <strong>{{ count }}</strong></dt><dd></dd></dl>
+        <dl>
+            <dt>{{ workout_type }} <strong>{{ count }}</strong></dt>
+            <dd>{{ volume }}</dd>
+        </dl>
     {% endfor %}
 </section>
 

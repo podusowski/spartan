@@ -92,7 +92,7 @@ class Statistics:
         meters = Gpx.objects.filter(workout__user=self.user).aggregate(Sum('distance'))['distance__sum']
         return units.km_from_m(meters)
 
-    def _volume(self, workout_type):
+    def _total_distance(self, workout_type):
         return Gpx.objects.filter(workout__user=self.user,
                                   activity_type=workout_type).aggregate(value=Sum('distance'))['value']
 
@@ -105,7 +105,7 @@ class Statistics:
 
         def decorate_with_volume(workout):
             workout_type, count = workout
-            return workout_type.lower(), count, self._volume(workout_type)
+            return workout_type.lower(), count, self._total_distance(workout_type)
 
         return list(map(decorate_with_volume, gps_workouts))
 
