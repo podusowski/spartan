@@ -3,7 +3,7 @@ import datetime
 
 from django.utils import timezone
 
-def week_range(number:int=None, end=None, start=timezone.now()):
+def week_range(number=None, end=None, start=timezone.now()):
     if number is None and end is None:
         raise AttributeError("number or end parameter must be provided")
 

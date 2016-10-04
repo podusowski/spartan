@@ -29,3 +29,7 @@ class UtilsTestCase(TestCase):
     def test_week_range_by_limit(self):
         weeks = list(dates.week_range(start=_time(2016, 8, 7, 0, 0, 0), number=3))
         self.assertEqual(3, len(weeks))
+
+    def test_insufficient_parameters(self):
+        with self.assertRaises(AttributeError):
+            list(dates.week_range()) # evaluate generator
