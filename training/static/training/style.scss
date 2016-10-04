@@ -89,35 +89,23 @@ p {
     padding: 0.2em;
 }
 
-table
-{
+table {
     width: 100%;
     border-spacing: 0;
+    @include text2;
 
-    td a
-    {
-        display: block;
-        padding: 0.3em;
-        @include text2;
-    }
-
-    th
-    {
+    th {
         background-color: lighten($background-color, 10%);
-        @include text1;
         padding: 0.3em;
         text-align: left;
+        font-weight: normal;
+        text-transform: uppercase;
     }
 
-    td, th
-    {
-        border-bottom: 1px solid lighten($background-color, 5%);
-        border-right: 1px solid lighten($background-color, 5%);
-    }
-
-    tr:hover
-    {
-        background-color: lighten($background-color, 20%);
+    td, th {
+        padding: 0.5em;
+        border-bottom: 1px solid lighten($background-color, 10%);
+        border-right: 1px solid lighten($background-color, 10%);
     }
 }
 
