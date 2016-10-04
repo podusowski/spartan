@@ -98,6 +98,12 @@ class Statistics:
 
         return units.Volume(meters=meters)
 
+    def _total_reps(self, excercise_name):
+        reps = Reps.objects.filter(excercise__workout__user=self.user,
+                                   excercise__name=excercise_name).aggregate(value=Sum('reps'))['value']
+
+        return units.Volume(reps=reps if reps else 0)
+
     def most_popular_workouts(self):
         gps_workouts = Gpx.objects \
                           .filter(workout__user=self.user) \
@@ -105,11 +111,21 @@ class Statistics:
                           .annotate(count=Count('activity_type')) \
                           .order_by('-count')
 
+        strength_workouts = Excercise.objects \
+                                     .filter(workout__user=self.user) \
+                                     .values_list('name') \
+                                     .annotate(count=Count('name')) \
+                                     .order_by('-count')
+
         def decorate_with_volume(workout):
             workout_type, count = workout
             return workout_type.lower(), count, self._total_distance(workout_type)
 
-        return list(map(decorate_with_volume, gps_workouts))
+        def decorate_strength_workout(workout):
+            excercise_name, count = workout
+            return excercise_name.lower(), count, self._total_reps(excercise_name)
+
+        return list(map(decorate_with_volume, gps_workouts)) + list(map(decorate_strength_workout, strength_workouts))
 
     def weeks(self, start=datetime.datetime.utcnow()):
 
