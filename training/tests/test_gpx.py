@@ -35,7 +35,7 @@ class GpxTestCase(TestCase):
         self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc), workout.finished)
 
         gpx_workout = workout.gpx_set.get()
-        self.assertEqual("RUNNING", gpx_workout.activity_type)
+        self.assertEqual("running", gpx_workout.activity_type)
         self.assertEqual(4, gpx_workout.distance)
 
     def test_exporting_gpx_points_as_json(self):
