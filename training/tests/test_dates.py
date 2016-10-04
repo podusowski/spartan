@@ -16,13 +16,10 @@ class UtilsTestCase(TestCase):
                                       end=_time(2016, 8, 1, 0, 0, 0)))
 
         self.assertEqual(1, len(weeks))
-        self.assertEqual((datetime.datetime(2016, 8, 1, 0, 0, 0, tzinfo=pytz.utc),
-                          datetime.datetime(2016, 8, 7, 23, 59, 59, tzinfo=pytz.utc)),
-                         weeks[0])
+        self.assertEqual((_time(2016, 8, 1, 0, 0, 0), _time(2016, 8, 7, 23, 59, 59)), weeks[0])
 
-
-        weeks = dates.week_range(start=datetime.datetime(2016, 8, 7, 0, 0, 0, tzinfo=pytz.utc),
-                                      end=datetime.datetime(2016, 8, 2, 0, 0, 0, tzinfo=pytz.utc))
+        weeks = dates.week_range(start=_time(2016, 8, 7, 0, 0, 0),
+                                 end=_time(2016, 8, 2, 0, 0, 0))
 
         self.assertEqual(1, len(list(weeks)))
 
