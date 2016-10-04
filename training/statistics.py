@@ -97,7 +97,7 @@ class Statistics:
                                      .annotate(count=Count('name')) \
                                      .order_by('-count')
 
-        def decorate_with_volume(workout):
+        def decorate_gps_workout(workout):
             workout_type, count = workout
             return {'name': workout_type.lower(),
                     'count': count,
@@ -109,7 +109,7 @@ class Statistics:
                     'count': count,
                     'volume': self._total_reps(excercise_name)}
 
-        excercises = (list(map(decorate_with_volume, gps_workouts))
+        excercises = (list(map(decorate_gps_workout, gps_workouts))
                     + list(map(decorate_strength_workout, strength_workouts)))
 
         return sorted(excercises, key=lambda e: e['count'], reverse=True)
@@ -129,18 +129,6 @@ class Statistics:
         result = list(map(make_week, dates.week_range(start=start, end=end_time)))
 
         return result
-
-    def reps_per_week(self):
-        def reps_in_range(time_range):
-            begin, end = time_range
-            reps = Reps.objects.filter(excercise__workout__user=self.user,
-                                       excercise__time_started__gt=begin,
-                                       excercise__time_started__lt=end).aggregate(Sum('reps'))['reps__sum']
-
-            return {'time': '{:%d.%m}'.format(end),
-                    'value': 0 if reps is None else reps}
-
-        return list(map(reps_in_range, dates.week_range(5)))
 
     def previous_workouts(self, begin=None, end=None):
         if begin is not None and end is not None:
