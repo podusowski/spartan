@@ -8,8 +8,9 @@ from django.db import migrations
 def make_activity_type_lower(apps, schema_editor):
     Gpx = apps.get_model("training", "Gpx")
     for gpx in Gpx.objects.all():
-        gpx.activity_type = gpx.activity_type.lower()
-        gpx.save()
+        if gpx.activity_type is not None:
+            gpx.activity_type = gpx.activity_type.lower()
+            gpx.save()
 
 
 class Migration(migrations.Migration):
