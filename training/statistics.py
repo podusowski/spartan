@@ -129,7 +129,10 @@ class Statistics:
                     'count': count,
                     'volume': self._total_reps(excercise_name)}
 
-        return list(map(decorate_with_volume, gps_workouts)) + list(map(decorate_strength_workout, strength_workouts))
+        excercises = (list(map(decorate_with_volume, gps_workouts))
+                    + list(map(decorate_strength_workout, strength_workouts)))
+
+        return sorted(excercises, key=lambda e: e['count'], reverse=True)
 
     def weeks(self, start=datetime.datetime.utcnow()):
 

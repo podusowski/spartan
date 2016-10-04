@@ -11,9 +11,9 @@
 
 {%block content%}
 
-<h2>quick stats</h2>
+<h2>your favourites</h2>
 <section>
-    {% for excercise in statistics.most_popular_workouts %}
+    {% for excercise in statistics.most_popular_workouts|slice:":10" %}
         <dl>
             <dt>{{ excercise.name }} <strong>{{ excercise.count }}</strong></dt>
             <dd>{{ excercise.volume }}</dd>
