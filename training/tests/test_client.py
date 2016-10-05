@@ -90,7 +90,6 @@ class ClienStrengthTestCase(TestCase):
         self._post('/add_reps/{}/'.format(excercise.id), {'reps': '5'})
 
         self.assertEqual(units.Volume(reps=20), workout.volume())
-        self.assertEqual(20, statistics.total_reps())
 
         self._post('/finish_workout/{}'.format(workout.id))
 
@@ -122,17 +121,8 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc), workout.finished)
 
         gpx_workout = workout.gpx_set.get()
-        self.assertEqual("running", gpx_workout.activity_type.lower())
+        self.assertEqual("running", gpx_workout.activity_type)
         self.assertEqual(4, gpx_workout.distance)
-
-        statistics = self._get_statistics_from_dashboard()
-        self.assertEqual('4m', statistics.total_km())
-
-        self._import_gpx('3p_simplest_2.gpx')
-        self.assertEqual('8m', statistics.total_km())
-
-        self._import_gpx('3p_cycling.gpx')
-        self.assertEqual('12m', statistics.total_km())
 
     def _import_gpx_and_check_activity_type(self, filename, activity_type):
         self._import_gpx(filename)

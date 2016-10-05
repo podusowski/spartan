@@ -65,13 +65,6 @@ class Statistics:
     def __init__(self, user):
         self.user = user
 
-    def total_reps(self):
-        return Reps.objects.filter(excercise__workout__user=self.user).aggregate(Sum('reps'))['reps__sum']
-
-    def total_km(self):
-        meters = Gpx.objects.filter(workout__user=self.user).aggregate(Sum('distance'))['distance__sum']
-        return units.km_from_m(meters)
-
     def _total_distance(self, workout_type):
         meters = Gpx.objects.filter(workout__user=self.user,
                                     activity_type=workout_type).aggregate(value=Sum('distance'))['value']
