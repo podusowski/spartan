@@ -6,6 +6,7 @@ from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
 from training import models, units
+from .utils import time
 
 
 GPX_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -58,7 +59,7 @@ class ClienStrengthTestCase(TestCase):
         for reps in series:
             self._post('/add_reps/{}/'.format(excercise.id), {'reps': reps})
 
-        self._post('/finish_workout/{}'.format(workout.id))
+        return self._post('/finish_workout/{}'.format(workout.id)).context['workout']
 
     def test_add_some_excercises_and_reps(self):
         self._expect_to_be_logged_in()
@@ -160,7 +161,7 @@ class ClienStrengthTestCase(TestCase):
 
         self._import_gpx('3p_cycling.gpx')
 
-        self._do_some_pushups([2, 4, 8])
+        pushups = self._do_some_pushups([2, 4, 8])
 
         statistics = self._get_statistics_from_dashboard()
         excercises = statistics.most_popular_workouts()
@@ -168,11 +169,14 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual('running', excercises[0]['name'])
         self.assertEqual(3, excercises[0]['count'])
         self.assertEqual(units.Volume(meters=8), excercises[0]['volume'])
+        self.assertEqual(time(2016, 7, 30, 6, 22, 5), excercises[0]['earliest'])
 
         self.assertEqual('cycling', excercises[1]['name'])
         self.assertEqual(1, excercises[1]['count'])
         self.assertEqual(units.Volume(meters=4), excercises[1]['volume'])
+        self.assertEqual(time(2016, 6, 30, 6, 22, 5), excercises[1]['earliest'])
 
         self.assertEqual('push-up', excercises[2]['name'])
         self.assertEqual(1, excercises[2]['count'])
         self.assertEqual(units.Volume(reps=14), excercises[2]['volume'])
+        self.assertEqual(pushups.started, excercises[2]['earliest'])

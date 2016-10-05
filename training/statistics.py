@@ -2,7 +2,7 @@ import datetime
 import logging
 import arrow
 
-from django.db.models import Sum
+from django.db.models import Sum, Min
 from django.utils import timezone
 
 from .models import *
@@ -87,27 +87,27 @@ class Statistics:
     def most_popular_workouts(self):
         gps_workouts = Gpx.objects \
                           .filter(workout__user=self.user) \
-                          .values_list('activity_type') \
-                          .annotate(count=Count('activity_type')) \
+                          .values('activity_type') \
+                          .annotate(count=Count('activity_type'), earliest=Min('workout__started')) \
                           .order_by('-count')
 
         strength_workouts = Excercise.objects \
                                      .filter(workout__user=self.user) \
-                                     .values_list('name') \
-                                     .annotate(count=Count('name')) \
+                                     .values('name') \
+                                     .annotate(count=Count('name'), earliest=Min('workout__started')) \
                                      .order_by('-count')
 
         def decorate_gps_workout(workout):
-            workout_type, count = workout
-            return {'name': workout_type.lower(),
-                    'count': count,
-                    'volume': self._total_distance(workout_type)}
+            return {'name': workout['activity_type'],
+                    'count': workout['count'],
+                    'volume': self._total_distance(workout['activity_type']),
+                    'earliest': workout['earliest']}
 
         def decorate_strength_workout(workout):
-            excercise_name, count = workout
-            return {'name': excercise_name.lower(),
-                    'count': count,
-                    'volume': self._total_reps(excercise_name)}
+            return {'name': workout['name'],
+                    'count': workout['count'],
+                    'volume': self._total_reps(workout['name']),
+                    'earliest': workout['earliest']}
 
         excercises = (list(map(decorate_gps_workout, gps_workouts))
                     + list(map(decorate_strength_workout, strength_workouts)))
