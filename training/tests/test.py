@@ -67,17 +67,3 @@ class ViewsTestCase(TestCase):
         self._add_reps(crunches, "20")
 
         self._finish_workout(workout)
-
-
-class ModelsTestCase(TestCase):
-    def test_reps_most_common(self):
-        user = User.objects.create_user(username='jacob', email='jacob@…', password='top_secret')
-        workout = models.Workout.objects.create(user=user)
-
-        excercise = workout.excercise_set.create()
-        excercise.reps_set.create(reps=10)
-        excercise.reps_set.create(reps=5)
-        excercise.reps_set.create(reps=5)
-        excercise.reps_set.create(reps=3)
-
-        self.assertEqual([10, 5, 3], list(models.Reps.most_common()))

@@ -180,3 +180,22 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(1, excercises[2]['count'])
         self.assertEqual(units.Volume(reps=14), excercises[2]['volume'])
         self.assertEqual(pushups.started, excercises[2]['earliest'])
+
+    def test_most_common_reps(self):
+        self._expect_to_be_logged_in()
+
+        statistics = self._get_statistics_from_dashboard()
+
+        self.assertEqual([], list(statistics.most_common_reps()))
+
+        self._do_some_pushups([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        self.assertEqual([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], list(statistics.most_common_reps()))
+
+        self._do_some_pushups([11])
+        self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 2], list(statistics.most_common_reps()))
+
+        self._do_some_pushups([10, 10, 10])
+        self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 2], list(statistics.most_common_reps()))
+
+        self._do_some_pushups([1, 1, 1])
+        self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 1], list(statistics.most_common_reps()))

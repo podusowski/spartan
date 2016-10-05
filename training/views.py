@@ -62,7 +62,6 @@ def workout(request, training_session_id):
         pass
 
     return render(request, 'training/workout.html', {'workout': workout,
-                                                     'most_common_reps': Reps.most_common(),
                                                      'statistics': Statistics(request.user),
                                                      'gpx': gpx})
 
