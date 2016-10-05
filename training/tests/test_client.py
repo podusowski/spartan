@@ -165,6 +165,14 @@ class ClienStrengthTestCase(TestCase):
         statistics = self._get_statistics_from_dashboard()
         excercises = statistics.most_popular_workouts()
 
-        self.assertEqual({'name': 'running', 'count': 3, 'volume': units.Volume(meters=8)}, excercises[0])
-        self.assertEqual({'name': 'cycling', 'count': 1, 'volume': units.Volume(meters=4)}, excercises[1])
-        self.assertEqual({'name': 'push-up', 'count': 1, 'volume': units.Volume(reps=14)}, excercises[2])
+        self.assertEqual('running', excercises[0]['name'])
+        self.assertEqual(3, excercises[0]['count'])
+        self.assertEqual(units.Volume(meters=8), excercises[0]['volume'])
+
+        self.assertEqual('cycling', excercises[1]['name'])
+        self.assertEqual(1, excercises[1]['count'])
+        self.assertEqual(units.Volume(meters=4), excercises[1]['volume'])
+
+        self.assertEqual('push-up', excercises[2]['name'])
+        self.assertEqual(1, excercises[2]['count'])
+        self.assertEqual(units.Volume(reps=14), excercises[2]['volume'])
