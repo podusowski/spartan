@@ -170,6 +170,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(3, excercises[0]['count'])
         self.assertEqual(units.Volume(meters=8), excercises[0]['volume'])
         self.assertEqual(time(2016, 7, 30, 6, 22, 5), excercises[0]['earliest'])
+        self.assertEqual(time(2016, 8, 30, 6, 22, 5), excercises[0]['latest'])
 
         self.assertEqual('cycling', excercises[1]['name'])
         self.assertEqual(1, excercises[1]['count'])
@@ -180,6 +181,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(1, excercises[2]['count'])
         self.assertEqual(units.Volume(reps=14), excercises[2]['volume'])
         self.assertEqual(pushups.started, excercises[2]['earliest'])
+        self.assertEqual(pushups.started, excercises[2]['latest'])
 
     def test_most_common_reps(self):
         self._expect_to_be_logged_in()

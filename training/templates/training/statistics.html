@@ -10,6 +10,7 @@
         <th>count</th>
         <th>volume</th>
         <th>doing since</th>
+        <th>last time</th>
     </tr>
     {% for excercise in statistics.most_popular_workouts %}
         <tr>
@@ -17,6 +18,7 @@
             <td>{{ excercise.count }}</td>
             <td>{{ excercise.volume }}</td>
             <td>{{ excercise.earliest|timesince }}</td>
+            <td>{{ excercise.latest|timesince }}</td>
         </tr>
     {% endfor %}
     </table>

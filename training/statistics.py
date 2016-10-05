@@ -2,7 +2,7 @@ import datetime
 import logging
 import arrow
 
-from django.db.models import Sum, Min
+from django.db.models import Sum, Min, Max
 from django.utils import timezone
 
 from .models import *
@@ -88,26 +88,32 @@ class Statistics:
         gps_workouts = Gpx.objects \
                           .filter(workout__user=self.user) \
                           .values('activity_type') \
-                          .annotate(count=Count('activity_type'), earliest=Min('workout__started')) \
+                          .annotate(count=Count('activity_type'),
+                                    earliest=Min('workout__started'),
+                                    latest=Max('workout__started')) \
                           .order_by('-count')
 
         strength_workouts = Excercise.objects \
                                      .filter(workout__user=self.user) \
                                      .values('name') \
-                                     .annotate(count=Count('name'), earliest=Min('workout__started')) \
+                                     .annotate(count=Count('name'),
+                                               earliest=Min('workout__started'),
+                                               latest=Max('workout__started')) \
                                      .order_by('-count')
 
         def decorate_gps_workout(workout):
             return {'name': workout['activity_type'],
                     'count': workout['count'],
                     'volume': self._total_distance(workout['activity_type']),
-                    'earliest': workout['earliest']}
+                    'earliest': workout['earliest'],
+                    'latest': workout['latest']}
 
         def decorate_strength_workout(workout):
             return {'name': workout['name'],
                     'count': workout['count'],
                     'volume': self._total_reps(workout['name']),
-                    'earliest': workout['earliest']}
+                    'earliest': workout['earliest'],
+                    'latest': workout['latest']}
 
         excercises = (list(map(decorate_gps_workout, gps_workouts))
                     + list(map(decorate_strength_workout, strength_workouts)))
