@@ -72,9 +72,9 @@ class Workout(models.Model):
 
     def volume(self):
         if self.is_gpx():
-            return units.Volume(meters=self._total_distance())
+            return units.Volume(meters=self._total_distance() or 0)
         else:
-            return units.Volume(reps=self._total_reps())
+            return units.Volume(reps=self._total_reps() or 0)
 
 
 class Excercise(models.Model):
