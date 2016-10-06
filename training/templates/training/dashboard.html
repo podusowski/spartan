@@ -11,9 +11,9 @@
 
 {%block content%}
 
-<h2>your favourites</h2>
+<h2>this month</h2>
 <section>
-    {% for excercise in statistics.most_popular_workouts|slice:":10" %}
+    {% for excercise in statistics.favourites_this_month|slice:":10" %}
         <dl>
             <dt>{{ excercise.name }} <strong>{{ excercise.count }}</strong></dt>
             <dd>{{ excercise.volume }}</dd>
