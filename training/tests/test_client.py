@@ -213,6 +213,35 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(1, popular[0]['count'])
         self.assertEqual(units.Volume(reps=22), popular[0]['volume'])
 
+    def test_most_popular_workouts_this_month(self):
+        self._expect_to_be_logged_in()
+        statistics = self._get_statistics_from_dashboard()
+
+        workout = self._do_some_pushups([5, 10, 7])
+        workout.started = time(2016, 7, 1, 0, 0, 0)
+        workout.finished = time(2016, 7, 1, 0, 0, 1)
+        workout.save()
+
+        workout = self._do_some_pushups([5, 10, 7])
+        workout.started = time(2016, 8, 1, 0, 0, 0)
+        workout.finished = time(2016, 8, 1, 0, 0, 1)
+        workout.save()
+
+        self._import_gpx('3p_simplest.gpx')  # 07.2016
+        self._import_gpx('3p_simplest_2.gpx')  # 08.2016
+        self._import_gpx('3p_cycling.gpx')  # 06.2016
+
+        month = statistics.favourites_this_month(now=time(2016, 7, 31))
+
+        self.assertEqual(2, len(month))
+        self.assertEqual('running', month[0]['name'])
+        self.assertEqual(1, month[0]['count'])
+        self.assertEqual(units.Volume(meters=4), month[0]['volume'])
+
+        self.assertEqual('push-up', month[1]['name'])
+        self.assertEqual(1, month[1]['count'])
+        self.assertEqual(units.Volume(reps=22), month[1]['volume'])
+
     def test_most_common_reps(self):
         self._expect_to_be_logged_in()
 

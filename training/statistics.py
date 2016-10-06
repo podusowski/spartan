@@ -72,6 +72,10 @@ class Statistics:
     def __init__(self, user):
         self.user = user
 
+    def favourites_this_month(self, now=timezone.now()):
+        months = list(dates.month_range(1, start=now))
+        return self.most_popular_workouts(*months[0])
+
     def most_popular_workouts(self, time_begin=None, time_end=None):
         gps_workouts = _filter_by_timespan(Gpx.objects, time_begin, time_end) \
                           .filter(workout__user=self.user) \
