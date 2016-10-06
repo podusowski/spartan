@@ -173,6 +173,46 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(pushups.started, excercises[2]['earliest'])
         self.assertEqual(pushups.started, excercises[2]['latest'])
 
+    def test_most_popular_gps_workouts_during_timespan(self):
+        self._expect_to_be_logged_in()
+        statistics = self._get_statistics_from_dashboard()
+
+        self._import_gpx('3p_simplest.gpx')
+        self._import_gpx('3p_simplest_2.gpx')
+
+        popular = statistics.most_popular_workouts()
+
+        self.assertEqual(units.Volume(meters=8), popular[0]['volume'])
+
+        popular = statistics.most_popular_workouts(time(2016, 7, 1, 0, 0, 0),
+                                                   time(2016, 7, 30, 23, 59, 59))
+
+        self.assertEqual(units.Volume(meters=4), popular[0]['volume'])
+
+    def test_most_popular_strength_workouts_during_timespan(self):
+        self._expect_to_be_logged_in()
+        statistics = self._get_statistics_from_dashboard()
+
+        workout = self._do_some_pushups([5, 10, 7])
+        workout.started = time(2016, 7, 1, 0, 0, 0)
+        workout.finished = time(2016, 7, 1, 0, 0, 1)
+        workout.save()
+
+        workout = self._do_some_pushups([5, 10, 7])
+        workout.started = time(2016, 8, 1, 0, 0, 0)
+        workout.finished = time(2016, 8, 1, 0, 0, 1)
+        workout.save()
+
+        popular = statistics.most_popular_workouts()
+
+        self.assertEqual(units.Volume(reps=44), popular[0]['volume'])
+
+        popular = statistics.most_popular_workouts(time(2016, 7, 1, 0, 0, 0),
+                                                   time(2016, 7, 30, 23, 59, 59))
+
+        self.assertEqual(1, popular[0]['count'])
+        self.assertEqual(units.Volume(reps=22), popular[0]['volume'])
+
     def test_most_common_reps(self):
         self._expect_to_be_logged_in()
 

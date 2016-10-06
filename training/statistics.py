@@ -61,24 +61,25 @@ class Week:
         return reversed(result)
 
 
+def _filter_by_timespan(source, start, end):
+    if start is not None and end is not None:
+        return source.filter(workout__started__gte=start, workout__started__lt=end)
+    else:
+        return source
+
+def _filter_by_timespan2(source, start, end):
+    if start is not None and end is not None:
+        return source.filter(excercise__workout__started__gte=start, excercise__workout__started__lt=end)
+    else:
+        return source
+
+
 class Statistics:
     def __init__(self, user):
         self.user = user
 
-    def _total_distance(self, workout_type):
-        meters = Gpx.objects.filter(workout__user=self.user,
-                                    activity_type=workout_type).aggregate(value=Sum('distance'))['value']
-
-        return units.Volume(meters=meters if meters else 0)
-
-    def _total_reps(self, excercise_name):
-        reps = Reps.objects.filter(excercise__workout__user=self.user,
-                                   excercise__name=excercise_name).aggregate(value=Sum('reps'))['value']
-
-        return units.Volume(reps=reps if reps else 0)
-
-    def most_popular_workouts(self):
-        gps_workouts = Gpx.objects \
+    def most_popular_workouts(self, time_begin=None, time_end=None):
+        gps_workouts = _filter_by_timespan(Gpx.objects, time_begin, time_end) \
                           .filter(workout__user=self.user) \
                           .values('activity_type') \
                           .annotate(count=Count('activity_type'),
@@ -86,7 +87,7 @@ class Statistics:
                                     latest=Max('workout__started')) \
                           .order_by('-count')
 
-        strength_workouts = Excercise.objects \
+        strength_workouts = _filter_by_timespan(Excercise.objects, time_begin, time_end) \
                                      .filter(workout__user=self.user) \
                                      .values('name') \
                                      .annotate(count=Count('name'),
@@ -94,17 +95,32 @@ class Statistics:
                                                latest=Max('workout__started')) \
                                      .order_by('-count')
 
+        def total_distance(workout_type):
+            meters = _filter_by_timespan(Gpx.objects, time_begin, time_end) \
+                        .filter(workout__user=self.user,
+                                activity_type=workout_type).aggregate(value=Sum('distance'))['value']
+
+            return units.Volume(meters=meters if meters else 0)
+
+        def total_reps(excercise_name):
+            reps = _filter_by_timespan2(Reps.objects, time_begin, time_end) \
+                        .filter(excercise__workout__user=self.user,
+                                excercise__name=excercise_name).aggregate(value=Sum('reps'))['value']
+
+            return units.Volume(reps=reps if reps else 0)
+
+
         def decorate_gps_workout(workout):
             return {'name': workout['activity_type'],
                     'count': workout['count'],
-                    'volume': self._total_distance(workout['activity_type']),
+                    'volume': total_distance(workout['activity_type']),
                     'earliest': workout['earliest'],
                     'latest': workout['latest']}
 
         def decorate_strength_workout(workout):
             return {'name': workout['name'],
                     'count': workout['count'],
-                    'volume': self._total_reps(workout['name']),
+                    'volume': total_reps(workout['name']),
                     'earliest': workout['earliest'],
                     'latest': workout['latest']}
 
