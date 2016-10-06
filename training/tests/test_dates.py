@@ -27,3 +27,12 @@ class UtilsTestCase(TestCase):
     def test_insufficient_parameters(self):
         with self.assertRaises(AttributeError):
             list(dates.week_range()) # evaluate generator
+
+    def test_month_range(self):
+        months = list(dates.month_range(start=time(2016, 2, 1, 0, 0, 0),
+                                        end=time(2015, 12, 1, 0, 0, 0)))
+
+        self.assertEqual(3, len(months))
+        self.assertEqual((time(2016, 2, 1, 0, 0, 0), time(2016, 2, 29, 23, 59, 59, 999999)), months[0])
+        self.assertEqual((time(2016, 1, 1, 0, 0, 0), time(2016, 1, 31, 23, 59, 59, 999999)), months[1])
+        self.assertEqual((time(2015, 12, 1, 0, 0, 0), time(2015, 12, 31, 23, 59, 59, 999999)), months[2])
