@@ -127,8 +127,7 @@ dd {
     @include text2;
 }
 
-dt,
-label {
+dt {
     margin-bottom: 0.2em;
     display: inline-block;
     width: 5em;
@@ -179,6 +178,22 @@ form {
     display: inline-block;
     width: auto;
 
+    .helptext {
+        //display: block;
+        @include text3;
+        margin-left: 1em;
+    }
+
+    li {
+        //border-bottom: 1px solid #555;
+        margin-bottom: 1em;
+    }
+
+    label {
+        display: block;
+        @include text2;
+    }
+
     input[type="submit"]::-moz-focus-inner {
         border: 0;
     }
@@ -194,10 +209,13 @@ form {
     }
 
     input[type="text"],
+    input[type="file"],
     input[type="password"],
     input[type="number"] {
-        background: linear-gradient(0deg, lighten($background-color, 5%) 0%, darken($background-color, 5%) 100%);
+        background: linear-gradient(0deg, lighten($background-color, 10%) 0%,
+                                          lighten($background-color, 5%) 100%);
         border: 1px solid black;
+        border-radius: 0.2em;
     }
 
     input[type="submit"] {
@@ -249,7 +267,7 @@ dl.vertical {
     display: block;
 }
 
-ul {
+ul.reps {
     display: inline-block;
 
     li {
@@ -260,7 +278,6 @@ ul {
 
 section {
     margin: 0 0.5em 1em 0.5em;
-    overflow: auto;
     padding: 0;
 }
 

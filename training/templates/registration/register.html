@@ -2,6 +2,7 @@
 
 {%block content%}
 
+<section>
 <form action="{% url 'register' %}" method="post">
     {% csrf_token %}
     <ul>
@@ -9,5 +10,6 @@
     </ul>
     <input type="submit" value="register" />
 </form>
+</section>
 
 {%endblock%}
