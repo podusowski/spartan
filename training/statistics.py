@@ -67,12 +67,6 @@ def _filter_by_timespan(source, start, end):
     else:
         return source
 
-def _filter_by_timespan2(source, start, end):
-    if start is not None and end is not None:
-        return source.filter(excercise__workout__started__gte=start, excercise__workout__started__lt=end)
-    else:
-        return source
-
 
 class Statistics:
     def __init__(self, user):
@@ -103,9 +97,9 @@ class Statistics:
             return units.Volume(meters=meters if meters else 0)
 
         def total_reps(excercise_name):
-            reps = _filter_by_timespan2(Reps.objects, time_begin, time_end) \
-                        .filter(excercise__workout__user=self.user,
-                                excercise__name=excercise_name).aggregate(value=Sum('reps'))['value']
+            reps = _filter_by_timespan(Excercise.objects, time_begin, time_end) \
+                        .filter(workout__user=self.user,
+                                name=excercise_name).aggregate(value=Sum('reps__reps'))['value']
 
             return units.Volume(reps=reps if reps else 0)
 
