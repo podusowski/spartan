@@ -48,14 +48,14 @@
     <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
     <section>
         {% for day in week.days %}
-            <div class="day-container {{ day.workouts|yesno:"active_day,inactive_day" }}">
+            <div class="day {{ day.workouts|yesno:"active_day,inactive_day" }}">
                 <div class="day-name">
                     {{ day.start_time|date:"D" }}
                 </div>
                 <div class="day-content">
                     {% for workout in day.workouts %}
                         <a href="{% url 'workout' workout.id %}">
-                            <dl class="workout">
+                            <dl>
                                 <dt>{{ workout.started|date:"h:m" }} {{ workout.workout_type }}</dt>
                                 <dd>
                                     {{ workout.volume }}
