@@ -53,6 +53,16 @@ $background-color: black;
     }
 }
 
+@mixin important-value {
+    background-color: $secondary_color;
+    border-radius: 1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -147,28 +157,7 @@ dt,
     display: block;
 }
 
-dd {
-    @include text2;
-}
-
-dt {
-    margin-bottom: 0.2em;
-    display: inline-block;
-    width: 5em;
-    vertical-align: middle;
-}
-
-@mixin important-value {
-    background-color: $secondary_color;
-    border-radius: 1em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-}
-
-strong
-{
+strong {
     @include important-value;
 }
 
@@ -179,13 +168,11 @@ form {
     width: auto;
 
     .helptext {
-        //display: block;
         @include text3;
         margin-left: 1em;
     }
 
     li {
-        //border-bottom: 1px solid #555;
         margin-bottom: 1em;
     }
 
@@ -248,17 +235,17 @@ dl {
     dt {
         @include text1;
         display: block;
-        width: 100%;
-        vertical-align: middle;
         white-space: nowrap;
         text-transform: uppercase;
         margin-right: 0.5em;
+        margin-bottom: 0.2em;
+        vertical-align: middle;
     }
 
     dd {
+        @include text2;
         display: block;
         vertical-align: middle;
-        @include text2;
     }
 }
 
