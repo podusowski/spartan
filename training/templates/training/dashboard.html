@@ -14,8 +14,9 @@
 <h2>this month</h2>
 <section>
     {% for excercise in statistics.favourites_this_month|slice:":10" %}
-        <dl>
-            <dt>{{ excercise.name }} <strong>{{ excercise.count }}</strong></dt>
+        <dl class="metric">
+            <dt>{{ excercise.name }}</dt>
+            <dd>{{ excercise.count }} times</dd>
             <dd>{{ excercise.volume }}</dd>
         </dl>
     {% endfor %}
@@ -54,7 +55,7 @@
                 <div class="day-content">
                     {% for workout in day.workouts %}
                         <a href="{% url 'workout' workout.id %}">
-                            <dl>
+                            <dl class="workout">
                                 <dt>{{ workout.started|date:"h:m" }} {{ workout.workout_type }}</dt>
                                 <dd>
                                     {{ workout.volume }}

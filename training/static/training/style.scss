@@ -29,6 +29,30 @@ $background-color: black;
     border-radius: .3em;
 }
 
+@mixin button($color) {
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 100;
+    color: lighten($color, 70%);
+
+    display: inline-block;
+
+    background: linear-gradient(to top,
+                                lighten($color, 8%) 0%,
+                                darken($color, 8%) 100%);
+
+    border-color: darken($color, 30%);
+    padding: 0.5em;
+    border: 1px solid darken($color, 30%);
+    border-radius: 0.2em;
+
+    &:hover {
+        $darker: darken($color, 5%);
+        background: linear-gradient(to top,
+                                    lighten($darker, 8%) 0%,
+                                    darken($darker, 8%) 100%);
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -148,30 +172,6 @@ strong
     @include important-value;
 }
 
-@mixin button($color) {
-    text-shadow: 1px 1px 1px #000;
-    font-weight: 100;
-    color: lighten($color, 70%);
-
-    display: inline-block;
-
-    background: linear-gradient(to top,
-                                lighten($color, 8%) 0%,
-                                darken($color, 8%) 100%);
-
-    border-color: darken($color, 30%);
-    padding: 0.5em;
-    border: 1px solid darken($color, 30%);
-    border-radius: 0.2em;
-
-    &:hover {
-        $darker: darken($color, 5%);
-        background: linear-gradient(to top,
-                                    lighten($darker, 8%) 0%,
-                                    darken($darker, 8%) 100%);
-    }
-}
-
 form {
     margin-top: 0.5em;
     margin-right: 0.5em;
@@ -246,11 +246,11 @@ dl {
     min-width: 7em;
 
     dt {
+        @include text1;
         display: block;
         width: 100%;
         vertical-align: middle;
         white-space: nowrap;
-        @include text1;
         text-transform: uppercase;
         margin-right: 0.5em;
         padding-bottom: -0.3em;
@@ -260,6 +260,16 @@ dl {
         display: block;
         vertical-align: middle;
         @include text2;
+    }
+}
+
+dl.metric {
+    @include fancy_box(black);
+
+    dd:first-of-type {
+        border: none;
+        padding-left: 0;
+        color: $primary_color;
     }
 }
 

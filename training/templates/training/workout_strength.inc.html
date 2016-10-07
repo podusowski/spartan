@@ -1,20 +1,18 @@
 {% load training_format %}
 
 {%if workout.live%}
-    <h2>workout</h2>
     <section>
-        <dl><dt>duration</dt><dd><span id="stopwatch">--:--</span></dd></dl>
-        <dl><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
-        <dl><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
+        <dl class="metric"><dt>duration</dt><dd><span id="stopwatch">--:--</span></dd></dl>
+        <dl class="metric"><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
+        <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     </section>
 {% endif %}
 
 {% if workout.finished %}
-    <h2>workout</h2>
     <section>
-        <dl><dt>started</dt><dd>{{workout.started}}</dd></dl>
-        <dl><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
-        <dl><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
+        <dl class="metric"><dt>started</dt><dd>{{workout.started}}</dd></dl>
+        <dl class="metric"><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
+        <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     </section>
 {% endif %}
 
