@@ -55,6 +55,7 @@ $background-color: black;
 
 @mixin important-value {
     background-color: $secondary_color;
+    color: white;
     border-radius: 1em;
     padding-left: 0.5em;
     padding-right: 0.5em;
@@ -68,17 +69,18 @@ $background-color: black;
     padding: 0;
     box-sizing: border-box;
     touch-action: pan-y pinch-zoom double-tap-zoom;
-    color: invert($background-color);
 }
 
 body {
     background-color: $background-color;
+    color: white;
     font-family: Calibri, 'Open Sans', sans-serif;
     font-weight: normal;
 }
 
 a {
     text-decoration: none;
+    color: darken(white, 20%);
 }
 
 .header {
@@ -238,14 +240,11 @@ dl {
         white-space: nowrap;
         text-transform: uppercase;
         margin-right: 0.5em;
-        margin-bottom: 0.2em;
-        vertical-align: middle;
     }
 
     dd {
         @include text2;
         display: block;
-        vertical-align: middle;
     }
 }
 
@@ -280,6 +279,7 @@ section {
 }
 
 .day-container, .excercise {
+    color: white;
     min-height: 5em;
     vertical-align: top;
     border-radius: 0.3em;
@@ -316,7 +316,6 @@ section {
     vertical-align: top;
 
     font-weight: 100;
-    color: #444;
     text-transform: uppercase;
     vertical-align: top;
 }
