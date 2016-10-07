@@ -253,7 +253,6 @@ dl {
         white-space: nowrap;
         text-transform: uppercase;
         margin-right: 0.5em;
-        padding-bottom: -0.3em;
     }
 
     dd {
@@ -265,6 +264,12 @@ dl {
 
 dl.metric {
     @include fancy_box(black);
+
+    border-left: 1px solid #111;
+
+    &:first-of-type {
+        border-left: none;
+    }
 
     dd:first-of-type {
         border: none;

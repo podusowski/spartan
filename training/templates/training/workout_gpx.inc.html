@@ -5,15 +5,15 @@
 
 <h2>{{ gpx.activity_type }}, {{ workout.started }}</h2>
 <section>
-    <dl><dt>distance</dt><dd>{{ gpx.distance|distance }}</dd></dl>
-    <dl><dt>time</dt><dd>{{ workout.duration }}</dd></dl>
-    <dl><dt>pace</dt><dd>{{ gpx.speed_or_pace }}</dd></dl>
+    <dl class="metric"><dt>distance</dt><dd>{{ gpx.distance|distance }}</dd></dl>
+    <dl class="metric"><dt>time</dt><dd>{{ workout.duration }}</dd></dl>
+    <dl class="metric"><dt>pace</dt><dd>{{ gpx.speed_or_pace }}</dd></dl>
 
     {% if gpx.average_hr %}
-        <dl><dt>avg hr</dt><dd>{{ gpx.average_hr }}</dd></dl>
+        <dl class="metric"><dt>avg hr</dt><dd>{{ gpx.average_hr }}</dd></dl>
     {% endif %}
     {% if gpx.average_cad %}
-        <dl><dt>avg cadence</dt><dd>{{ gpx.average_cad }}</dd></dl>
+        <dl class="metric"><dt>avg cadence</dt><dd>{{ gpx.average_cad }}</dd></dl>
     {% endif %}
 </section>
 
