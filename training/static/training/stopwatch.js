@@ -1,6 +1,7 @@
 var time_difference_between_server = 0;
 
-function time_on_server(on_server) {
+function time_on_server(on_server)
+{
     var now = new Date();
     time_difference_between_server = now - on_server;
 }
