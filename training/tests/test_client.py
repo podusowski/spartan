@@ -32,7 +32,7 @@ class ClienStrengthTestCase(TestCase):
     def _expect_workout_page(self, workout_id, status_code=200):
         return self._get('/workout/{}'.format(workout_id), status_code=status_code)
 
-    def _expect_to_be_logged_in(self):
+    def _login(self):
         self._post('/login/', {'username': 'grzegorz', 'password': 'z'})
 
     def _start_workout(self):
@@ -44,7 +44,7 @@ class ClienStrengthTestCase(TestCase):
         return self._get('/dashboard').context['statistics']
 
     def test_create_workout_and_delete_it(self):
-        self._expect_to_be_logged_in()
+        self._login()
         workout = self._start_workout()
 
         self._post('/delete_workout/{}/'.format(workout.id))
@@ -64,7 +64,7 @@ class ClienStrengthTestCase(TestCase):
         return self._post('/finish_workout/{}'.format(workout.id)).context['workout']
 
     def test_add_some_excercises_and_reps(self):
-        self._expect_to_be_logged_in()
+        self._login()
         self._start_workout()
 
         statistics = self._get_statistics_from_dashboard()
@@ -112,7 +112,7 @@ class ClienStrengthTestCase(TestCase):
         return statistics.previous_workouts()[0]
 
     def test_gpx_import(self):
-        self._expect_to_be_logged_in()
+        self._login()
 
         self._import_gpx('3p_simplest.gpx')
 
@@ -132,20 +132,20 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(activity_type, workout.workout_type)
 
     def test_import_activity_type_from_gpx(self):
-        self._expect_to_be_logged_in()
+        self._login()
 
         self._import_gpx_and_check_activity_type('3p_cycling.gpx', 'cycling')
         self._import_gpx_and_check_activity_type('3p_simplest.gpx', 'running')
 
     def test_strength_workout_type_when_starting_workout(self):
-        self._expect_to_be_logged_in()
+        self._login()
         self._start_workout()
 
         workout = self._get_latest_workout_from_dashboard()
         self.assertEqual('strength', workout.workout_type)
 
     def test_most_popular_excercises(self):
-        self._expect_to_be_logged_in()
+        self._login()
 
         self._import_gpx('3p_simplest.gpx')
         self._import_gpx('3p_simplest_2.gpx')
@@ -176,7 +176,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(pushups.started, excercises[2]['latest'])
 
     def test_most_popular_gps_workouts_during_timespan(self):
-        self._expect_to_be_logged_in()
+        self._login()
         statistics = self._get_statistics_from_dashboard()
 
         self._import_gpx('3p_simplest.gpx')
@@ -192,7 +192,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(units.Volume(meters=4), popular[0]['volume'])
 
     def test_most_popular_strength_workouts_during_timespan(self):
-        self._expect_to_be_logged_in()
+        self._login()
         statistics = self._get_statistics_from_dashboard()
 
         workout = self._do_some_pushups([5, 10, 7])
@@ -216,7 +216,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(units.Volume(reps=22), popular[0]['volume'])
 
     def test_most_popular_workouts_this_month(self):
-        self._expect_to_be_logged_in()
+        self._login()
         statistics = self._get_statistics_from_dashboard()
 
         workout = self._do_some_pushups([5, 10, 7])
@@ -245,7 +245,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual(units.Volume(reps=22), month[1]['volume'])
 
     def test_most_common_reps(self):
-        self._expect_to_be_logged_in()
+        self._login()
 
         statistics = self._get_statistics_from_dashboard()
 
@@ -269,7 +269,7 @@ class ClienStrengthTestCase(TestCase):
             endomondo.return_value = endomondo_mock
             endomondo.return_value.token = 'token'
 
-            self._expect_to_be_logged_in()
+            self._login()
 
             key = self._get('/endomondo/').context['key']
             self.assertIsNone(key)
