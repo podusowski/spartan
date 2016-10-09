@@ -2,49 +2,45 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui, user-scalable: no">
+    <meta name="application-name" content="Spartan">
+    <meta name="msapplication-TileColor" content="#0E2B5E"/>
+    <meta name="msapplication-config" content="none"/>
+    <meta name="msapplication-navbutton-color" content="#4285f4">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui, user-scalable: no">
-<meta name="application-name" content="Spartan">
-<meta name="msapplication-TileColor" content="#0E2B5E"/>
-<meta name="msapplication-config" content="none"/>
-<meta name="msapplication-navbutton-color" content="#4285f4">
+    {% load sass_tags %}
+    <link href="{% sass_src 'training/style.scss' %}" rel="stylesheet" type="text/css" />
 
-{% load sass_tags %}
-<link href="{% sass_src 'training/style.scss' %}" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,400" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:100,400" rel="stylesheet">
-
-<title>spartan</title>
-
+    <title>spartan</title>
 </head>
 
 <body>
+    <div class="header">
+        <h1><a href="{%url 'index'%}">spartan</a></h1>
 
-<div class="header">
-    <h1><a href="{%url 'index'%}">spartan</a></h1>
-
-    <div class="user">
-        {%if request.user.is_authenticated%}
-            logged as {{request.user.username}} (<a href="{% url 'logout' %}">logout</a>)
-        {%else%}
-            not logged in
-        {%endif%}
+        <div class="user">
+            {%if request.user.is_authenticated%}
+                logged as {{request.user.username}} (<a href="{% url 'logout' %}">logout</a>)
+            {%else%}
+                not logged in
+            {%endif%}
+        </div>
     </div>
-</div>
 
-{% block nav %}
-<nav>
-    <a href="{% url 'dashboard' %}">dashboard</a>
-</nav>
-{% endblock %}
+    {% block nav %}
+    <nav>
+        <a href="{% url 'dashboard' %}">dashboard</a>
+    </nav>
+    {% endblock %}
 
-{%spaceless%}
-{%block content%}{%endblock%}
-{%endspaceless%}
-
+    {%spaceless%}
+    {%block content%}{%endblock%}
+    {%endspaceless%}
 </body>
 
 </html>
