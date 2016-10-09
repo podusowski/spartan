@@ -1,6 +1,8 @@
 import os
 import datetime
 import pytz
+import unittest.mock
+from unittest.mock import patch, Mock, PropertyMock
 
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
@@ -260,3 +262,17 @@ class ClienStrengthTestCase(TestCase):
 
         self._do_some_pushups([1, 1, 1])
         self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 1], list(statistics.most_common_reps()))
+
+    def test_connect_to_endomondo(self):
+        with patch('endoapi.endomondo.Endomondo') as endomondo:
+            endomondo_mock = Mock()
+            endomondo.return_value = endomondo_mock
+            endomondo.return_value.token = 'token'
+
+            self._expect_to_be_logged_in()
+            self._post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
+
+            endomondo.assert_called_with(email='legan@com.pl', password='haslo')
+
+            key = self._get('/endomondo/').context['key']
+            self.assertEqual('token', key.key)
