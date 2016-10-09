@@ -264,12 +264,12 @@ class ClienStrengthTestCase(TestCase):
         self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 1], list(statistics.most_common_reps()))
 
     def test_connect_to_endomondo(self):
+        self._login()
+
         with patch('endoapi.endomondo.Endomondo') as endomondo:
             endomondo_mock = Mock()
             endomondo.return_value = endomondo_mock
             endomondo.return_value.token = 'token'
-
-            self._login()
 
             key = self._get('/endomondo/').context['key']
             self.assertIsNone(key)
@@ -282,3 +282,18 @@ class ClienStrengthTestCase(TestCase):
 
             key = self._get('/disconnect_endomondo/').context['key']
             self.assertIsNone(key)
+
+    def test_import_from_endomondo_no_workouts(self):
+        self._login()
+
+        with patch('endoapi.endomondo.Endomondo') as endomondo:
+            endomondo.return_value = Mock()
+            endomondo.return_value.token = 'token'
+
+            self._post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
+
+            endomondo.return_value.fetch.return_value = []
+            self._get('/synchronize_endomondo_ajax/')
+
+            statistics = self._get_statistics_from_dashboard()
+            self.assertEqual(0, len(statistics.previous_workouts()))
