@@ -270,8 +270,11 @@ class ClienStrengthTestCase(TestCase):
             endomondo.return_value.token = 'token'
 
             self._expect_to_be_logged_in()
-            self._post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
 
+            key = self._get('/endomondo/').context['key']
+            self.assertIsNone(key)
+
+            self._post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
             endomondo.assert_called_with(email='legan@com.pl', password='haslo')
 
             key = self._get('/endomondo/').context['key']
