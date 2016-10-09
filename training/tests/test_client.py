@@ -279,3 +279,6 @@ class ClienStrengthTestCase(TestCase):
 
             key = self._get('/endomondo/').context['key']
             self.assertEqual('token', key.key)
+
+            key = self._get('/disconnect_endomondo/').context['key']
+            self.assertIsNone(key)
