@@ -35,8 +35,6 @@ def save_gpx(user, content):
     if _workout_already_exists(user, started, finished):
         raise WorkoutAlreadyExists()
 
-    started, finished = parsed.get_time_bounds()
-
     workout = models.Workout.objects.create(user=user,
                                             started=started,
                                             finished=finished)
