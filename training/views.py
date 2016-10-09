@@ -110,10 +110,7 @@ def delete_workout(request, workout_id):
 from django import forms
 
 class UploadGpxForm(forms.Form):
-    def __init__(self):
-        super(forms.Form, self).__init__(label_suffix='')
-
-    gpxfile = forms.FileField(label='select a file')
+    gpxfile = forms.FileField(label='select a file', label_suffix='')
 
 
 @login_required
