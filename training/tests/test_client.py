@@ -286,7 +286,7 @@ class ClienStrengthTestCase(TestCase):
     def test_import_from_endomondo_no_workouts(self):
         self._login()
 
-        with patch('endoapi.endomondo.Endomondo') as endomondo:
+        with patch('endoapi.endomondo.Endomondo', autospec=True) as endomondo:
             endomondo.return_value = Mock()
             endomondo.return_value.token = 'token'
 
@@ -294,6 +294,8 @@ class ClienStrengthTestCase(TestCase):
 
             endomondo.return_value.fetch.return_value = []
             self._get('/synchronize_endomondo_ajax/')
+
+            endomondo.return_value.fetch.assert_called_once_with(max_results=10, before=None, after=None)
 
             statistics = self._get_statistics_from_dashboard()
             self.assertEqual(0, len(statistics.previous_workouts()))
