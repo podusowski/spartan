@@ -135,15 +135,24 @@ class ConnectWithEndomondoForm(forms.Form):
     password = forms.CharField(label='password', widget=forms.PasswordInput())
 
 
+def _make_form(form_type, request):
+    if request.method == "POST":
+        return form_type(request.POST, request.FILES)
+    else:
+        return form_type()
+
+
 @login_required
 def endomondo(request):
-    if request.method == "POST":
+    key = gpx.endomondo_key(request.user)
+
+    form = _make_form(ConnectWithEndomondoForm, request)
+
+    if form.is_bound and form.is_valid():
         gpx.connect_to_endomondo(request.user, request.POST["email"], request.POST["password"])
         return redirect('endomondo')
-    else:
-        key = gpx.endomondo_key(request.user)
-        form = ConnectWithEndomondoForm()
-        return render(request, 'training/endomondo.html', {'form': form, 'key': key})
+
+    return render(request, 'training/endomondo.html', {'form': form, 'key': key})
 
 
 @login_required
