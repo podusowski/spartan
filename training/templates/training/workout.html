@@ -19,6 +19,10 @@
 
 <script src="{% static 'training/stopwatch.js' %}"></script>
 
+<script>
+    time_on_server(new Date("{% now 'c' %}"));
+</script>
+
 {% if workout.is_gpx %}
     {% include 'training/workout_gpx.inc.html' %}
 {% else %}

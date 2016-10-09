@@ -1,7 +1,14 @@
+var time_difference_between_server = 0;
+
+function time_on_server(on_server) {
+    var now = new Date();
+    time_difference_between_server = now - on_server;
+}
+
 function stopwatch(html_element_id, start_time)
 {
     var now = new Date();
-    var diff = now.getTime() - start_time.getTime();
+    var diff = now.getTime() - start_time.getTime() - time_difference_between_server;
 
     document.getElementById(html_element_id).innerHTML = format_timespan(diff);
     setTimeout(function() { stopwatch(html_element_id, start_time); }, 500);
