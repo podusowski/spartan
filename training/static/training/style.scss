@@ -30,20 +30,17 @@ $background-color: black;
 }
 
 @mixin button($color) {
-    text-shadow: 1px 1px 1px #000;
-    font-weight: 100;
+    @include text1;
     color: lighten($color, 70%);
-
     display: inline-block;
 
     background: linear-gradient(to top,
                                 lighten($color, 8%) 0%,
                                 darken($color, 8%) 100%);
 
-    border-color: darken($color, 30%);
     padding: 0.5em;
     border: 1px solid darken($color, 30%);
-    border-radius: 0.2em;
+    border-radius: 5%;
 
     &:hover {
         $darker: darken($color, 5%);
@@ -201,6 +198,7 @@ form {
     input[type="file"],
     input[type="password"],
     input[type="number"] {
+        color: white;
         background: linear-gradient(0deg, lighten($background-color, 10%) 0%,
                                           lighten($background-color, 5%) 100%);
         border: 1px solid black;
@@ -226,12 +224,8 @@ form {
     // these classes are set from JS because css can't
     // select a label before input
     .file_input_label {
-        background: $primary_color;
-        padding: 0.5em;
+        @include button($primary_color);
 
-        &:hover {
-            background: lighten($primary_color, 20%);
-        }
     }
 
     .file_input {
