@@ -260,15 +260,7 @@ dl {
 dl.metric {
     @include fancy_box(black);
 
-    border-left: 1px solid #111;
-
-    &:first-of-type {
-        border-left: none;
-    }
-
     dd:first-of-type {
-        border: none;
-        padding-left: 0;
         color: $primary_color;
     }
 }
