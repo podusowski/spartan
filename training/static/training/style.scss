@@ -222,6 +222,22 @@ form {
     input[type="number"] {
         width: 4em;
     }
+
+    // these classes are set from JS because css can't
+    // select a label before input
+    .file_input_label {
+        background: $primary_color;
+        padding: 0.5em;
+
+        &:hover {
+            background: lighten($primary_color, 20%);
+        }
+    }
+
+    .file_input {
+        position: absolute;
+        left: -1000px;
+    }
 }
 
 dl {
