@@ -1,0 +1,23 @@
+{% extends "training/base.html" %}
+
+{% block content %}
+
+<h2>this month</h2>
+<section>
+    <table>
+    <tr>
+        <th>name</th>
+        <th>count</th>
+        <th>volume</th>
+    </tr>
+    {% for excercise in statistics.favourites_this_month %}
+        <tr>
+            <td>{{ excercise.name }}</td>
+            <td>{{ excercise.count }}</td>
+            <td>{{ excercise.volume }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</section>
+
+{% endblock %}

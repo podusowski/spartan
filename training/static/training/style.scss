@@ -394,3 +394,13 @@ nav {
         margin: 0;
     }
 }
+
+.quick_stats {
+    a {
+        vertical-align: top;
+        display: inline-block;
+        color: $primary_color;
+        font-weight: bold;
+        margin-bottom: 0.5em;
+    }
+}

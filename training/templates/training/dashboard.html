@@ -11,9 +11,9 @@
 
 {%block content%}
 
-<h2>this month</h2>
-<section>
-    {% for excercise in statistics.favourites_this_month|slice:":10" %}
+<h2>5 favourites this month | <a href="{% url 'statistics_this_month' %}">more</a></h2>
+<section class="quick_stats">
+    {% for excercise in statistics.favourites_this_month|slice:":5" %}
         <dl class="metric">
             <dt>{{ excercise.name }}</dt>
             <dd>{{ excercise.count }} times</dd>

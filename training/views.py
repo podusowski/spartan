@@ -30,6 +30,11 @@ def statistics(request):
 
 
 @login_required
+def statistics_this_month(request):
+    return render(request, 'training/statistics_this_month.html', {'statistics': Statistics(request.user)})
+
+
+@login_required
 def start_workout(request):
     workout = Workout.objects.create(user=request.user)
     return redirect('workout', workout.id)
