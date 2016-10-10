@@ -319,3 +319,10 @@ class ClienStrengthTestCase(TestCase):
         self._post('/user_profile', {'timezone': 'Europe/Lisbon'})
         profile = models.UserProfile.objects.get(user=self.user)
         self.assertEqual('Europe/Lisbon', profile.timezone)
+
+    def test_saving_invalid_timezone_falls_back_to_utc(self):
+        self._login()
+
+        self._post('/user_profile', {'timezone': 'invalid'})
+        profile = models.UserProfile.objects.get(user=self.user)
+        self.assertEqual('UTC', profile.timezone)

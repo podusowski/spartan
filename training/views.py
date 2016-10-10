@@ -1,5 +1,7 @@
 import os
 import logging
+import pytz
+import pytz.exceptions
 
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
@@ -36,7 +38,12 @@ def user_profile(request):
     form = _make_form(UserProfileForm, request)
 
     if request.method == "POST":
-        UserProfile.objects.update_or_create(defaults={'timezone': request.POST['timezone']}, user=request.user)
+        try:
+            tz = pytz.timezone(request.POST['timezone'])
+        except pytz.exceptions.UnknownTimeZoneError:
+            tz = pytz.utc
+
+        UserProfile.objects.update_or_create(defaults={'timezone': tz.zone}, user=request.user)
 
     return render(request, 'training/user_profile.html', {'form': form})
 
