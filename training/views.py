@@ -15,11 +15,11 @@ from .statistics import *
 from . import gpx
 
 
-def _make_form(form_type, request):
+def _make_form(form_type, request, initial=None):
     if request.method == "POST":
         return form_type(request.POST, request.FILES)
     else:
-        return form_type()
+        return form_type(initial=initial)
 
 
 def index(request):
@@ -35,15 +35,23 @@ class UserProfileForm(forms.Form):
 
 @login_required
 def user_profile(request):
-    form = _make_form(UserProfileForm, request)
+    try:
+        tz = pytz.timezone(UserProfile.objects.get(user=request.user).timezone)
+    except Exception as e:
+        logging.debug(str(e))
+        tz = pytz.utc
+
+    form = _make_form(UserProfileForm, request, {'timezone': tz.zone})
 
     if request.method == "POST":
         try:
             tz = pytz.timezone(request.POST['timezone'])
-        except pytz.exceptions.UnknownTimeZoneError:
+        except pytz.exceptions.UnknownTimeZoneError as e:
             tz = pytz.utc
 
         UserProfile.objects.update_or_create(defaults={'timezone': tz.zone}, user=request.user)
+
+        return redirect('user_profile')
 
     return render(request, 'training/user_profile.html', {'form': form})
 
