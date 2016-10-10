@@ -309,6 +309,9 @@ class ClienStrengthTestCase(TestCase):
         # page is accessible without post data
         self._get('/user_profile')
 
+    def test_saving_timezone(self):
+        self._login()
+
         self._post('/user_profile', {'timezone': 'Europe/Warsaw'})
         profile = models.UserProfile.objects.get(user=self.user)
         self.assertEqual('Europe/Warsaw', profile.timezone)
