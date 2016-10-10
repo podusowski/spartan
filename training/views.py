@@ -6,10 +6,18 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
+from django import forms
 
 from .models import *
 from .statistics import *
 from . import gpx
+
+
+def _make_form(form_type, request):
+    if request.method == "POST":
+        return form_type(request.POST, request.FILES)
+    else:
+        return form_type()
 
 
 def index(request):
@@ -17,6 +25,20 @@ def index(request):
         return redirect('dashboard')
     else:
         return render(request, 'training/index.html', {'users_count': User.objects.all().count()})
+
+
+class UserProfileForm(forms.Form):
+    timezone = forms.CharField(label='time zone')
+
+
+@login_required
+def user_profile(request):
+    form = _make_form(UserProfileForm, request)
+
+    if request.method == "POST":
+        UserProfile.objects.update_or_create(defaults={'timezone': request.POST['timezone']}, user=request.user)
+
+    return render(request, 'training/user_profile.html', {'form': form})
 
 
 @login_required
@@ -112,8 +134,6 @@ def delete_workout(request, workout_id):
     return redirect('dashboard')
 
 
-from django import forms
-
 class UploadGpxForm(forms.Form):
     gpxfile = forms.FileField(label='select a file', label_suffix='')
 
@@ -135,13 +155,6 @@ def upload_gpx(request):
 class ConnectWithEndomondoForm(forms.Form):
     email = forms.CharField(label='e-mail')
     password = forms.CharField(label='password', widget=forms.PasswordInput())
-
-
-def _make_form(form_type, request):
-    if request.method == "POST":
-        return form_type(request.POST, request.FILES)
-    else:
-        return form_type()
 
 
 @login_required

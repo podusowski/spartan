@@ -15,6 +15,8 @@ urlpatterns = [
             success_url='/'
         ), name='register'),
 
+    url('^user_profile$', views.user_profile, name='user_profile'),
+
     url('^dashboard$', views.dashboard, name='dashboard'),
     url('^statistics$', views.statistics, name='statistics'),
     url('^statistics_this_month$', views.statistics_this_month, name='statistics_this_month'),

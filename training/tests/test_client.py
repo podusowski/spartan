@@ -16,7 +16,7 @@ GPX_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class ClienStrengthTestCase(TestCase):
     def setUp(self):
-        user = User.objects.create_user(username='grzegorz', email='', password='z')
+        self.user = User.objects.create_user(username='grzegorz', email='', password='z')
         self.client = Client()
 
     def _get(self, uri, status_code=200):
@@ -299,3 +299,20 @@ class ClienStrengthTestCase(TestCase):
 
             statistics = self._get_statistics_from_dashboard()
             self.assertEqual(0, len(statistics.previous_workouts()))
+
+    def test_user_profile(self):
+        self._login()
+
+        with self.assertRaises(Exception):
+            self.user.userprofile
+
+        # page is accessible without post data
+        self._get('/user_profile')
+
+        self._post('/user_profile', {'timezone': 'Europe/Warsaw'})
+        profile = models.UserProfile.objects.get(user=self.user)
+        self.assertEqual('Europe/Warsaw', profile.timezone)
+
+        self._post('/user_profile', {'timezone': 'Europe/Lisbon'})
+        profile = models.UserProfile.objects.get(user=self.user)
+        self.assertEqual('Europe/Lisbon', profile.timezone)

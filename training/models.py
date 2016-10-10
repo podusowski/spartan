@@ -175,3 +175,8 @@ class AuthKeys(models.Model):
 class EndomondoWorkout(models.Model):
     endomondo_id = models.IntegerField()
     workout = models.ForeignKey(Workout)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    timezone = models.CharField(max_length=30, null=True, default=None)

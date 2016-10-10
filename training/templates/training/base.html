@@ -21,7 +21,7 @@
 
         <div class="user">
             {%if request.user.is_authenticated%}
-                logged as {{request.user.username}} (<a href="{% url 'logout' %}">logout</a>)
+                logged as <a href="{% url 'user_profile' %}">{{request.user.username}}</a> (<a href="{% url 'logout' %}">logout</a>)
             {%else%}
                 not logged in
             {%endif%}
