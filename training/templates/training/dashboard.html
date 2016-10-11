@@ -56,7 +56,12 @@
                     {% for workout in day.workouts %}
                         <a href="{% url 'workout' workout.id %}">
                             <dl>
-                                <dt>{{ workout.started|date:"h:m" }} {{ workout.workout_type }}</dt>
+                                <dt>
+                                    <span class="note">
+                                        {{ workout.started|date:"P" }}
+                                    </span>
+                                    {{ workout.workout_type }}
+                                </dt>
                                 <dd>
                                     {{ workout.volume }}
                                     <span class="note">
