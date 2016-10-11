@@ -13,6 +13,7 @@ from django import forms
 from .models import *
 from .statistics import *
 from . import gpx
+from training import userprof
 
 
 def _make_form(form_type, request, initial=None):
@@ -35,22 +36,12 @@ class UserProfileForm(forms.Form):
 
 @login_required
 def user_profile(request):
-    try:
-        tz = pytz.timezone(UserProfile.objects.get(user=request.user).timezone)
-    except Exception as e:
-        logging.debug(str(e))
-        tz = pytz.utc
+    current_tz = userprof.timezone(request.user)
 
-    form = _make_form(UserProfileForm, request, {'timezone': tz.zone})
+    form = _make_form(UserProfileForm, request, {'timezone': current_tz.zone})
 
     if request.method == "POST":
-        try:
-            tz = pytz.timezone(request.POST['timezone'])
-        except pytz.exceptions.UnknownTimeZoneError as e:
-            tz = pytz.utc
-
-        UserProfile.objects.update_or_create(defaults={'timezone': tz.zone}, user=request.user)
-
+        userprof.save_timezone(request.user, request.POST['timezone'])
         return redirect('user_profile')
 
     return render(request, 'training/user_profile.html', {'form': form})
