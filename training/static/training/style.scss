@@ -196,12 +196,14 @@ form {
     input[type="text"],
     input[type="file"],
     input[type="password"],
-    input[type="number"] {
+    input[type="number"],
+    select {
         color: white;
         background: linear-gradient(0deg, lighten($background-color, 10%) 0%,
                                           lighten($background-color, 5%) 100%);
         border: 1px solid black;
         border-radius: 0.2em;
+        padding: 0.3em;
     }
 
     input[type="submit"] {
