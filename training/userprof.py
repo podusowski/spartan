@@ -1,7 +1,13 @@
 import logging
 import pytz
 
+from django import forms
+
 from training import models
+
+
+class UserProfileForm(forms.Form):
+    timezone = forms.CharField(label='time zone')
 
 
 def timezone(user):

@@ -30,15 +30,11 @@ def index(request):
         return render(request, 'training/index.html', {'users_count': User.objects.all().count()})
 
 
-class UserProfileForm(forms.Form):
-    timezone = forms.CharField(label='time zone')
-
-
 @login_required
 def user_profile(request):
     current_tz = userprof.timezone(request.user)
 
-    form = _make_form(UserProfileForm, request, {'timezone': current_tz.zone})
+    form = _make_form(userprof.UserProfileForm, request, {'timezone': current_tz.zone})
 
     if request.method == "POST":
         userprof.save_timezone(request.user, request.POST['timezone'])
