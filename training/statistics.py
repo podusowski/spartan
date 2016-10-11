@@ -52,7 +52,7 @@ class Week:
 
         result = list(map(make_day, range(7)))
 
-        for workout in self.workouts:
+        for workout in self.workouts.order_by('started'):
             day = workout.started.weekday()
             result[day].workouts.append(workout)
 
