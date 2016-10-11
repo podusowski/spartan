@@ -2,8 +2,15 @@ import logging
 import pytz
 
 from django import forms
+from django.utils import timezone as django_tz
+from django.utils.deprecation import MiddlewareMixin
 
 from training import models
+
+
+class TimezoneMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        django_tz.activate(timezone(request.user))
 
 
 class UserProfileForm(forms.Form):
