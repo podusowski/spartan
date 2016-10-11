@@ -13,8 +13,11 @@ class TimezoneMiddleware(MiddlewareMixin):
         django_tz.activate(timezone(request.user))
 
 
+TIMEZONES = zip(pytz.all_timezones, pytz.all_timezones)
+
+
 class UserProfileForm(forms.Form):
-    timezone = forms.CharField(label='time zone')
+    timezone = forms.ChoiceField(label='time zone', choices=TIMEZONES)
 
 
 def timezone(user):
