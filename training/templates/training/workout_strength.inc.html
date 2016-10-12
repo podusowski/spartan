@@ -20,10 +20,10 @@
 <section>
 {% for excercise in workout.excercise_set.all %}
     <div class="excercise {% if forloop.first and workout.live %}active{% endif %}">
-        <div class="excercise_title">
+        <div class="name">
             {{excercise.name}}
         </div>
-        <div class="excercise_content">
+        <div class="content">
             {% if forloop.first and not workout.finished %}
                 <span class="note" data-stopwatch-from="{{excercise.time_started.isoformat}}">{{excercise.duration|duration}}</span>
             {% else %}

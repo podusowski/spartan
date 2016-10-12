@@ -282,7 +282,6 @@ section {
 
 .day, .excercise {
     color: white;
-    min-height: 5em;
     vertical-align: top;
     border-radius: 0.3em;
     border: 1px solid #111;
@@ -297,46 +296,42 @@ section {
     &.inactive {
         border-left: 2px solid #333;
     }
+
+    .name {
+        display: inline-block;
+        color: #aaa;
+        margin: 0 0 0 0.5em;
+        text-transform: uppercase;
+        font-size: smaller;
+    }
+
+    .content {
+        border: none;
+        margin-left: 0.5em;
+        vertical-align: top;
+        text-transform: uppercase;
+        vertical-align: top;
+    }
 }
 
-.active_day {
-    border-left: 2px solid $primary_color;
+.day {
+    min-height: 5em;
+
+    .name {
+        width: 2.5em;
+    }
+
+    .content {
+        padding-top: 0.5em;
+        display: inline-block;
+        color: #222;
+    }
 }
 
-.inactive_day {
-    border-left: 2px solid #333;
-}
-
-.day-name, .excercise_title {
-    display: inline-block;
-    margin: 0 1em 0 0;
-    color: #aaa;
-    padding: 0.5em;
-    text-transform: uppercase;
-    font-size: smaller;
-}
-
-.day-name {
-    width: 2em;
-}
-
-.day-content, .excercise_content {
-    border: none;
-    margin-left: 0.5em;
-    vertical-align: top;
-    font-weight: 100;
-    text-transform: uppercase;
-    vertical-align: top;
-}
-
-.day-content {
-    padding-top: 0.5em;
-    display: inline-block;
-    color: #222;
-}
-
-.excercise_content {
-    padding-bottom: 0.5em;
+.excercise {
+    .content {
+        padding-bottom: 0.5em;
+    }
 }
 
 nav {

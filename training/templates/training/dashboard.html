@@ -49,10 +49,10 @@
     <section>
         {% for day in week.days %}
             <div class="day {{ day.workouts|yesno:"active,inactive" }}">
-                <div class="day-name">
+                <div class="name">
                     {{ day.start_time|date:"D" }}
                 </div>
-                <div class="day-content">
+                <div class="content">
                     {% for workout in day.workouts %}
                         <a href="{% url 'workout' workout.id %}">
                             <dl>
