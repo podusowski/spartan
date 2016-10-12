@@ -2,7 +2,7 @@
 
 {%if workout.live%}
     <section>
-        <dl class="metric"><dt>duration</dt><dd><span id="stopwatch">--:--</span></dd></dl>
+        <dl class="metric"><dt>duration</dt><dd><span data-stopwatch-from="{{workout.started.isoformat}}">--:--</span></dd></dl>
         <dl class="metric"><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     </section>
@@ -25,12 +25,7 @@
         </div>
         <div class="excercise_content">
             {% if forloop.first and not workout.finished %}
-                <span id="excercise_duration" class="note">{{excercise.duration|duration}}</span>
-                <script>
-                    $(document).ready(function() {
-                        stopwatch("excercise_duration", new Date("{{excercise.time_started.isoformat}}"));
-                    });
-                </script>
+                <span class="note" data-stopwatch-from="{{excercise.time_started.isoformat}}">{{excercise.duration|duration}}</span>
             {% else %}
                 <span class="note">{{excercise.duration|duration}}</span>
             {% endif %}
@@ -98,12 +93,4 @@
             <a class="form-value-shortcut" href="javascript:start_excercise('{{ excercise }}')">{{ excercise }}</a>
         {%endfor%}
     </section>
-{% endif %}
-
-{% if workout.live %}
-<script>
-    $(document).ready(function() {
-        stopwatch("stopwatch", new Date("{{workout.started.isoformat}}"));
-    });
-</script>
 {% endif %}

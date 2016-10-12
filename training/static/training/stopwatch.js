@@ -15,6 +15,16 @@ function stopwatch(html_element_id, start_time)
     setTimeout(function() { stopwatch(html_element_id, start_time); }, 500);
 }
 
+function stopwatch2(element)
+{
+    var start_time = new Date(element.attr('data-stopwatch-from'));
+    var now = new Date();
+    var diff = now.getTime() - start_time.getTime() - time_difference_between_server;
+
+    element.text(format_timespan(diff));
+    setTimeout(function() { stopwatch2(element); }, 500);
+}
+
 function format_number(number)
 {
     if (number > 9)
@@ -60,3 +70,15 @@ function format_timespan(ms)
         return mins_and_secs;
     }
 }
+
+function start_all_stopwatches()
+{
+    $("[data-stopwatch-from]").each(function()
+    {
+        stopwatch2($(this));
+    });
+}
+
+$(document).ready(function() {
+    start_all_stopwatches();
+});
