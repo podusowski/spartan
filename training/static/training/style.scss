@@ -286,9 +286,17 @@ section {
     vertical-align: top;
     border-radius: 0.3em;
     border: 1px solid #111;
-    border-left: 2px solid $primary_color;
+    border-left: 2px solid #333;
     margin-bottom: 0.5em;
     background: linear-gradient(135deg, #111 0%, black 100%);
+
+    &.active {
+        border-left: 2px solid $primary_color;
+    }
+
+    &.inactive {
+        border-left: 2px solid #333;
+    }
 }
 
 .active_day {

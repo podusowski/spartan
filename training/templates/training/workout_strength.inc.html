@@ -19,7 +19,7 @@
 <h2>excercises</h2>
 <section>
 {% for excercise in workout.excercise_set.all %}
-    <div class="excercise">
+    <div class="excercise {% if forloop.first and workout.live %}active{% endif %}">
         <div class="excercise_title">
             {{excercise.name}}
         </div>
