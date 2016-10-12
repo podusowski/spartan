@@ -94,7 +94,7 @@ class Excercise(models.Model):
     time_updated = models.DateTimeField(null=True, default=None)
 
     class Meta:
-        ordering = ['time_started']
+        ordering = ['-time_started']
 
 
 class Reps(models.Model):
