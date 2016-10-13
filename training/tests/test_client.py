@@ -11,7 +11,7 @@ from training import models, units
 from .utils import time
 
 
-GPX_DIR = os.path.dirname(os.path.abspath(__file__))
+GPX_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gpx')
 
 
 class ClienStrengthTestCase(TestCase):

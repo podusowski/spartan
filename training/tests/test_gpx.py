@@ -21,7 +21,7 @@ class GpxTestCase(TestCase):
 
     def _make_simple_upload_file(self, filename):
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        GPX_FILE = os.path.join(BASE_DIR, filename)
+        GPX_FILE = os.path.join(BASE_DIR, 'gpx', filename)
         return SimpleUploadedFile('workout.gpx', open(GPX_FILE, 'rb').read())
 
     def test_make_sure_basic_stuff_is_imported_from_gpx(self):
