@@ -41,3 +41,12 @@ def add_excercise(user, workout_id, name):
 
     excercise.time_started = django.utils.timezone.now()
     excercise.save()
+
+
+def add_reps(user, excercise_id, reps):
+    s = models.Excercise.objects.get(pk=excercise_id, workout__user=user)
+    s.reps_set.create(reps=reps)
+
+    s.time_updated = django.utils.timezone.now()
+    s.save()
+    return s.workout.id
