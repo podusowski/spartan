@@ -88,25 +88,7 @@ def workout(request, training_session_id):
 
 @login_required
 def add_excercise(request, training_session_id):
-    workout = Workout.objects.get(pk=training_session_id, user=request.user)
-
-    try:
-        current_excercise = workout.excercise_set.order_by('-pk')[0]
-        current_excercise.time_finished = timezone.now()
-        current_excercise.save()
-    except:
-        pass
-
-    excercise = workout.excercise_set.create(name=request.POST['name'])
-    try:
-        workout.start()
-    except:
-        pass
-    workout.save()
-
-    excercise.time_started = timezone.now()
-    excercise.save()
-
+    strength_workout.add_excercise(request.user, training_session_id, request.POST['name'])
     return redirect('workout', training_session_id)
 
 

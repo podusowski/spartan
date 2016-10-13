@@ -101,6 +101,13 @@ class ClienStrengthTestCase(TestCase):
         self.assertIsNotNone(workout.started)
         self.assertIsNotNone(workout.finished)
 
+    def test_finish_workout_without_any_excercise(self):
+        self._login()
+        workout = self._start_workout()
+
+        with self.assertRaises(Exception):
+            self._post('/finish_workout/{}'.format(workout.id))
+
     def _import_gpx(self, filename):
         path = os.path.join(GPX_DIR, filename)
         with open(path, 'r') as f:
