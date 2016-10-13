@@ -69,6 +69,9 @@ $background-color: black;
 
 body {
     background-color: $background-color;
+    background-image: url(background.svg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: white;
     font-family: Calibri, 'Open Sans', sans-serif;
     font-weight: normal;
