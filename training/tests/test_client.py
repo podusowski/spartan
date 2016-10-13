@@ -156,7 +156,7 @@ class ClienStrengthTestCase(TestCase):
 
         self._import_gpx('3p_simplest.gpx')
         self._import_gpx('3p_simplest_2.gpx')
-        self._import_gpx('3p_without_points.gpx')
+        self._import_gpx('running_no_points.gpx')
 
         self._import_gpx('3p_cycling.gpx')
 
