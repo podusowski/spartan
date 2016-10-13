@@ -25,9 +25,11 @@
 
 <body>
     <div class="header">
-        <h1><a href="{%url 'index'%}">spartan</a></h1>
+        <div>
+            <a href="{%url 'index'%}"><img src="{% static 'training/spartan.svg' %}" /></a>
+        </div>
 
-        <div class="user">
+        <div>
             {%if request.user.is_authenticated%}
                 logged as <a href="{% url 'user_profile' %}">{{request.user.username}}</a> (<a href="{% url 'logout' %}">logout</a>)
             {%else%}
