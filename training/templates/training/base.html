@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui, user-scalable: no">
 
     {% load sass_tags %}
+    {% load staticfiles %}
+
     <link href="{% sass_src 'training/style.scss' %}" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,400" rel="stylesheet">
+
+    <link rel="icon" href="{% static 'training/64.png' %}" sizes="64x64" type="image/png">
+
+    <meta name="msapplication-square70x70logo" content="{% static 'training/70.png' %}" />
+    <meta name="msapplication-square150x150logo" content="{% static 'training/150.png' %}" />
+    <!-- <meta name="msapplication-wide310x150logo" content="widetile.png" /> -->
+    <meta name="msapplication-square310x310logo" content="{% static 'training/310.png' %}" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
