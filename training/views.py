@@ -14,6 +14,7 @@ from .models import *
 from .statistics import *
 from . import gpx
 from training import userprof
+from training import strength_workout
 
 
 def _make_form(form_type, request, initial=None):
@@ -60,8 +61,8 @@ def statistics_this_month(request):
 
 @login_required
 def start_workout(request):
-    workout = Workout.objects.create(user=request.user)
-    return redirect('workout', workout.id)
+    id = strength_workout.start_workout(request.user)
+    return redirect('workout', id)
 
 
 @login_required
