@@ -67,18 +67,8 @@ def start_workout(request):
 
 @login_required
 def finish_workout(request, training_session_id):
-    workout = Workout.objects.get(pk=training_session_id)
-    workout.finish()
-    workout.save()
-
-    try:
-        current_excercise = workout.excercise_set.order_by('-pk')[0]
-        current_excercise.time_finished = timezone.now()
-        current_excercise.save()
-    except:
-        pass
-
-    return redirect('workout', workout.id)
+    strength_workout.finish_workout(None, training_session_id)
+    return redirect('workout', training_session_id)
 
 
 @login_required
