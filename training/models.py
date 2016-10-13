@@ -122,9 +122,6 @@ class Gpx(models.Model):
     activity_type = SportField(max_length=20)
     distance = models.IntegerField(null=True, default=None)
 
-    def clean():
-        self.activity_type = self.activity_type.lower()
-
     def points_as_json(self):
         def make_point(point):
             return {'lat': float(point.lat),
