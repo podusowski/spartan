@@ -8,10 +8,8 @@ from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
 from training import models, units
-from .utils import time
-
-
-GPX_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gpx')
+from training.tests import utils
+from training.tests.utils import time
 
 
 class ClienStrengthTestCase(TestCase):
@@ -109,7 +107,7 @@ class ClienStrengthTestCase(TestCase):
             self._post('/finish_workout/{}'.format(workout.id))
 
     def _import_gpx(self, filename):
-        path = os.path.join(GPX_DIR, filename)
+        path = os.path.join(utils.GPX_DIR, filename)
         with open(path, 'r') as f:
             self._post('/upload_gpx/', {'gpxfile': f})
 
