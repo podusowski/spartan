@@ -39,10 +39,10 @@ class ClienStrengthTestCase(utils.ClientTestCase):
 
         self._expect_workout_page(workout.id, status_code=404)
 
-    def _do_some_pushups(self, series):
+    def _strength_workout(self, name, series):
         workout = self._start_workout()
 
-        self.post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+        self.post('/add_excercise/{}/'.format(workout.id), {'name': name})
 
         excercise = workout.excercise_set.latest('pk')
 
@@ -50,6 +50,9 @@ class ClienStrengthTestCase(utils.ClientTestCase):
             self.post('/add_reps/{}/'.format(excercise.id), {'reps': reps})
 
         return self.post('/finish_workout/{}'.format(workout.id)).context['workout']
+
+    def _do_some_pushups(self, series):
+        return self._strength_workout('push-up', series)
 
     def test_add_some_excercises_and_reps(self):
         self._login()
@@ -148,7 +151,7 @@ class ClienStrengthTestCase(utils.ClientTestCase):
 
         self._import_gpx('3p_cycling.gpx')
 
-        pushups = self._do_some_pushups([2, 4, 8])
+        pushups = self._strength_workout('push-up', [2, 4, 8])
 
         statistics = self._get_statistics_from_dashboard()
         excercises = statistics.most_popular_workouts()
@@ -190,12 +193,12 @@ class ClienStrengthTestCase(utils.ClientTestCase):
         self._login()
         statistics = self._get_statistics_from_dashboard()
 
-        workout = self._do_some_pushups([5, 10, 7])
+        workout = self._strength_workout('push-up', [5, 10, 7])
         workout.started = time(2016, 7, 1, 0, 0, 0)
         workout.finished = time(2016, 7, 1, 0, 0, 1)
         workout.save()
 
-        workout = self._do_some_pushups([5, 10, 7])
+        workout = self._strength_workout('push-up', [5, 10, 7])
         workout.started = time(2016, 8, 1, 0, 0, 0)
         workout.finished = time(2016, 8, 1, 0, 0, 1)
         workout.save()
