@@ -26,4 +26,5 @@ class UnitsTestCase(TestCase):
 
     def test_pace_convertion_from_mps_to_mpkm(self):
         self.assertEqual('3:59min/km', units.mpkm_from_mps(4.17))
+        self.assertEqual('5:03min/km', units.mpkm_from_mps(3.3))
         self.assertEqual('-', units.mpkm_from_mps(0))

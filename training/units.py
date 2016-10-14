@@ -3,7 +3,7 @@ def mpkm_from_mps(m_per_s):
         c = 16.666666666667
         mpkm = int(c // m_per_s)
         spkm = int((c / m_per_s - mpkm) * 60)
-        return '{}:{}min/km'.format(mpkm, spkm)
+        return '{}:{:02d}min/km'.format(mpkm, spkm)
     except:
         return '-'
 
