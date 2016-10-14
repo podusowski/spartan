@@ -12,54 +12,44 @@ from training.tests import utils
 from training.tests.utils import time
 
 
-class ClienStrengthTestCase(TestCase):
+class ClienStrengthTestCase(utils.ClientTestCase):
     def setUp(self):
+        super(utils.ClientTestCase, self).setUp()
         self.user = User.objects.create_user(username='grzegorz', email='', password='z')
-        self.client = Client()
-
-    def _get(self, uri, status_code=200):
-        response = self.client.get(uri, follow=True)
-        self.assertEqual(status_code, response.status_code)
-        return response
-
-    def _post(self, uri, data={}, status_code=200):
-        response = self.client.post(uri, data, follow=True)
-        self.assertEqual(status_code, response.status_code)
-        return response
 
     def _expect_workout_page(self, workout_id, status_code=200):
-        return self._get('/workout/{}'.format(workout_id), status_code=status_code)
+        return self.get('/workout/{}'.format(workout_id), status_code=status_code)
 
     def _login(self):
-        self._post('/login/', {'username': 'grzegorz', 'password': 'z'})
+        self.post('/login/', {'username': 'grzegorz', 'password': 'z'})
 
     def _start_workout(self):
-        workout = self._get('/start_workout').context['workout']
+        workout = self.get('/start_workout').context['workout']
         self._expect_workout_page(workout.id)
         return workout
 
     def _get_statistics_from_dashboard(self):
-        return self._get('/dashboard').context['statistics']
+        return self.get('/dashboard').context['statistics']
 
     def test_create_workout_and_delete_it(self):
         self._login()
         workout = self._start_workout()
 
-        self._post('/delete_workout/{}/'.format(workout.id))
+        self.post('/delete_workout/{}/'.format(workout.id))
 
         self._expect_workout_page(workout.id, status_code=404)
 
     def _do_some_pushups(self, series):
         workout = self._start_workout()
 
-        self._post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+        self.post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
 
         excercise = workout.excercise_set.latest('pk')
 
         for reps in series:
-            self._post('/add_reps/{}/'.format(excercise.id), {'reps': reps})
+            self.post('/add_reps/{}/'.format(excercise.id), {'reps': reps})
 
-        return self._post('/finish_workout/{}'.format(workout.id)).context['workout']
+        return self.post('/finish_workout/{}'.format(workout.id)).context['workout']
 
     def test_add_some_excercises_and_reps(self):
         self._login()
@@ -71,7 +61,7 @@ class ClienStrengthTestCase(TestCase):
         self.assertIsNone(workout.started)
         self.assertIsNone(workout.finished)
 
-        self._post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+        self.post('/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
 
         statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
@@ -81,17 +71,17 @@ class ClienStrengthTestCase(TestCase):
 
         excercise = workout.excercise_set.latest('pk')
 
-        self._post('/add_reps/{}/'.format(excercise.id), {'reps': '10'})
-        self._post('/add_excercise/{}/'.format(workout.id), {'name': 'pull-up'})
+        self.post('/add_reps/{}/'.format(excercise.id), {'reps': '10'})
+        self.post('/add_excercise/{}/'.format(workout.id), {'name': 'pull-up'})
 
         excercise = workout.excercise_set.latest('pk')
 
-        self._post('/add_reps/{}/'.format(excercise.id), {'reps': '5'})
-        self._post('/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self.post('/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self.post('/add_reps/{}/'.format(excercise.id), {'reps': '5'})
 
         self.assertEqual(units.Volume(reps=20), workout.volume())
 
-        self._post('/finish_workout/{}'.format(workout.id))
+        self.post('/finish_workout/{}'.format(workout.id))
 
         statistics = self._get_statistics_from_dashboard()
         workout = statistics.previous_workouts()[0]
@@ -104,12 +94,12 @@ class ClienStrengthTestCase(TestCase):
         workout = self._start_workout()
 
         with self.assertRaises(Exception):
-            self._post('/finish_workout/{}'.format(workout.id))
+            self.post('/finish_workout/{}'.format(workout.id))
 
     def _import_gpx(self, filename):
         path = os.path.join(utils.GPX_DIR, filename)
         with open(path, 'r') as f:
-            self._post('/upload_gpx/', {'gpxfile': f})
+            self.post('/upload_gpx/', {'gpxfile': f})
 
     def _get_latest_workout_from_dashboard(self):
         statistics = self._get_statistics_from_dashboard()
@@ -276,16 +266,16 @@ class ClienStrengthTestCase(TestCase):
             endomondo.return_value = endomondo_mock
             endomondo.return_value.token = 'token'
 
-            key = self._get('/endomondo/').context['key']
+            key = self.get('/endomondo/').context['key']
             self.assertIsNone(key)
 
-            self._post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
+            self.post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
             endomondo.assert_called_with(email='legan@com.pl', password='haslo')
 
-            key = self._get('/endomondo/').context['key']
+            key = self.get('/endomondo/').context['key']
             self.assertEqual('token', key.key)
 
-            key = self._get('/disconnect_endomondo/').context['key']
+            key = self.get('/disconnect_endomondo/').context['key']
             self.assertIsNone(key)
 
     def test_import_from_endomondo_no_workouts(self):
@@ -295,10 +285,10 @@ class ClienStrengthTestCase(TestCase):
             endomondo.return_value = Mock()
             endomondo.return_value.token = 'token'
 
-            self._post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
+            self.post('/endomondo/', {'email': 'legan@com.pl', 'password': 'haslo'})
 
             endomondo.return_value.fetch.return_value = []
-            self._get('/synchronize_endomondo_ajax/')
+            self.get('/synchronize_endomondo_ajax/')
 
             endomondo.return_value.fetch.assert_called_once_with(max_results=10, before=None, after=None)
 
@@ -312,28 +302,28 @@ class ClienStrengthTestCase(TestCase):
             self.user.userprofile
 
         # page is accessible without post data
-        self._get('/user_profile')
+        self.get('/user_profile')
 
     def test_saving_timezone(self):
         self._login()
 
-        self._post('/user_profile', {'timezone': 'Europe/Warsaw'})
+        self.post('/user_profile', {'timezone': 'Europe/Warsaw'})
         profile = models.UserProfile.objects.get(user=self.user)
         self.assertEqual('Europe/Warsaw', profile.timezone)
 
-        self._post('/user_profile', {'timezone': 'Europe/Lisbon'})
+        self.post('/user_profile', {'timezone': 'Europe/Lisbon'})
         profile = models.UserProfile.objects.get(user=self.user)
         self.assertEqual('Europe/Lisbon', profile.timezone)
 
-        form = self._get('/user_profile').context['form']
+        form = self.get('/user_profile').context['form']
         self.assertEqual('Europe/Lisbon', form.initial['timezone'])
 
     def test_saving_invalid_timezone_falls_back_to_utc(self):
         self._login()
 
-        self._post('/user_profile', {'timezone': 'invalid'})
+        self.post('/user_profile', {'timezone': 'invalid'})
         profile = models.UserProfile.objects.get(user=self.user)
         self.assertEqual('UTC', profile.timezone)
 
-        form = self._get('/user_profile').context['form']
+        form = self.get('/user_profile').context['form']
         self.assertEqual('UTC', form.initial['timezone'])
