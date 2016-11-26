@@ -39,6 +39,7 @@
                     <li><strong>{{excercise.total_reps}}</strong></li>
                 {% endif %}
             </ul>
+        </div>
 
             {% if forloop.first and excercise.time_updated and not workout.finished %}
                 <script>
@@ -48,7 +49,7 @@
                 </script>
             {% endif %}
             {% if forloop.first and not workout.finished %}
-                <div>
+                <div class="toolbox">
                     <form action="{% url 'add_reps' excercise.id %}" method="post" id="add_reps">
                         {% csrf_token %}
                         <input type="number" id="sets_{{ excercise.id }}" name="reps" value="{{ excercise.sets }}" placeholder="reps" required />
@@ -60,7 +61,6 @@
                     {% endfor %}
                 </div>
             {%endif%}
-        </div>
     </div>
 {%empty%}
     excersice is not started until you add first excercise
