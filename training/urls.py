@@ -32,4 +32,5 @@ urlpatterns = [
     url('^synchronize_endomondo/$', views.synchronize_endomondo, name='synchronize_endomondo'),
     url('^synchronize_endomondo_ajax/$', views.synchronize_endomondo_ajax, name='synchronize_endomondo_ajax'),
     url('^purge_endomondo/$', views.purge_endomondo, name='purge_endomondo'),
+    url('^explorer/$', views.explorer, name='explorer'),
 ]

@@ -1,6 +1,8 @@
 import datetime
 import os
 import logging
+import json
+import decimal
 
 from django.db import transaction
 
@@ -132,3 +134,23 @@ def disconnect_endomondo(user):
 
 def purge_endomondo_workouts(user):
     models.Workout.objects.filter(user=user, endomondoworkout__isnull=False).delete()
+
+
+def generate_heatmap(user):
+    def r(value):
+        return round(float(value), 4)
+
+    def make_heatmap_point(gpx_point):
+        return (r(gpx_point.lon), r(gpx_point.lat))
+
+    def json_encode_decimal(obj):
+        if isinstance(obj, decimal.Decimal):
+            return str(obj)
+        raise TypeError(repr(obj) + " is not JSON serializable")
+
+    points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user)
+    points = map(make_heatmap_point, points)
+    points = set(points)
+    points = list(points)
+
+    return json.dumps(points, default=json_encode_decimal)

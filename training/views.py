@@ -164,3 +164,9 @@ def disconnect_endomondo(request):
 def purge_endomondo(request):
     gpx.purge_endomondo_workouts(request.user)
     return redirect('dashboard')
+
+
+@login_required
+def explorer(request):
+    heatmap = gpx.generate_heatmap(request.user)
+    return render(request, 'training/explorer.html', {'heatmap': heatmap, 'c': len(heatmap)})

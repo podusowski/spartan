@@ -1,0 +1,77 @@
+{%extends "training/base.html"%}
+
+{% block nav %}
+<nav>
+    <a href="{% url 'dashboard' %}">dashboard</a>
+</nav>
+{% endblock %}
+
+{%block content%}
+
+{% load staticfiles %}
+{% load training_format %}
+
+im da fkin explorer
+
+<link rel="stylesheet" href="https://openlayers.org/en/v3.19.1/css/ol.css" type="text/css">
+<script src="https://openlayers.org/en/v3.19.1/build/ol.js"></script>
+
+<section>
+    <div id="map" style="height: 700px"></div>
+</section>
+
+<script>
+
+function makeGpsLayer(polyline_points) {
+    var track = new ol.geom.MultiPoint(polyline_points).transform('EPSG:4326', 'EPSG:3857');
+
+    var featureLine = new ol.Feature({
+        geometry: track
+    });
+
+    var sourceLine = new ol.source.Vector({
+        features: [featureLine]
+    });
+
+    var styles = [
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 3,
+                fill: new ol.style.Fill({
+                    color: '#3399ff'
+                })
+            })
+        })
+    ]
+
+    var layer = new ol.layer.Vector({
+        source: sourceLine,
+
+        style: styles
+    });
+
+    return layer
+}
+
+function renderMap(target, layer) {
+    var osmLayer = new ol.layer.Tile({source: new ol.source.OSM()})
+
+    var map = new ol.Map({
+            layers: [osmLayer, layer],
+            target: target
+        });
+
+    map.getView().fit(layer.getSource().getExtent(), map.getSize());
+}
+
+var points = {{ heatmap|safe }};
+
+renderMap('map', makeGpsLayer(points));
+
+</script>
+
+<p>
+    points: {{ c }}
+</p>
+
+{%endblock%}
