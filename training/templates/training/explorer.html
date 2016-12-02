@@ -22,7 +22,7 @@ im da fkin explorer
 
 <script>
 
-function makeGpsLayer(polyline_points) {
+function makeHeatmapLayer(polyline_points) {
     var track = new ol.geom.MultiPoint(polyline_points).transform('EPSG:4326', 'EPSG:3857');
 
     var featureLine = new ol.Feature({
@@ -33,21 +33,25 @@ function makeGpsLayer(polyline_points) {
         features: [featureLine]
     });
 
+    var hexagon = new ol.style.Icon({
+        src: '{% static 'training/hexagon.svg' %}',
+        scale: 0.01,
+        opacity: 0.5
+    });
+
     var styles = [
         new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 3,
-                fill: new ol.style.Fill({
-                    color: '#3399ff'
-                })
-            })
+            image: hexagon
         })
     ]
 
     var layer = new ol.layer.Vector({
         source: sourceLine,
 
-        style: styles
+        style: function(feature, resolution) {
+            hexagon.setScale(1/resolution);
+            return styles;
+        }
     });
 
     return layer
@@ -66,7 +70,7 @@ function renderMap(target, layer) {
 
 var points = {{ heatmap|safe }};
 
-renderMap('map', makeGpsLayer(points));
+renderMap('map', makeHeatmapLayer(points));
 
 </script>
 
