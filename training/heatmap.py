@@ -8,26 +8,26 @@ from . import models
 EPSG4326 = pyproj.Proj('+init=EPSG:4326')
 WEB_MERCATOR = pyproj.Proj('+init=EPSG:3857')
 
-size = 100
+HEXAGONAL_SIZE = 100
 
 
 def hex_to_pixel(h):
     q, r = h
-    x = size * 3/2 * q
-    y = size * sqrt(3) * (r + q/2)
+    x = HEXAGONAL_SIZE * 3/2 * q
+    y = HEXAGONAL_SIZE * sqrt(3) * (r + q/2)
     return x, y
 
 
 def hex_to_pixel(h):
-    x = size * sqrt(3) * (q + r/2)
-    y = size * 3/2 * r
+    x = HEXAGONAL_SIZE * sqrt(3) * (q + r/2)
+    y = HEXAGONAL_SIZE * 3/2 * r
     return x, y
 
 
 def hex_to_pixel(h):
     q, r = h
-    x = size * 3/2 * q
-    y = size * sqrt(3) * (r + q/2)
+    x = HEXAGONAL_SIZE * 3/2 * q
+    y = HEXAGONAL_SIZE * sqrt(3) * (r + q/2)
     return x, y
 
 
@@ -73,8 +73,8 @@ def hex_round(h):
 
 def pixel_to_hex(point):
     x, y = point
-    q = x * 2/3 / size
-    r = (-x / 3 + sqrt(3)/3 * y) / size
+    q = x * 2/3 / HEXAGONAL_SIZE
+    r = (-x / 3 + sqrt(3)/3 * y) / HEXAGONAL_SIZE
     return hex_round((q, r))
 
 
