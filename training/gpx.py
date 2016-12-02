@@ -142,22 +142,8 @@ def purge_endomondo_workouts(user):
 
 EPSG4326 = pyproj.Proj('+init=EPSG:4326')
 WEB_MERCATOR = pyproj.Proj('+init=EPSG:3857')
-#PLATE_CARREE = pyproj.Proj('+init=EPSG:32663')
-#PLATE_CARREE = pyproj.Proj(proj='hammer')
-# CASSINI = pyproj.Proj('
 
 size = 100
-
-def offset_to_pixel(h):
-    lon, lat = h
-
-    x_offset = 0.5 * (lat % 2 == 0)
-
-    x = size * math.sqrt(3) * (lon + x_offset)
-    y = size * 3/2 * lat
-
-    return x, y
-
 
 
 def hex_to_pixel(h):
@@ -171,6 +157,7 @@ def hex_to_pixel(h):
     x = size * sqrt(3) * (q + r/2)
     y = size * 3/2 * r
     return x, y
+
 
 def hex_to_pixel(h):
     q, r = h
@@ -234,17 +221,9 @@ def generate_heatmap(user):
         lon, lat = gpx_point
         return r(lon), r(lat)
 
-    def project(point):
-        lon, lat = point
-        return pyproj.transform(EPSG4326, PLATE_CARREE, lon, lat)
-
     def web(point):
         lon, lat = point
         return pyproj.transform(EPSG4326, WEB_MERCATOR, lon, lat)
-
-    def skip(point):
-        lon, lat = point
-        return lon % 2 == 0 #and lat % 2 != 0
 
     def hexagonal(point):
         h = pixel_to_hex(point)
@@ -259,11 +238,8 @@ def generate_heatmap(user):
     #points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user, time__gt=time).values_list('lon', 'lat')
     points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user).values_list('lon', 'lat')
 
-    #points = map(project, points)
     points = map(web, points)
-
     points = map(loose_precision, points)
-    # ints from now
 
     points = map(hexagonal, points)
     points = set(points)
