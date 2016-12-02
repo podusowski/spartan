@@ -15,7 +15,7 @@
 <script src="https://openlayers.org/en/v3.19.1/build/ol.js"></script>
 
 <section>
-    <div id="map" style="height: 700px"></div>
+    <div id="map" style="height: 650px"></div>
 </section>
 
 <script>
@@ -32,7 +32,7 @@ function makeHeatmapLayer(polyline_points) {
     });
 
     var hexagon = new ol.style.Icon({
-        src: '{% static 'training/hexagon.svg' %}',
+        src: '{% static 'training/hexagon.png' %}',
         opacity: 0.7
     });
 
@@ -46,7 +46,7 @@ function makeHeatmapLayer(polyline_points) {
         source: sourceLine,
 
         style: function(feature, resolution) {
-            hexagon.setScale(1/resolution/1.57);
+            hexagon.setScale(1.8 / resolution);
             return styles;
         }
     });
