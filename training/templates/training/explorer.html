@@ -46,7 +46,7 @@ function makeHeatmapLayer(polyline_points) {
         source: sourceLine,
 
         style: function(feature, resolution) {
-            hexagon.setScale(1.7 / resolution);
+            hexagon.setScale(2 / resolution);
             return styles;
         }
     });
