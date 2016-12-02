@@ -15,6 +15,7 @@ from .statistics import *
 from . import gpx
 from training import userprof
 from training import strength_workout
+from training import heatmap
 
 
 def _make_form(form_type, request, initial=None):
@@ -168,5 +169,5 @@ def purge_endomondo(request):
 
 @login_required
 def explorer(request):
-    heatmap = gpx.generate_heatmap(request.user)
-    return render(request, 'training/explorer.html', {'heatmap': heatmap, 'c': len(heatmap)})
+    m = heatmap.generate_heatmap(request.user)
+    return render(request, 'training/explorer.html', {'heatmap': m, 'c': len(m)})
