@@ -169,5 +169,7 @@ def purge_endomondo(request):
 
 @login_required
 def explorer(request):
-    m = heatmap.generate_heatmap(request.user)
-    return render(request, 'training/explorer.html', {'heatmap': m, 'c': len(m)})
+    c, m = heatmap.generate_heatmap(request.user)
+    return render(request, 'training/explorer.html', {'heatmap': m,
+                                                      'c': c,
+                                                      'workout_types': gpx.workout_types(request.user)})

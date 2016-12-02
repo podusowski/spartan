@@ -138,3 +138,7 @@ def disconnect_endomondo(user):
 
 def purge_endomondo_workouts(user):
     models.Workout.objects.filter(user=user, endomondoworkout__isnull=False).delete()
+
+
+def workout_types(user):
+    return set(models.Gpx.objects.filter(workout__user=user).values_list('activity_type', flat=True))

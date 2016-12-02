@@ -15,7 +15,11 @@
 <script src="https://openlayers.org/en/v3.19.1/build/ol.js"></script>
 
 <section>
-    <div id="map" style="height: 650px"></div>
+    <dl class="metric"><dt>points</dt><dd>{{ c }}</dd></dl>
+</section>
+
+<section>
+    <div id="map" style="height: 550px"></div>
 </section>
 
 <script>
@@ -70,9 +74,5 @@ var points = {{ heatmap|safe }};
 renderMap('map', makeHeatmapLayer(points));
 
 </script>
-
-<p>
-    points: {{ c }}
-</p>
 
 {%endblock%}

@@ -1,7 +1,9 @@
 import pyproj
 from math import sqrt
 import json
+import datetime
 
+from django.utils import timezone
 from . import models
 
 
@@ -78,7 +80,7 @@ def pixel_to_hex(point):
     return hex_round((q, r))
 
 
-def generate_heatmap(user):
+def generate_heatmap(user, days=None):
     def web_mercator(point):
         lon, lat = point
         return pyproj.transform(EPSG4326, WEB_MERCATOR, lon, lat)
@@ -92,11 +94,17 @@ def generate_heatmap(user):
             return str(obj)
         raise TypeError(repr(obj) + " is not JSON serializable")
 
-    points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user).values_list('lon', 'lat')
+    points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user)
+
+    if days is not None:
+        date = timezone.now() - datetime.timedelta(days=days)
+        points = points.filter(time__gt=date)
+
+    points = points.values_list('lon', 'lat')
 
     points = map(web_mercator, points)
     points = map(hexagonal, points)
     points = set(points)
     points = list(points)
 
-    return json.dumps(points, default=json_encode_decimal)
+    return len(points), json.dumps(points, default=json_encode_decimal)
