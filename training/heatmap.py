@@ -79,14 +79,7 @@ def pixel_to_hex(point):
 
 
 def generate_heatmap(user):
-    def r(value):
-        return int(value / 100) * 100 #round(float(value), 1)
-
-    def loose_precision(gpx_point):
-        lon, lat = gpx_point
-        return r(lon), r(lat)
-
-    def web(point):
+    def web_mercator(point):
         lon, lat = point
         return pyproj.transform(EPSG4326, WEB_MERCATOR, lon, lat)
 
@@ -99,16 +92,11 @@ def generate_heatmap(user):
             return str(obj)
         raise TypeError(repr(obj) + " is not JSON serializable")
 
-    #time = timezone.now().date() - datetime.timedelta(days=14)
-    #points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user, time__gt=time).values_list('lon', 'lat')
     points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user).values_list('lon', 'lat')
 
-    points = map(web, points)
-    points = map(loose_precision, points)
-
+    points = map(web_mercator, points)
     points = map(hexagonal, points)
     points = set(points)
-
     points = list(points)
 
     return json.dumps(points, default=json_encode_decimal)
