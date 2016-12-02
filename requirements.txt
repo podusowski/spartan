@@ -14,6 +14,7 @@ rjsmin==1.0.12
 six==1.10.0
 psycopg2
 arrow
+pyproj
 
 git+https://github.com/podusowski/endoapi.git
 git+https://github.com/podusowski/gpxpy.git

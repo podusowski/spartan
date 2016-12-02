@@ -23,7 +23,7 @@ im da fkin explorer
 <script>
 
 function makeHeatmapLayer(polyline_points) {
-    var track = new ol.geom.MultiPoint(polyline_points).transform('EPSG:4326', 'EPSG:3857');
+    var track = new ol.geom.MultiPoint(polyline_points);//.transform('EPSG:4326', 'EPSG:3857');
 
     var featureLine = new ol.Feature({
         geometry: track
@@ -49,7 +49,7 @@ function makeHeatmapLayer(polyline_points) {
         source: sourceLine,
 
         style: function(feature, resolution) {
-            hexagon.setScale(1/resolution);
+            hexagon.setScale(1/resolution/1.55);
             return styles;
         }
     });

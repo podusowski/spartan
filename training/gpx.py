@@ -3,8 +3,12 @@ import os
 import logging
 import json
 import decimal
+import pyproj
+import math
+from math import sqrt
 
 from django.db import transaction
+from django.utils import timezone
 
 import gpxpy
 
@@ -136,22 +140,134 @@ def purge_endomondo_workouts(user):
     models.Workout.objects.filter(user=user, endomondoworkout__isnull=False).delete()
 
 
+EPSG4326 = pyproj.Proj('+init=EPSG:4326')
+WEB_MERCATOR = pyproj.Proj('+init=EPSG:3857')
+#PLATE_CARREE = pyproj.Proj('+init=EPSG:32663')
+#PLATE_CARREE = pyproj.Proj(proj='hammer')
+# CASSINI = pyproj.Proj('
+
+size = 100
+
+def offset_to_pixel(h):
+    lon, lat = h
+
+    x_offset = 0.5 * (lat % 2 == 0)
+
+    x = size * math.sqrt(3) * (lon + x_offset)
+    y = size * 3/2 * lat
+
+    return x, y
+
+
+
+def hex_to_pixel(h):
+    q, r = h
+    x = size * 3/2 * q
+    y = size * sqrt(3) * (r + q/2)
+    return x, y
+
+
+def hex_to_pixel(h):
+    x = size * sqrt(3) * (q + r/2)
+    y = size * 3/2 * r
+    return x, y
+
+def hex_to_pixel(h):
+    q, r = h
+    x = size * 3/2 * q
+    y = size * sqrt(3) * (r + q/2)
+    return x, y
+
+
+def cube_to_hex(h): # axial
+    x, _, z = h
+    q = x
+    r = z
+    return q, r
+
+
+def hex_to_cube(h): # axial
+    q, r = h
+    x = q
+    z = r
+    y = -x-z
+    return (x, y, z)
+
+
+def cube_round(h):
+    x, y, z = h
+
+    rx = round(x)
+    ry = round(y)
+    rz = round(z)
+
+    x_diff = abs(rx - x)
+    y_diff = abs(ry - y)
+    z_diff = abs(rz - z)
+
+    if x_diff > y_diff and x_diff > z_diff:
+        rx = -ry-rz
+    elif y_diff > z_diff:
+        ry = -rx-rz
+    else:
+        rz = -rx-ry
+
+    return rx, ry, rz
+
+
+def hex_round(h):
+    return cube_to_hex(cube_round(hex_to_cube(h)))
+
+
+def pixel_to_hex(point):
+    x, y = point
+    q = x * 2/3 / size
+    r = (-x / 3 + sqrt(3)/3 * y) / size
+    return hex_round((q, r))
+
+
 def generate_heatmap(user):
     def r(value):
-        return round(float(value), 3)
+        return int(value / 100) * 100 #round(float(value), 1)
 
-    def make_heatmap_point(gpx_point):
+    def loose_precision(gpx_point):
         lon, lat = gpx_point
         return r(lon), r(lat)
+
+    def project(point):
+        lon, lat = point
+        return pyproj.transform(EPSG4326, PLATE_CARREE, lon, lat)
+
+    def web(point):
+        lon, lat = point
+        return pyproj.transform(EPSG4326, WEB_MERCATOR, lon, lat)
+
+    def skip(point):
+        lon, lat = point
+        return lon % 2 == 0 #and lat % 2 != 0
+
+    def hexagonal(point):
+        h = pixel_to_hex(point)
+        return hex_to_pixel(h)
 
     def json_encode_decimal(obj):
         if isinstance(obj, decimal.Decimal):
             return str(obj)
         raise TypeError(repr(obj) + " is not JSON serializable")
 
+    #time = timezone.now().date() - datetime.timedelta(days=14)
+    #points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user, time__gt=time).values_list('lon', 'lat')
     points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user).values_list('lon', 'lat')
-    points = map(make_heatmap_point, points)
+
+    #points = map(project, points)
+    points = map(web, points)
+
+    points = map(loose_precision, points)
+    # ints from now
+
+    points = map(hexagonal, points)
     points = set(points)
+
     points = list(points)
 
     return json.dumps(points, default=json_encode_decimal)
