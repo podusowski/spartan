@@ -138,17 +138,18 @@ def purge_endomondo_workouts(user):
 
 def generate_heatmap(user):
     def r(value):
-        return round(float(value), 4)
+        return round(float(value), 3)
 
     def make_heatmap_point(gpx_point):
-        return (r(gpx_point.lon), r(gpx_point.lat))
+        lon, lat = gpx_point
+        return r(lon), r(lat)
 
     def json_encode_decimal(obj):
         if isinstance(obj, decimal.Decimal):
             return str(obj)
         raise TypeError(repr(obj) + " is not JSON serializable")
 
-    points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user)
+    points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user).values_list('lon', 'lat')
     points = map(make_heatmap_point, points)
     points = set(points)
     points = list(points)
