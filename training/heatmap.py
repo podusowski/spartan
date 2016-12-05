@@ -21,22 +21,34 @@ def _dump(data):
     return json.dumps(data, default=json_encode_decimal)
 
 
-def generate_heatmap(user, days=None):
-    def web_mercator(point):
-        lon, lat = point
-        return pyproj.transform(EPSG4326, WEB_MERCATOR, lon, lat)
+def web_mercator(point):
+    lon, lat = point
+    return pyproj.transform(EPSG4326, WEB_MERCATOR, lon, lat)
 
+
+def _process_points(activity):
+    points = map(web_mercator, activity)
+    points = map(hexagons.point_to_hexagon, points)
+    points = set(points)
+    points = list(points)
+    return points
+
+
+def generate_heatmap(user, days=None):
     points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user)
 
     if days is not None:
         date = timezone.now() - datetime.timedelta(days=days)
         points = points.filter(time__gt=date)
 
-    points = points.values_list('lon', 'lat')
+    points = points.values_list('lon', 'lat', 'gpx__activity_type')
 
-    points = map(web_mercator, points)
-    points = map(hexagons.point_to_hexagon, points)
-    points = set(points)
-    points = list(points)
+    activities = {}
+    for lat, lon, activity_type in points:
+        if activity_type not in activities:
+            activities[activity_type] = []
+        activities[activity_type].append((lat, lon))
 
-    return len(points), _dump(points)
+    activities = [{'activity_type': activity_type, 'points': _process_points(points)} for activity_type, points in activities.items()]
+
+    return {'total_points': len(points), 'json': _dump(activities), 'activities': activities}

@@ -15,7 +15,9 @@
 <script src="https://openlayers.org/en/v3.19.1/build/ol.js"></script>
 
 <section>
-    <dl class="metric"><dt>points</dt><dd>{{ c }}</dd></dl>
+    {% for activity in heatmap.activities %}
+        <dl class="metric"><dt>{{ activity.activity_type }}</dt><dd>{{ activity.points|length }}</dd></dl>
+    {% endfor %}
 </section>
 
 <section>
@@ -24,8 +26,38 @@
 
 <script>
 
-function makeHeatmapLayer(polyline_points) {
-    var track = new ol.geom.MultiPoint(polyline_points);
+function makeIconStyle(src) {
+    return new ol.style.Style({
+        image: new ol.style.Icon({
+            src: src,
+            opacity: 0.7
+        })
+    });
+}
+
+var activities = {
+    'running': makeIconStyle('{% static 'training/hexagon-blue.png' %}'),
+    'cycling': makeIconStyle('{% static 'training/hexagon-red.png' %}'),
+    'walking': makeIconStyle('{% static 'training/hexagon-yellow.png' %}')
+};
+
+function scaleStyles(scale, opacity) {
+    for (activity_type in activities) {
+        activities[activity_type].getImage().setScale(scale);
+        activities[activity_type].getImage().setOpacity(opacity);
+    }
+}
+
+function getActivityStyle(activity_type) {
+    if (activity_type in activities) {
+        return activities[activity_type];
+    } else {
+        console.log("no style defined for " + activity_type);
+    }
+}
+
+function makeHeatmapLayer(activity) {
+    var track = new ol.geom.MultiPoint(activity.points);
 
     var featureLine = new ol.Feature({
         geometry: track
@@ -35,53 +67,49 @@ function makeHeatmapLayer(polyline_points) {
         features: [featureLine]
     });
 
-    var hexagon = new ol.style.Icon({
-        src: '{% static 'training/hexagon.png' %}',
-        opacity: 0.7
-    });
-
-    var styles = [
-        new ol.style.Style({
-            image: hexagon
-        })
-    ]
-
     var layer = new ol.layer.Vector({
         source: sourceLine,
 
         style: function(feature, resolution) {
-            console.log(resolution);
             if (resolution < 50)
             {
-                hexagon.setScale(2 / resolution);
-                hexagon.setOpacity(0.6);
+                scaleStyles(2 / resolution, 0.6);
             }
             else
             {
-                hexagon.setScale(0.2);
-                hexagon.setOpacity(0.1);
+                scaleStyles(0.2, 0.1);
             }
-            return styles;
+            return getActivityStyle(activity.activity_type);
         }
     });
 
     return layer
 }
 
-function renderMap(target, layer) {
+function renderMap(target, layers) {
     var osmLayer = new ol.layer.Tile({source: new ol.source.OSM()})
 
     var map = new ol.Map({
-            layers: [osmLayer, layer],
-            target: target
+            layers: [osmLayer].concat(layers),
+            target: target,
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 8
+            })
         });
 
-    map.getView().fit(layer.getSource().getExtent(), map.getSize());
+    var extent = ol.extent.createEmpty();
+    layers.forEach(function(layer) {
+        ol.extent.extend(extent, layer.getSource().getExtent());
+    });
+
+    map.getView().fit(extent, map.getSize());
 }
 
-var points = {{ heatmap|safe }};
+var heatmap = {{ heatmap.json|safe }};
+var heatmapLayers = heatmap.map(makeHeatmapLayer);
 
-renderMap('map', makeHeatmapLayer(points));
+renderMap('map', heatmapLayers);
 
 </script>
 
