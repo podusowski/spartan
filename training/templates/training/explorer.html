@@ -45,11 +45,11 @@ function makeIconStyle(src) {
 }
 
 var activities = {
-    'running': makeIconStyle('{% static 'training/hexagon-blue.png' %}'),
-    'cycling': makeIconStyle('{% static 'training/hexagon-red.png' %}'),
-    'walking': makeIconStyle('{% static 'training/hexagon-yellow.png' %}'),
-    'hiking': makeIconStyle('{% static 'training/hexagon-brown.png' %}'),
-    'running, trail': makeIconStyle('{% static 'training/hexagon-black.png' %}')
+    {% for activity in heatmap.activities %}
+        {% with 'training/hexagon-'|add:activity.color|add:'.png' as icon %}
+            '{{ activity.activity_type }}': makeIconStyle('{% static icon %}'),
+        {% endwith %}
+    {% endfor %}
 };
 
 function scaleStyles(scale, opacity) {
