@@ -242,6 +242,18 @@ dl.metric {
     dd:first-of-type {
         color: $primary_color;
     }
+
+    &.active {
+        border-top: 2px solid $primary_color;
+    }
+
+    &.inactive {
+        border-top: 2px solid #333;
+    }
+
+    &.interactive {
+        cursor: pointer;
+    }
 }
 
 section {

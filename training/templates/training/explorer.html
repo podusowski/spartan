@@ -17,7 +17,7 @@
 <section>
     {% for activity in heatmap.activities %}
         {% with 'training/hexagon-'|add:activity.color|add:'.png' as icon %}
-            <dl class="metric" onclick="toggleLayer('{{ activity.activity_type }}')">
+            <dl class="metric interactive active" onclick="toggleLayer(this, '{{ activity.activity_type }}')">
                 <dt>
                     <img src="{% static icon %}" width="8" height="8" />
                     {{ activity.activity_type }}
@@ -117,22 +117,40 @@ function renderMap(target, layers) {
     return map;
 }
 
-function toggleLayer(name) {
-    for (key in heatmapLayers)
-    {
+function findLayer(name) {
+    for (key in heatmapLayers) {
         layer = heatmapLayers[key];
 
-        if (layer.name == name)
-        {
-            layer.setVisible(!layer.getVisible());
+        if (layer.name == name) {
+            return layer;
         }
     }
 }
 
-var heatmap = {{ heatmap.json|safe }};
-var heatmapLayers = heatmap.map(makeHeatmapLayer);
+function toggleLayer(e, name) {
+    layer = findLayer(name);
 
-var map = renderMap('map', heatmapLayers);
+    var visible = !layer.getVisible();
+    layer.setVisible(visible);
+
+    if (visible)
+    {
+        $(e).removeClass('inactive');
+        $(e).addClass('active');
+    }
+    else
+    {
+        $(e).addClass('inactive');
+        $(e).removeClass('active');
+    }
+}
+
+var heatmapLayers;
+
+$(document).ready(function() {
+    heatmapLayers = {{ heatmap.json|safe }}.map(makeHeatmapLayer);
+    renderMap('map', heatmapLayers);
+});
 
 </script>
 
