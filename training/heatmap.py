@@ -2,6 +2,7 @@ import pyproj
 from math import sqrt
 import json
 import datetime
+import decimal
 
 from django.utils import timezone
 from . import models
@@ -13,12 +14,7 @@ WEB_MERCATOR = pyproj.Proj('+init=EPSG:3857')
 
 
 def _dump(data):
-    def json_encode_decimal(obj):
-        if isinstance(obj, decimal.Decimal):
-            return str(obj)
-        raise TypeError(repr(obj) + " is not JSON serializable")
-
-    return json.dumps(data, default=json_encode_decimal)
+    return json.dumps(data)
 
 
 def _web_mercator(point):
@@ -34,24 +30,31 @@ def _process_points(activity):
     return points
 
 
-def generate_heatmap(user, days=None):
+ACTIVITIES = [{'activity_type': 'running', 'color': 'blue'},
+              {'activity_type': 'running, trail', 'color': 'black'},
+              {'activity_type': 'cycling', 'color': 'red'},
+              {'activity_type': 'walking', 'color': 'yellow'},
+              {'activity_type': 'hiking', 'color': 'brown'}]
+
+
+def _collect_points(user, activity_type, days=None):
     points = models.GpxTrackPoint.objects.filter(gpx__workout__user=user)
 
     if days is not None:
         date = timezone.now() - datetime.timedelta(days=days)
         points = points.filter(time__gt=date)
 
-    points = points.values_list('lon', 'lat', 'gpx__activity_type')
+    points = points.filter(gpx__activity_type=activity_type)
+    points = points.values_list('lon', 'lat')
+    return _process_points(points)
 
-    activities = {}
-    for lat, lon, activity_type in points:
-        if activity_type not in activities:
-            activities[activity_type] = []
-        activities[activity_type].append((lat, lon))
 
-    activities = [{'activity_type': activity_type,
-                   'points': _process_points(points)} for activity_type, points in activities.items()]
+def generate_heatmap(user, days=None):
+    activities = []
+    for activity in ACTIVITIES:
+        activities.append({'activity_type': activity['activity_type'],
+                           'color': activity['color'],
+                           'points': _collect_points(user, activity['activity_type'], days)})
 
-    return {'total_points': len(points),
-            'json': _dump(activities),
+    return {'json': _dump(activities),
             'activities': activities}

@@ -16,7 +16,17 @@
 
 <section>
     {% for activity in heatmap.activities %}
-        <dl class="metric"><dt>{{ activity.activity_type }}</dt><dd>{{ activity.points|length }}</dd></dl>
+        {% with 'training/hexagon-'|add:activity.color|add:'.png' as icon %}
+            <dl class="metric">
+                <dt>
+                    <img src="{% static icon %}" width="8" height="8" />
+                    {{ activity.activity_type }}
+                </dt>
+                <dd>
+                    {{ activity.points|length }}
+                </dd>
+            </dl>
+        {% endwith %}
     {% endfor %}
 </section>
 
@@ -29,8 +39,7 @@
 function makeIconStyle(src) {
     return new ol.style.Style({
         image: new ol.style.Icon({
-            src: src,
-            opacity: 0.7
+            src: src
         })
     });
 }
@@ -93,11 +102,7 @@ function renderMap(target, layers) {
 
     var map = new ol.Map({
             layers: [osmLayer].concat(layers),
-            target: target,
-            view: new ol.View({
-                center: [0, 0],
-                zoom: 8
-            })
+            target: target
         });
 
     var extent = ol.extent.createEmpty();
