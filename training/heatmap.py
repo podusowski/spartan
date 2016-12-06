@@ -2,6 +2,7 @@ import pyproj
 from math import sqrt
 import json
 import datetime
+import numpy as np
 import decimal
 
 from django.utils import timezone
@@ -22,12 +23,15 @@ def _web_mercator(point):
     return pyproj.transform(EPSG4326, WEB_MERCATOR, lon, lat)
 
 
-def _process_points(activity):
-    points = map(_web_mercator, activity)
-    points = map(hexagons.point_to_hexagon, points)
-    points = set(points)
-    points = list(points)
-    return points
+def _unique_rows(data):
+    uniq = np.unique(data.view(data.dtype.descr * data.shape[1]))
+    return uniq.view(data.dtype).reshape(-1, data.shape[1])
+
+
+def _process_points(coordinates):
+    points = np.array([_web_mercator(p) for p in coordinates])
+    points = np.apply_along_axis(hexagons.point_to_hexagon, 1, points)
+    return _unique_rows(points).tolist()
 
 
 ACTIVITIES = [{'activity_type': 'running', 'color': 'blue'},
