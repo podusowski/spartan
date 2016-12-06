@@ -353,10 +353,13 @@ nav {
 
     #menu-content {
         a {
-            background: linear-gradient(135deg, #111 0%, #000 100%);
             display: block;
             padding: 0.5em;
-            border-bottom: 1px solid #333;
+            border-top: 1px solid #222;
+        }
+
+        a:first-of-type {
+            border-top: none;
         }
     }
 }
