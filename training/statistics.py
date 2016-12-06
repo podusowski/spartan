@@ -50,15 +50,16 @@ class Week:
             start_time = self.start_time + datetime.timedelta(days=number)
             return Day(start_time)
 
-        result = list(map(make_day, range(7)))
+        def in_past(day):
+            return day.start_time <= timezone.now()
+
+        days = [make_day(n) for n in range(7) if in_past(make_day(n))]
 
         for workout in self.workouts.order_by('started'):
             day = workout.started.weekday()
-            result[day].workouts.append(workout)
+            days[day].workouts.append(workout)
 
-        logging.debug(str(result))
-
-        return reversed(result)
+        return reversed(days)
 
 
 def _filter_by_timespan(source, start, end):
@@ -110,7 +111,6 @@ class Statistics:
                        .aggregate(value=Sum('reps__reps'))['value']
 
             return units.Volume(reps=reps if reps else 0)
-
 
         def decorate_gps_workout(workout):
             return {'name': workout['activity_type'],
