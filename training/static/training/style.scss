@@ -338,10 +338,48 @@ nav {
     margin-bottom: 1em;
     padding: 0.3em;
 
-    a {
-        @include button($secondary_color)
+    .toolbox {
+        display: inline-block;
+        a {
+            @include button($secondary_color)
+        }
+    }
+
+    &.menu {
+        .toggle {
+            @include button(darken($secondary_color, 10%))
+        }
+    }
+
+    #menu-content {
+        a {
+            background: linear-gradient(135deg, #111 0%, #000 100%);
+            display: block;
+            padding: 0.5em;
+            border-bottom: 1px solid #333;
+        }
     }
 }
+
+nav {
+    #menu-content {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 480px) {
+    nav {
+        #menu-content {
+            display: inline-block;
+            a {
+                @include button(darken($secondary_color, 10%))
+                display: inline-block;
+
+            }
+        }
+    }
+}
+
 
 .button {
     @include button(darken($secondary_color, 10%))

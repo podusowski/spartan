@@ -1,14 +1,5 @@
 {% extends "training/base.html" %}
 
-{% block nav %}
-<nav>
-    <a href="{% url 'start_workout' %}">new workout</a>
-    <a href="{% url 'upload_gpx' %}">upload gpx</a>
-    <a href="{% url 'endomondo' %}">endomondo</a>
-    <a href="{% url 'statistics' %}">statistics</a>
-</nav>
-{% endblock %}
-
 {%block content%}
 
 <h2>5 favourites this month | <a href="{% url 'statistics_this_month' %}">more</a></h2>

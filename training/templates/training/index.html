@@ -2,18 +2,19 @@
 
 {%block content%}
 
-<h2>already have an account?</h2>
+<h2>welcome</h2>
+<section>
+    <p>train with {{users_count}} other users</p>
+</section>
+
+<h2>let's start</h2>
 <section>
     <form action="{% url 'login' %}">
         <input type="submit" value="login" />
     </form>
-</section>
 
-<h2>create new account</h2>
-<section>
-    <p>join {{users_count}} other users</p>
     <form action="{% url 'register' %}">
-        <input type="submit" value="register" />
+        <input type="submit" value="create an account" />
     </form>
 </section>
 

@@ -38,10 +38,31 @@
         </div>
     </div>
 
+    <script>
+    function toggleMenu() {
+        $("#menu-content").toggle();
+    }
+    </script>
+
     {% block nav %}
-    <nav>
-        <a href="{% url 'dashboard' %}">dashboard</a>
-    </nav>
+        <nav class="menu">
+            {% if request.user.is_authenticated %}
+                <div class="toolbox">
+                    {% block toolbox %}
+                    {% endblock %}
+                </div>
+
+                <a class="toggle" href="#" onclick="toggleMenu()">&#9776;</a>
+
+                <div id="menu-content">
+                    <a href="{% url 'dashboard' %}">dashboard</a>
+                    <a href="{% url 'start_workout' %}">new workout</a>
+                    <a href="{% url 'upload_gpx' %}">upload gpx</a>
+                    <a href="{% url 'endomondo' %}">endomondo</a>
+                    <a href="{% url 'statistics' %}">statistics</a>
+                </div>
+            {% endif %}
+        </nav>
     {% endblock %}
 
     {%spaceless%}

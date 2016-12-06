@@ -1,15 +1,11 @@
 {%extends "training/base.html"%}
 
-{% block nav %}
-<nav>
-    <a href="{% url 'dashboard' %}">dashboard</a>
-
+{% block toolbox %}
     {% if workout.live %}
         <a href="{% url 'finish_workout' workout.id %}" onclick="return confirm('are you sure this is it?')">finish</a>
     {% endif %}
 
     <a href="{% url 'delete_workout' workout.id %}" class="dangerous" onclick="return confirm('are you sure you want to delete this workout?')">delete</a>
-</nav>
 {% endblock %}
 
 {%block content%}
