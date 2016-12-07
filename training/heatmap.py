@@ -31,10 +31,8 @@ def _process_points(activity):
 
 
 ACTIVITIES = [{'activity_type': 'running', 'color': 'blue'},
-              {'activity_type': 'running, trail', 'color': 'black'},
               {'activity_type': 'cycling', 'color': 'red'},
-              {'activity_type': 'walking', 'color': 'yellow'},
-              {'activity_type': 'hiking', 'color': 'brown'}]
+              {'activity_type': 'walking', 'color': 'green'}]
 
 
 def _collect_points(user, activity_type, days=None):
