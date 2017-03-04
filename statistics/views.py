@@ -42,5 +42,4 @@ def delete_goal(request):
 
     if request.method == "POST":
         goals.delete(request.POST['name'])
-
-    return redirect('goals')
+        return redirect('workout_statistics', request.POST['name'])
