@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui, user-scalable: no">
+
+    {% load sass_tags %}
+    {% load staticfiles %}
+
+    <link href="{% sass_src 'training/styles/style.scss' %}" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,400" rel="stylesheet">
+
+    <link rel="icon" href="{% static 'training/64.png' %}" sizes="64x64" type="image/png">
+
+    <meta name="msapplication-square70x70logo" content="{% static 'training/70.png' %}" />
+    <meta name="msapplication-square150x150logo" content="{% static 'training/150.png' %}" />
+    <!-- <meta name="msapplication-wide310x150logo" content="widetile.png" /> -->
+    <meta name="msapplication-square310x310logo" content="{% static 'training/310.png' %}" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+
+    <title>spartan</title>
+</head>
+
+<body>
+    <header>
+        {%if request.user.is_authenticated%}
+            logged as <a href="{% url 'user_profile' %}">{{request.user.username}}</a> (<a href="{% url 'logout' %}">logout</a>)
+        {%else%}
+            not logged in
+        {%endif%}
+    </header>
+
+    <script>
+        function makeMenu(button, content) {
+            $(button).click(function() {
+                $(content).toggle("fast");
+            });
+
+            $(window).resize(function() {
+                $(content).removeAttr("style");
+            });
+        }
+
+        $(document).ready(function() {
+            makeMenu("#toggle-menu", "#menu-content");
+        });
+    </script>
+
+    {% block nav %}
+        <nav class="menu">
+            {% if request.user.is_authenticated %}
+                <span class="mobile">
+                    <a id="toggle-menu" href="#">&#9776;</a>
+                </span>
+
+                <div id="menu-content">
+                    <a href="{% url 'dashboard' %}">dashboard</a>
+                    <a href="{% url 'start_workout' %}">new workout</a>
+                    <a href="{% url 'upload_gpx' %}">upload gpx</a>
+                    <a href="{% url 'endomondo' %}">endomondo</a>
+                    <a href="{% url 'statistics' %}">statistics</a>
+                    <a href="{% url 'explorer' %}">explore</a>
+                </div>
+
+                <div class="toolbox">
+                    {% block toolbox %}
+                    {% endblock %}
+                </div>
+            {% endif %}
+        </nav>
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <p><a href="https://github.com/podusowski/spartan">view spartan on GitHub</a></p>
+        <p>we use cookies here, if you don't like it, leave</p>
+    </footer>
+</body>
+
+</html>

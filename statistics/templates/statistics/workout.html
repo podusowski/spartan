@@ -1,0 +1,37 @@
+{% extends "statistics/base.html" %}
+
+{% block content %}
+
+<h2>{{ workout.name }}</h2>
+
+<section>
+{% for name, value in workout.metrics.items %}
+    <dl>
+        <dt>{{ name }}</dt>
+        <dd>{{ value }}</dd>
+    </dl>
+{% endfor %}
+</section>
+
+<h2>goal</h2>
+<section>
+    <dl>
+        <dt>progress</dt>
+        <dd>{{ goal.progress }}</dd>
+    </dl>
+    <form action="{% url 'add_goal' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="name" value="{{ workout.name }}" />
+        <div>
+            <dl>
+                <dd>
+                    volume:
+                    <input type="number" name="volume" value="{{ goal.volume }}" required />
+                    <input type="submit" value="save" />
+                </dd>
+            </dl>
+        </div>
+    </form>
+</section>
+
+{% endblock %}

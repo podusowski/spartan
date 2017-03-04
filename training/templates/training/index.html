@@ -1,0 +1,21 @@
+{%extends "training/base.html"%}
+
+{%block content%}
+
+<h2>welcome</h2>
+<section>
+    <p>train with {{users_count}} other users</p>
+</section>
+
+<h2>let's start</h2>
+<section>
+    <form action="{% url 'login' %}">
+        <input type="submit" value="login" />
+    </form>
+
+    <form action="{% url 'register' %}">
+        <input type="submit" value="create an account" />
+    </form>
+</section>
+
+{%endblock%}

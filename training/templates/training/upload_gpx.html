@@ -1,0 +1,27 @@
+{% extends "training/base.html" %}
+
+{% block content %}
+
+<h2>upload workout from gpx</h2>
+<section>
+    <form enctype="multipart/form-data" action="{% url 'upload_gpx' %}" method="post">
+        {% csrf_token %}
+        <ul>
+            {{form.as_ul}}
+        </ul>
+        <input type="submit" value="upload" />
+    </form>
+    <script>
+        file_input = $('[type=file]');
+        file_input_label = file_input.prev();
+
+        file_input.addClass('file_input');
+        file_input_label.addClass('file_input_label');
+
+        file_input.on('change', function(e) {
+            file_input_label.text(e.target.value);
+        });
+    </script>
+</section>
+
+{% endblock %}

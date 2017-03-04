@@ -1,0 +1,31 @@
+{% extends "statistics/base.html" %}
+
+{% block content %}
+
+<h2>excercises you did most</h2>
+<section>
+    <table>
+    <tr>
+        <th>name</th>
+        <th>count</th>
+        <th>volume</th>
+        <th>doing since</th>
+        <th>last time</th>
+    </tr>
+    {% for excercise in statistics.most_popular_workouts %}
+        <tr>
+            <td>
+                <a href="{% url 'workout_statistics' excercise.name %}">
+                    {{ excercise.name }}
+                </a>
+            </td>
+            <td>{{ excercise.count }}</td>
+            <td>{{ excercise.volume }}</td>
+            <td>{{ excercise.earliest|timesince }}</td>
+            <td>{{ excercise.latest|timesince }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</section>
+
+{% endblock %}

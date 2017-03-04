@@ -1,0 +1,492 @@
+$primary_color: #CF4A08;
+$secondary_color: #444;
+$background-color: black;
+
+@mixin text1 {
+    color: #999;
+    text-shadow: 1px 1px 1px #000;
+}
+
+@mixin text2 {
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 100;
+}
+
+@mixin text3 {
+    color: lighten($primary_color, 30%);
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 100;
+    font-size: 0.7em;
+}
+
+@mixin fancy_box($color) {
+    background-color: lighten($color, 5%);
+    background: linear-gradient(135deg, lighten($color, 5%) 0%, darken($color, 2%) 100%);
+    border: 1px solid lighten($color, 3%);
+    padding: 0.5em;
+    overflow: auto;
+    border-radius: .3em;
+}
+
+@mixin button($color) {
+    @include text1;
+    color: lighten($color, 70%);
+    display: inline-block;
+
+    background: linear-gradient(to top,
+                                lighten($color, 8%) 0%,
+                                darken($color, 8%) 100%);
+
+    padding: 0.5em;
+    border: 1px solid darken($color, 30%);
+    border-radius: 4px;
+    font-weight: normal;
+
+    &:hover {
+        $darker: darken($color, 5%);
+        background: linear-gradient(to top,
+                                    lighten($darker, 8%) 0%,
+                                    darken($darker, 8%) 100%);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $background-color;
+    background-image: url(../background.svg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+    font-family: Calibri, 'Open Sans', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: darken(white, 20%);
+}
+
+header {
+    background-color: $primary_color;
+    background-image: url(../spartan.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 0.3em 0 0.3em 32px;
+}
+
+h2, h3, h4, h5 {
+    margin: 0 0.5em 0.3em 0.5em;
+    color: darken($primary_color, 10%);
+    font-weight: 100;
+    font-size: 1.2em;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 60%;
+}
+
+p {
+    padding: 0.2em;
+}
+
+table {
+    width: 100%;
+    border-spacing: 0;
+    @include text2;
+
+    th {
+        background-color: lighten($background-color, 5%);
+        padding: 0.3em;
+        text-align: left;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+    td, th {
+        padding: 0.5em;
+        border-bottom: 1px solid lighten($background-color, 5%);
+        border-right: 1px solid lighten($background-color, 5%);
+
+        &:first-of-type {
+            border-left: 1px solid lighten($background-color, 5%);
+        }
+    }
+}
+
+.note {
+    @include text3;
+}
+
+dt,
+.name {
+    @include text1;
+}
+
+.note,
+.name {
+    display: block;
+}
+
+strong {
+    color: $primary_color;
+}
+
+form {
+    margin-right: 0.5em;
+    display: inline-block;
+    width: auto;
+
+    .helptext {
+        @include text3;
+        margin-left: 1em;
+    }
+
+    li {
+        margin-bottom: 1em;
+    }
+
+    label {
+        display: block;
+        @include text2;
+    }
+
+    input[type="submit"]::-moz-focus-inner {
+        border: 0;
+    }
+
+    input {
+        padding: 0.5em;
+        font-weight: 100;
+        outline: none;
+        border-width: 1px;
+        border-style: solid;
+        font-size: 100%;
+        box-sizing: border-box;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    input[type="password"],
+    input[type="number"],
+    select {
+        color: white;
+        background: linear-gradient(0deg, lighten($background-color, 10%) 0%,
+                                          lighten($background-color, 5%) 100%);
+        border: 1px solid black;
+        border-radius: 0.2em;
+        padding: 0.5em;
+        margin-right: 0.1em;
+    }
+
+    input[type="submit"] {
+        @include button(#181818);
+    }
+
+    input[type="number"] {
+        width: 4em;
+    }
+
+    // these classes are set from JS because css can't
+    // select a label before input
+    .file_input_label {
+        @include button($primary_color);
+
+    }
+
+    .file_input {
+        position: absolute;
+        left: -1000px;
+    }
+}
+
+dl {
+    @include fancy_box(#222);
+    margin-right: 0.2em;
+    margin-bottom: 0.5em;
+    overflow: hidden;
+    display: inline-block;
+    font-size: smaller;
+    min-width: 7em;
+    white-space: nowrap;
+
+    dt {
+        @include text1;
+        display: block;
+        white-space: nowrap;
+        text-transform: uppercase;
+        margin-right: 0.5em;
+    }
+
+    dd {
+        @include text2;
+        display: block;
+    }
+}
+
+dl.metric {
+    @include fancy_box(black);
+
+    dd:first-of-type {
+        color: $primary_color;
+    }
+
+    &.active {
+        border-top: 2px solid $primary_color;
+    }
+
+    &.inactive {
+        border-top: 2px solid #333;
+    }
+
+    &.interactive {
+        cursor: pointer;
+    }
+}
+
+section {
+    margin: 0 0.5em 1em 0.5em;
+    padding: 0;
+}
+
+.day, .excercise {
+    color: white;
+    vertical-align: top;
+    border-radius: 0.3em;
+    border: 1px solid #111;
+    border-left: 2px solid #333;
+    margin-bottom: 0.5em;
+    background: linear-gradient(135deg, #111 0%, black 100%);
+
+    &.active {
+        border-left: 2px solid $primary_color;
+    }
+
+    &.inactive {
+        border-left: 2px solid #333;
+    }
+
+    .name {
+        display: inline-block;
+        color: #aaa;
+        margin: 0 0 0 0.5em;
+        text-transform: uppercase;
+        font-size: smaller;
+    }
+
+    .content {
+        border: none;
+        margin-left: 0.5em;
+        vertical-align: top;
+        text-transform: uppercase;
+        vertical-align: top;
+    }
+
+    .toolbox {
+        border-top: 1px solid #111;
+        background: #080808;
+        padding: 0.2em;
+    }
+
+    ul {
+        display: inline-block;
+        border-radius: 0.2em;
+
+        li {
+            @include text1;
+            display: inline-block;
+            padding: 0 0.7em 0 0;
+            text-align: center;
+        }
+    }
+}
+
+.day {
+    min-height: 5em;
+
+    .name {
+        width: 2.5em;
+    }
+
+    .content {
+        padding-top: 0.5em;
+        display: inline-block;
+        color: #222;
+    }
+}
+
+.excercise {
+    .content {
+        padding-bottom: 0.3em;
+    }
+}
+
+nav {
+    background-color: lighten($background-color, 5%);
+    margin-bottom: 1em;
+    padding: 0.3em;
+
+    .toolbox {
+        a {
+            margin-top: 0.5em;
+            @include button(darken($secondary_color, 30%))
+            font-size: smaller;
+        }
+
+        a.dangerous {
+            @include button(darken(red, 30%))
+        }
+    }
+
+    &.menu {
+        #toggle-menu {
+            @include button(darken($secondary_color, 20%))
+        }
+    }
+
+    #menu-content {
+        a {
+            display: block;
+            padding: 0.5em;
+            border-top: 1px solid #222;
+        }
+
+        a:first-of-type {
+            border-top: none;
+        }
+    }
+}
+
+nav {
+    #menu-content {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 650px) {
+    nav {
+        #menu-content {
+            display: inline-block;
+            a {
+                @include button(darken($secondary_color, 10%))
+                display: inline-block;
+
+            }
+        }
+    }
+
+    .mobile {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .desktop {
+        display: none;
+    }
+}
+
+.button {
+    @include button(darken($secondary_color, 10%))
+}
+
+.red_button,
+.dangerous {
+    @include button(darken(red, 30%))
+}
+
+.green_button {
+    @include button(darken(green, 30%))
+}
+
+.form-value-shortcut {
+    @include button(darken($secondary_color, 15%));
+    margin-right: 0.2em;
+    font-size: 100%;
+}
+
+.loading {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0;
+    border-top: 2px solid lighten($primary_color, 30%);
+    border-left: 1px solid lighten($primary_color, 30%);
+    border-radius: 50%;
+    animation: spin 2000ms infinite linear;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.endless_page_link,
+.endless_page_current {
+    @include text3;
+    padding: 0.5em;
+    margin: 0;
+    strong {
+        margin: 0;
+    }
+}
+
+.quick_stats {
+    dl.metric {
+        max-width: 7em;
+    }
+
+    dt {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    dd {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    a {
+        vertical-align: top;
+        display: inline-block;
+        color: $primary_color;
+        margin-bottom: 0.5em;
+    }
+}
+
+.percent-bar {
+    margin-top: 0.5em;
+    display: block;
+    height: 2px;
+    background-color: #222;
+    overflow: hidden;
+
+    div {
+        height: 2px;
+        background-color: silver;
+        display: block;
+    }
+
+    &.ON_TRACK > div {
+        background-color: $primary_color;
+    }
+
+    &.BEHIND > div {
+        background-color: red;
+    }
+
+    &.AHEAD > div {
+        background-color: green;
+    }
+}
+
+footer {
+    font-size: smaller;
+    text-align: center;
+}

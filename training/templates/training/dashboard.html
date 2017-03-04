@@ -1,0 +1,92 @@
+{% extends "training/base.html" %}
+
+{%block content%}
+
+{% if statistics.favourites_this_month %}
+    <h2>top 3 this month | <a href="{% url 'statistics_this_month' %}">more</a></h2>
+    <section class="quick_stats">
+        {% for excercise in statistics.favourites_this_month|slice:":3" %}
+            <dl class="metric">
+                <dt>{{ excercise.name }}</dt>
+                <dd>{{ excercise.count }} times</dd>
+                <dd>{{ excercise.volume }}</dd>
+            </dl>
+        {% endfor %}
+    </section>
+{% endif %}
+
+<h2>goals | <a href="{% url 'goals' %}">manage</a></h2>
+<section class="quick_stats">
+    {% for goal in goals.all %}
+        <dl class="metric">
+            <dt>{{ goal.name }}</dt>
+            <dd>{{ goal.left }}</dd>
+            <dd><div class="percent-bar {{ goal.forecast.name }}"><div style="width: {{ goal.percent }}%"> </div></div></dd>
+        </dl>
+    {% empty %}
+        <p class="note">You have no goals defined, go ahead and add some.</p>
+    {% endfor %}
+</section>
+
+{% load training_format %}
+{% load el_pagination_tags %}
+
+{% if statistics.not_started_workouts %}
+    <h2>not started</h2>
+    <section>
+        {% for workout in statistics.not_started_workouts %}
+            <a href="{% url 'workout' workout.id %}">
+                <dl>
+                    <dt>{{ workout.workout_type }}</dt>
+                </dl>
+            </a>
+        {% endfor %}
+    </section>
+{% endif %}
+
+{% paginate 4 statistics.weeks as weeks %}
+
+<section class="pagination">
+    {% show_pages %}
+</section>
+
+{% for week in weeks %}
+    <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
+    <section>
+        {% for day in week.days %}
+            <div class="day {{ day.workouts|yesno:"active,inactive" }}">
+                <div class="name">
+                    {{ day.start_time|date:"D" }}
+                </div>
+                <div class="content">
+                    {% for workout in day.workouts %}
+                        <a href="{% url 'workout' workout.id %}">
+                            <dl>
+                                <dt>
+                                    <span class="note">
+                                        {{ workout.started|date:"P" }}
+                                    </span>
+                                    {{ workout.workout_type }}
+                                </dt>
+                                <dd>
+                                    {{ workout.volume }}
+                                    <span class="note">
+                                        {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
+                                    </span>
+                                </dd>
+                            </dl>
+                        </a>
+                    {% empty %}
+                        rest
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+{% endfor %}
+
+<section class="pagination">
+    {% show_pages %}
+</section>
+
+{% endblock %}

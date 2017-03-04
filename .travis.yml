@@ -1,0 +1,17 @@
+language: python
+
+python:
+  - 3.4
+
+install:
+  - pip install -r requirements.txt
+  - pip install codecov
+
+script:
+  - coverage run manage.py test
+
+after_success:
+  - codecov
+
+notifications:
+  email: false
