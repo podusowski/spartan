@@ -33,7 +33,7 @@ def add_goal(request):
 
     if request.method == "POST":
         goals.set(request.POST['name'], request.POST['volume'])
-        return redirect('goals')
+        return redirect('workout_statistics', request.POST['name'])
 
 
 @login_required
