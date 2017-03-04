@@ -5,12 +5,12 @@
 <h2>{{ workout.name }}</h2>
 
 <section>
-{% for name, value in workout.metrics.items %}
-    <dl>
-        <dt>{{ name }}</dt>
-        <dd>{{ value }}</dd>
-    </dl>
-{% endfor %}
+    {% for name, value in workout.metrics.items %}
+        <dl>
+            <dt>{{ name }}</dt>
+            <dd>{{ value }}</dd>
+        </dl>
+    {% endfor %}
 </section>
 
 <h2>goal</h2>
