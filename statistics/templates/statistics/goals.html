@@ -42,4 +42,13 @@
     <p class="note">Volume can be reps or kilometers.</p>
 </section>
 
+<h2>workouts without a goal</h2>
+<section>
+    {% for w in goals.workouts_not_having_goal %}
+            <a class="form-value-shortcut" href="{% url 'workout_statistics' w %}">
+                {{ w }}
+            </a>
+    {% endfor %}
+</section>
+
 {% endblock %}

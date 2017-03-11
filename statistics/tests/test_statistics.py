@@ -116,3 +116,17 @@ class StatisticsTestCase(TestCase):
             all_goals = user_goals.all()
             self.assertEqual(units.Volume(reps=1), all_goals[0].progress)
             self.assertEqual(33, all_goals[0].percent)
+
+    def test_workouts_without_goal(self):
+        with patch('statistics.goals.Statistics', autospec=True) as StatisticsMock:
+            statistics_mock = StatisticsMock.return_value
+
+            user_goals = goals.Goals(self.user)
+            user_goals.set('push-up', 3)
+
+            push_ups = statistics.PopularWorkout(name='push-up', count=1, volume=units.Volume(reps=1), earliest=None, latest=None)
+            running = statistics.PopularWorkout(name='running', count=1, volume=units.Volume(meters=1), earliest=None, latest=None)
+
+            statistics_mock.most_popular_workouts.return_value = [push_ups, running]
+
+            self.assertEqual(['push-up'], user_goals.workouts_not_having_goal())

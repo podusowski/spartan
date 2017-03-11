@@ -32,6 +32,10 @@ class Goals:
                 return goal
         return None
 
+    def workouts_not_having_goal(self):
+        workouts = self.statistics.most_popular_workouts()
+        return [workout.name for workout in workouts]
+
     def all(self, now=timezone.now()) -> List[Goal]:
         volumes = {f.name: f.volume for f in self.statistics.favourites_this_month()}
 
