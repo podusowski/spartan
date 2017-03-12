@@ -1,26 +1,28 @@
-$primary_color: #CF4A08;
-$secondary_color: #444;
-$background-color: black;
+$color-accent: #CF4A08;
+$color-secondary-background: #444;
+$color-background: black;
+$color-text: white;
+$color-accent-text: #ccc;
 
-@mixin text1 {
-    color: #999;
+@mixin text {
+    color: $color-text;
     text-shadow: 1px 1px 1px #000;
 }
 
-@mixin text2 {
-    color: white;
+@mixin text-accent {
+    color: $color-accent-text;
     text-shadow: 1px 1px 1px #000;
     font-weight: 100;
 }
 
-@mixin text3 {
-    color: lighten($primary_color, 30%);
+@mixin text-helper {
+    color: lighten($color-accent, 30%);
     text-shadow: 1px 1px 1px #000;
     font-weight: 100;
     font-size: 0.7em;
 }
 
-@mixin fancy_box($color) {
+@mixin box($color) {
     background-color: lighten($color, 5%);
     background: linear-gradient(135deg, lighten($color, 5%) 0%, darken($color, 2%) 100%);
     border: 1px solid lighten($color, 3%);
@@ -30,7 +32,7 @@ $background-color: black;
 }
 
 @mixin button($color) {
-    @include text1;
+    @include text;
     color: lighten($color, 70%);
     display: inline-block;
 
@@ -58,12 +60,13 @@ $background-color: black;
 }
 
 body {
-    background-color: $background-color;
+    background-color: $color-background;
     background-image: url(../background.svg);
     background-repeat: no-repeat;
     background-attachment: fixed;
-    color: white;
     font-family: Calibri, 'Open Sans', sans-serif;
+
+    @include text;
 }
 
 a {
@@ -72,7 +75,7 @@ a {
 }
 
 header {
-    background-color: $primary_color;
+    background-color: $color-accent;
     background-image: url(../spartan.svg);
     background-size: contain;
     background-repeat: no-repeat;
@@ -81,7 +84,7 @@ header {
 
 h2, h3, h4, h5 {
     margin: 0 0.5em 0.3em 0.5em;
-    color: darken($primary_color, 10%);
+    color: darken($color-accent, 10%);
     font-weight: 100;
     font-size: 1.2em;
     text-transform: uppercase;
@@ -98,10 +101,10 @@ p {
 table {
     width: 100%;
     border-spacing: 0;
-    @include text2;
+    @include text-accent;
 
     th {
-        background-color: lighten($background-color, 5%);
+        background-color: lighten($color-background, 5%);
         padding: 0.3em;
         text-align: left;
         font-weight: normal;
@@ -110,22 +113,22 @@ table {
 
     td, th {
         padding: 0.5em;
-        border-bottom: 1px solid lighten($background-color, 5%);
-        border-right: 1px solid lighten($background-color, 5%);
+        border-bottom: 1px solid lighten($color-background, 5%);
+        border-right: 1px solid lighten($color-background, 5%);
 
         &:first-of-type {
-            border-left: 1px solid lighten($background-color, 5%);
+            border-left: 1px solid lighten($color-background, 5%);
         }
     }
 }
 
 .note {
-    @include text3;
+    @include text-helper;
 }
 
 dt,
 .name {
-    @include text1;
+    @include text;
 }
 
 .note,
@@ -134,7 +137,7 @@ dt,
 }
 
 strong {
-    color: $primary_color;
+    color: $color-accent;
 }
 
 form {
@@ -143,7 +146,7 @@ form {
     width: auto;
 
     .helptext {
-        @include text3;
+        @include text-helper;
         margin-left: 1em;
     }
 
@@ -153,7 +156,7 @@ form {
 
     label {
         display: block;
-        @include text2;
+        @include text;
     }
 
     input[type="submit"]::-moz-focus-inner {
@@ -176,8 +179,8 @@ form {
     input[type="number"],
     select {
         color: white;
-        background: linear-gradient(0deg, lighten($background-color, 10%) 0%,
-                                          lighten($background-color, 5%) 100%);
+        background: linear-gradient(0deg, lighten($color-background, 10%) 0%,
+                                          lighten($color-background, 5%) 100%);
         border: 1px solid black;
         border-radius: 0.2em;
         padding: 0.5em;
@@ -195,7 +198,7 @@ form {
     // these classes are set from JS because css can't
     // select a label before input
     .file_input_label {
-        @include button($primary_color);
+        @include button($color-accent);
 
     }
 
@@ -206,7 +209,7 @@ form {
 }
 
 dl {
-    @include fancy_box(#222);
+    @include box(#222);
     margin-right: 0.2em;
     margin-bottom: 0.5em;
     overflow: hidden;
@@ -216,7 +219,7 @@ dl {
     white-space: nowrap;
 
     dt {
-        @include text1;
+        @include text;
         display: block;
         white-space: nowrap;
         text-transform: uppercase;
@@ -224,20 +227,20 @@ dl {
     }
 
     dd {
-        @include text2;
+        @include text-accent;
         display: block;
     }
 }
 
 dl.metric {
-    @include fancy_box(black);
+    @include box(black);
 
     dd:first-of-type {
-        color: $primary_color;
+        color: $color-accent;
     }
 
     &.active {
-        border-top: 2px solid $primary_color;
+        border-top: 2px solid $color-accent;
     }
 
     &.inactive {
@@ -264,7 +267,7 @@ section {
     background: linear-gradient(135deg, #111 0%, black 100%);
 
     &.active {
-        border-left: 2px solid $primary_color;
+        border-left: 2px solid $color-accent;
     }
 
     &.inactive {
@@ -298,7 +301,7 @@ section {
         border-radius: 0.2em;
 
         li {
-            @include text1;
+            @include text;
             display: inline-block;
             padding: 0 0.7em 0 0;
             text-align: center;
@@ -327,14 +330,14 @@ section {
 }
 
 nav {
-    background-color: lighten($background-color, 5%);
+    background-color: lighten($color-background, 5%);
     margin-bottom: 1em;
     padding: 0.3em;
 
     .toolbox {
         a {
             margin-top: 0.5em;
-            @include button(darken($secondary_color, 30%))
+            @include button(darken($color-secondary-background, 30%))
             font-size: smaller;
         }
 
@@ -345,7 +348,7 @@ nav {
 
     &.menu {
         #toggle-menu {
-            @include button(darken($secondary_color, 20%))
+            @include button(darken($color-secondary-background, 20%))
         }
     }
 
@@ -373,7 +376,7 @@ nav {
         #menu-content {
             display: inline-block;
             a {
-                @include button(darken($secondary_color, 10%))
+                @include button(darken($color-secondary-background, 10%))
                 display: inline-block;
 
             }
@@ -392,7 +395,7 @@ nav {
 }
 
 .button {
-    @include button(darken($secondary_color, 10%))
+    @include button(darken($color-secondary-background, 10%))
 }
 
 .red_button,
@@ -405,7 +408,7 @@ nav {
 }
 
 .form-value-shortcut {
-    @include button(darken($secondary_color, 15%));
+    @include button(darken($color-secondary-background, 15%));
     margin-right: 0.2em;
     font-size: 100%;
 }
@@ -415,8 +418,8 @@ nav {
     width: 8px;
     height: 8px;
     margin: 0;
-    border-top: 2px solid lighten($primary_color, 30%);
-    border-left: 1px solid lighten($primary_color, 30%);
+    border-top: 2px solid lighten($color-accent, 30%);
+    border-left: 1px solid lighten($color-accent, 30%);
     border-radius: 50%;
     animation: spin 2000ms infinite linear;
 }
@@ -429,7 +432,7 @@ nav {
 
 .endless_page_link,
 .endless_page_current {
-    @include text3;
+    @include text-helper;
     padding: 0.5em;
     margin: 0;
     strong {
@@ -455,7 +458,7 @@ nav {
     a {
         vertical-align: top;
         display: inline-block;
-        color: $primary_color;
+        color: $color-accent;
         margin-bottom: 0.5em;
     }
 }
@@ -474,7 +477,7 @@ nav {
     }
 
     &.ON_TRACK > div {
-        background-color: $primary_color;
+        background-color: $color-accent;
     }
 
     &.BEHIND > div {
