@@ -89,5 +89,6 @@
         {%for excercise,_ in statistics.most_common_excercises|slice:":20"%}
             <a class="form-value-shortcut" href="javascript:start_excercise('{{ excercise }}')">{{ excercise }}</a>
         {%endfor%}
-    </section>
 {% endif %}
+
+</section>

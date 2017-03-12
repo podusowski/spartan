@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<h2>your monthly goals</h2>
 <section>
+    <h2>your monthly goals</h2>
     {% if goals.all %}
         <table>
         <tr>
@@ -28,10 +28,9 @@
     {% else %}
         <p>No gloas defined.</p>
     {% endif %}
-</section>
 
-<h2>workouts without a goal</h2>
-<section>
+    <h2>workouts without a goal</h2>
+
     {% for workout in goals.workouts_not_having_goal %}
         <a class="form-value-shortcut" href="{% url 'workout_statistics' workout %}">
             {{ workout }}

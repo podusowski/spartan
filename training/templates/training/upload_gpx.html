@@ -2,8 +2,9 @@
 
 {% block content %}
 
-<h2>upload workout from gpx</h2>
 <section>
+    <h2>upload workout from gpx</h2>
+
     <form enctype="multipart/form-data" action="{% url 'upload_gpx' %}" method="post">
         {% csrf_token %}
         <ul>

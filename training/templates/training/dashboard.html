@@ -13,7 +13,9 @@
             </dl>
         {% endfor %}
     {% endif %}
+</section>
 
+<section class="quick_stats">
     <h2>goals | <a href="{% url 'goals' %}">manage</a></h2>
     {% for goal in goals.all %}
         <dl class="metric">

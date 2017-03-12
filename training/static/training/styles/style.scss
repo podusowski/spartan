@@ -455,12 +455,7 @@ nav {
         max-width: 7em;
     }
 
-    dt {
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    dd {
+    dt, dd {
         text-overflow: ellipsis;
         overflow: hidden;
     }

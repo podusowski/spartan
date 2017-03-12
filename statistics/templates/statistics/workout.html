@@ -2,9 +2,8 @@
 
 {% block content %}
 
-<h2>{{ workout.name }}</h2>
-
 <section>
+    <h2>{{ workout.name }}</h2>
     {% for name, value in workout.metrics.items %}
         <dl>
             <dt>{{ name }}</dt>
@@ -13,8 +12,8 @@
     {% endfor %}
 </section>
 
-<h2>goal</h2>
 <section>
+    <h2>goal</h2>
     {% if goal %}
         <dl>
             <dt>progress</dt>
@@ -22,7 +21,7 @@
         </dl>
     {% endif %}
 
-    <h3>set new</h3>
+    <h2>set new</h2>
     <form action="{% url 'add_goal' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="name" value="{{ workout.name }}" />
