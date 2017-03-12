@@ -3,6 +3,8 @@ $color-secondary-background: #444;
 $color-background: black;
 $color-text: white;
 $color-accent-text: #ccc;
+$color-border: #111;
+$color-border-accent: #333;
 
 @mixin text {
     color: $color-text;
@@ -258,20 +260,19 @@ section {
 }
 
 .day, .excercise {
-    color: white;
     vertical-align: top;
     border-radius: 0.3em;
-    border: 1px solid #111;
-    border-left: 2px solid #333;
+    border: 1px solid $color-border;
+    border-left: 2px solid $color-border-accent;
     margin-bottom: 0.5em;
-    background: linear-gradient(135deg, #111 0%, black 100%);
+    background: linear-gradient(135deg, $color-border 0%, $color-background 100%);
 
     &.active {
         border-left: 2px solid $color-accent;
     }
 
     &.inactive {
-        border-left: 2px solid #333;
+        border-left: 2px solid $color-border-accent;
     }
 
     .name {
