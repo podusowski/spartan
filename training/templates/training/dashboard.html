@@ -2,9 +2,9 @@
 
 {%block content%}
 
-{% if statistics.favourites_this_month %}
-    <h2>top 3 this month | <a href="{% url 'statistics_this_month' %}">more</a></h2>
-    <section class="quick_stats">
+<section class="quick_stats">
+    {% if statistics.favourites_this_month %}
+        <h2>top 3 this month | <a href="{% url 'statistics_this_month' %}">more</a></h2>
         {% for excercise in statistics.favourites_this_month|slice:":3" %}
             <dl class="metric">
                 <dt>{{ excercise.name }}</dt>
@@ -12,11 +12,9 @@
                 <dd>{{ excercise.volume }}</dd>
             </dl>
         {% endfor %}
-    </section>
-{% endif %}
+    {% endif %}
 
-<h2>goals | <a href="{% url 'goals' %}">manage</a></h2>
-<section class="quick_stats">
+    <h2>goals | <a href="{% url 'goals' %}">manage</a></h2>
     {% for goal in goals.all %}
         <dl class="metric">
             <dt>{{ goal.name }}</dt>
@@ -31,9 +29,10 @@
 {% load training_format %}
 {% load el_pagination_tags %}
 
+<section>
+
 {% if statistics.not_started_workouts %}
     <h2>not started</h2>
-    <section>
         {% for workout in statistics.not_started_workouts %}
             <a href="{% url 'workout' workout.id %}">
                 <dl>
@@ -41,18 +40,14 @@
                 </dl>
             </a>
         {% endfor %}
-    </section>
 {% endif %}
 
 {% paginate 4 statistics.weeks as weeks %}
 
-<section class="pagination">
-    {% show_pages %}
-</section>
+<p>{% show_pages %}</p>
 
 {% for week in weeks %}
     <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
-    <section>
         {% for day in week.days %}
             <div class="day {{ day.workouts|yesno:"active,inactive" }}">
                 <div class="name">
@@ -82,11 +77,10 @@
                 </div>
             </div>
         {% endfor %}
-    </section>
 {% endfor %}
 
-<section class="pagination">
-    {% show_pages %}
+<p class="pagination">{% show_pages %}</p>
+
 </section>
 
 {% endblock %}
