@@ -6,6 +6,8 @@ $color-accent-text: #ccc;
 $color-border: #111;
 $color-border-accent: #333;
 
+$font: 'Exo 2', sans-serif;
+
 @mixin text {
     color: $color-text;
     text-shadow: 1px 1px 1px #000;
@@ -14,13 +16,13 @@ $color-border-accent: #333;
 @mixin text-accent {
     color: $color-accent-text;
     text-shadow: 1px 1px 1px #000;
-    font-weight: 100;
+    font-weight: 300;
 }
 
 @mixin text-helper {
     color: lighten($color-accent, 30%);
     text-shadow: 1px 1px 1px #000;
-    font-weight: 100;
+    font-weight: 300;
     font-size: 0.7em;
 }
 
@@ -66,7 +68,7 @@ body {
     background-image: url(../background.svg);
     background-repeat: no-repeat;
     background-attachment: fixed;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $font;
 
     @include text;
 }
@@ -85,10 +87,10 @@ header {
 }
 
 h2, h3, h4, h5 {
-    margin: 0 0.5em 0 0;
-    color: darken($color-accent, 10%);
+    margin: 0 0 0.3em 0;
+    color: darken($color-text, 10%);
     font-weight: 100;
-    font-size: 1.2em;
+    font-size: 1.5em;
     text-transform: uppercase;
 }
 
@@ -466,8 +468,7 @@ nav {
     a {
         vertical-align: top;
         display: inline-block;
-        color: $color-accent;
-        margin-bottom: 0.5em;
+        color: $color-text;
     }
 }
 
