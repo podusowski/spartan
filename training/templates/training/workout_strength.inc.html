@@ -1,23 +1,22 @@
 {% load training_format %}
 
-{%if workout.live%}
-    <section>
+<section>
+    <h2>quick stats</h2>
+    {%if workout.live%}
         <dl class="metric"><dt>duration</dt><dd><span data-stopwatch-from="{{workout.started.isoformat}}">--:--</span></dd></dl>
         <dl class="metric"><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
-    </section>
-{% endif %}
+    {% endif %}
 
-{% if workout.finished %}
-    <section>
+    {% if workout.finished %}
         <dl class="metric"><dt>started</dt><dd>{{workout.started}}</dd></dl>
         <dl class="metric"><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
-    </section>
-{% endif %}
+    {% endif %}
+</section>
 
-<h2>excercises</h2>
 <section>
+<h2>excercises</h2>
 {% for excercise in workout.excercise_set.all %}
     <div class="excercise {% if forloop.first and workout.live %}active{% endif %}">
         <div class="name">
@@ -81,8 +80,8 @@
         }
     </script>
 
-    <h2>start new excercise</h2>
     <section>
+    <h2>start new excercise</h2>
         <form action="{% url 'add_excercise' workout.id %}" method="post" id="start_excercise">
             {% csrf_token %}
             <input type="text" id="new_excercise_name" name="name" placeholder="name" required />
