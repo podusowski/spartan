@@ -9,8 +9,9 @@
 <script src="{% static 'training/activity_charts.js' %}"></script>
 <script src="{% static 'training/activity_map.js' %}"></script>
 
-<h2>{{ gpx.name }}, {{ workout.started }}</h2>
 <section>
+    <h2>{{ gpx.name }}, {{ workout.started }}</h2>
+
     <dl class="metric"><dt>distance</dt><dd>{{ gpx.distance|distance }}</dd></dl>
     <dl class="metric"><dt>time</dt><dd>{{ workout.duration }}</dd></dl>
     <dl class="metric"><dt>pace</dt><dd>{{ gpx.speed_or_pace }}</dd></dl>
@@ -22,13 +23,9 @@
     {% if gpx.average_cad %}
         <dl class="metric"><dt>avg cadence</dt><dd>{{ gpx.average_cad }}</dd></dl>
     {% endif %}
-</section>
 
-<section>
     <div id="map" style="height: 350px"></div>
-</section>
 
-<section>
     <canvas id="charts" width="8" height="1"></canvas>
 </section>
 

@@ -1,7 +1,6 @@
 {% load training_format %}
 
 <section>
-    <h2>quick stats</h2>
     {%if workout.live%}
         <dl class="metric"><dt>duration</dt><dd><span data-stopwatch-from="{{workout.started.isoformat}}">--:--</span></dd></dl>
         <dl class="metric"><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
@@ -13,22 +12,23 @@
         <dl class="metric"><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     {% endif %}
-</section>
 
-<section>
 <h2>excercises</h2>
 {% for excercise in workout.excercise_set.all %}
     <div class="excercise {% if forloop.first and workout.live %}active{% endif %}">
         <div class="name">
-            {{excercise.name}}
-        </div>
-        <div class="content">
             {% if forloop.first and not workout.finished %}
                 <span class="note" data-stopwatch-from="{{excercise.time_started.isoformat}}">{{excercise.duration|duration}}</span>
             {% else %}
                 <span class="note">{{excercise.duration|duration}}</span>
             {% endif %}
+        </div>
 
+        <div class="name">
+            {{excercise.name}}
+        </div>
+
+        <div class="content">
             <ul class="reps">
                 {% for reps in excercise.reps_set.all %}
                     <li>{{reps.reps}}</li>
@@ -61,10 +61,9 @@
                 </div>
             {%endif%}
     </div>
-{%empty%}
-    excersice is not started until you add first excercise
-{%endfor%}
-</section>
+{% empty %}
+    workout is not started until you start first excercise
+{% endfor %}
 
 
 {% if not workout.finished %}
@@ -80,7 +79,6 @@
         }
     </script>
 
-    <section>
     <h2>start new excercise</h2>
         <form action="{% url 'add_excercise' workout.id %}" method="post" id="start_excercise">
             {% csrf_token %}
