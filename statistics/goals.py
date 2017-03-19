@@ -32,9 +32,12 @@ class Goals:
                 return goal
         return None
 
+    def _has_goal(self, name: str) -> bool:
+        return True if self.get(name) else False
+
     def workouts_not_having_goal(self):
         workouts = self.statistics.most_popular_workouts()
-        return [workout.name for workout in workouts]
+        return [workout.name for workout in workouts if not self._has_goal(workout.name)]
 
     def all(self, now=timezone.now()) -> List[Goal]:
         volumes = {f.name: f.volume for f in self.statistics.favourites_this_month()}

@@ -129,4 +129,4 @@ class StatisticsTestCase(TestCase):
 
             statistics_mock.most_popular_workouts.return_value = [push_ups, running]
 
-            self.assertEqual(['push-up'], user_goals.workouts_not_having_goal())
+            self.assertEqual(['running'], user_goals.workouts_not_having_goal())
