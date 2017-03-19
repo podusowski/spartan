@@ -1,10 +1,5 @@
-$color-accent: #CF4A08;
-$color-secondary-background: #444;
-$color-background: black;
-$color-text: white;
-$color-accent-text: #ccc;
-$color-border: #111;
-$color-border-accent: #333;
+@import "colors";
+@import "loading_animation";
 
 $font: 'Exo 2', sans-serif;
 
@@ -427,23 +422,6 @@ nav {
     @include button(darken($color-secondary-background, 15%));
     margin-right: 0.2em;
     font-size: 100%;
-}
-
-.loading {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    margin: 0;
-    border-top: 2px solid lighten($color-accent, 30%);
-    border-left: 1px solid lighten($color-accent, 30%);
-    border-radius: 50%;
-    animation: spin 2000ms infinite linear;
-}
-
-@keyframes spin {
-    100% {
-        transform: rotate(360deg);
-    }
 }
 
 .endless_page_link,
