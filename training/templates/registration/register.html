@@ -3,13 +3,14 @@
 {%block content%}
 
 <section>
-<form action="{% url 'register' %}" method="post">
-    {% csrf_token %}
-    <ul>
-        {{form.as_ul}}
-    </ul>
-    <input type="submit" value="register" />
-</form>
+    <h2>Register new account</h2>
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <ul>
+            {{form.as_ul}}
+        </ul>
+        <input type="submit" value="register" />
+    </form>
 </section>
 
 {%endblock%}

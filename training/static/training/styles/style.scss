@@ -99,7 +99,7 @@ h3 {
 }
 
 p {
-    padding: 0.2em;
+    margin: 0 0 0.5em 0;
 }
 
 table {
@@ -125,6 +125,10 @@ table {
             border-left: 1px solid $color-border;
         }
     }
+}
+
+.intro {
+    text-align: center;
 }
 
 .note {
@@ -162,6 +166,8 @@ form {
     label {
         display: block;
         @include text;
+        text-transform: uppercase;
+        font-weight: 100;
     }
 
     input[type="submit"]::-moz-focus-inner {
