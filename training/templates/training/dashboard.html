@@ -4,7 +4,7 @@
 
 <section class="quick_stats">
     {% if statistics.favourites_this_month %}
-        <h2>top 3 this month | <a href="{% url 'statistics_this_month' %}">more</a></h2>
+        <h2>top 3 this month <a href="{% url 'statistics_this_month' %}">more</a></h2>
         {% for excercise in statistics.favourites_this_month|slice:":3" %}
             <dl class="metric">
                 <dt>{{ excercise.name }}</dt>
@@ -16,7 +16,7 @@
 </section>
 
 <section class="quick_stats">
-    <h2>goals | <a href="{% url 'goals' %}">manage</a></h2>
+    <h2>goals <a href="{% url 'goals' %}">manage</a></h2>
     {% for goal in goals.all %}
         <dl class="metric">
             <dt>{{ goal.name }}</dt>

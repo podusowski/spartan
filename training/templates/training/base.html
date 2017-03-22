@@ -25,11 +25,13 @@
 
 <body>
     <header>
-        {%if request.user.is_authenticated%}
-            logged as <a href="{% url 'user_profile' %}">{{request.user.username}}</a> (<a href="{% url 'logout' %}">logout</a>)
-        {%else%}
-            not logged in
-        {%endif%}
+        <div class="container">
+            {%if request.user.is_authenticated%}
+                logged as <a href="{% url 'user_profile' %}">{{request.user.username}}</a> (<a href="{% url 'logout' %}">logout</a>)
+            {%else%}
+                not logged in
+            {%endif%}
+        </div>
     </header>
 
     <script>
@@ -50,6 +52,7 @@
 
     {% block nav %}
         <nav class="menu">
+            <div class="container">
             {% if request.user.is_authenticated %}
                 <span class="mobile">
                     <a id="toggle-menu" href="#">&#9776;</a>
@@ -69,6 +72,7 @@
                     {% endblock %}
                 </div>
             {% endif %}
+            </div>
         </nav>
     {% endblock %}
 
