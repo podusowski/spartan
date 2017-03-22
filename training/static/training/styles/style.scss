@@ -214,7 +214,7 @@ form {
     }
 }
 
-dl {
+dl.dashboard-workout {
     @include box(#222);
     margin-right: 0.2em;
     margin-bottom: 0.5em;
@@ -239,7 +239,22 @@ dl {
 }
 
 dl.metric {
-    @include box(black);
+    font-size: smaller;
+    display: inline-block;
+    padding: 0.2em;
+    min-width: 5.1em;
+
+    dt {
+        white-space: nowrap;
+        text-transform: uppercase;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 5.1em;
+    }
+
+    dd {
+        @include text;
+    }
 
     dd:first-of-type {
         color: $color-accent;
@@ -431,23 +446,6 @@ nav {
     margin: 0;
     strong {
         margin: 0;
-    }
-}
-
-.quick_stats {
-    dl.metric {
-        max-width: 7em;
-    }
-
-    dt, dd {
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    a {
-        vertical-align: top;
-        display: inline-block;
-        color: $color-text;
     }
 }
 
