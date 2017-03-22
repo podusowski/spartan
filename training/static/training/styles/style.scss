@@ -409,6 +409,7 @@ nav .container {
 }
 
 nav {
+    background-color: lighten($color-background, 5%);
     #menu-content {
         display: none;
     }
@@ -451,6 +452,9 @@ nav {
         background-color: $color-accent;
     }
 
+    body {
+        font-size: 16px;
+    }
 }
 
 .button {
