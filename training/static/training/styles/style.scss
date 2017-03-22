@@ -64,6 +64,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     font-family: $font;
+    font-size: 14px;
 
     @include text;
 }
@@ -239,7 +240,7 @@ dl.dashboard-workout {
 }
 
 dl.metric {
-    font-size: smaller;
+    font-size: 0.8em;
     display: inline-block;
     padding: 0.2em;
     min-width: 5.1em;
