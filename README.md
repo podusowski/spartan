@@ -5,6 +5,10 @@ Web activity tracker for both strength and cardio (GPS tracked) activities.
 <a href="https://codecov.io/gh/podusowski/spartan"><img src="https://codecov.io/gh/podusowski/spartan/branch/master/graph/badge.svg" alt="Codecov" /></a>
 <a href="https://codeclimate.com/github/podusowski/spartan"><img src="https://codeclimate.com/github/podusowski/spartan/badges/gpa.svg" /></a>
 
+<img src="screenshots/dashboard.png?raw=true" />
+<img src="screenshots/gps_workout.png?raw=true" />
+<img src="screenshots/strength_workout.png?raw=true" />
+
 ## How to run locally
 
 ### Preparations
