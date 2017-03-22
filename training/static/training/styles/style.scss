@@ -239,18 +239,16 @@ dl.dashboard-workout {
     }
 }
 
-dl.metric {
+dl.metric, dl.metric-long {
     font-size: 0.8em;
-    display: inline-block;
     padding: 0.2em;
-    min-width: 5.1em;
+    min-width: 6.2em;
 
     dt {
         white-space: nowrap;
         text-transform: uppercase;
         text-overflow: ellipsis;
         overflow: hidden;
-        max-width: 5.1em;
     }
 
     dd {
@@ -271,6 +269,14 @@ dl.metric {
 
     &.interactive {
         cursor: pointer;
+    }
+}
+
+dl.metric {
+    display: inline-block;
+
+    dt {
+        max-width: 5.1em;
     }
 }
 

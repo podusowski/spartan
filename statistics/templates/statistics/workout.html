@@ -5,7 +5,7 @@
 <section>
     <h2>{{ workout.name }}</h2>
     {% for name, value in workout.metrics.items %}
-        <dl>
+        <dl class="metric-long">
             <dt>{{ name }}</dt>
             <dd>{{ value }}</dd>
         </dl>
