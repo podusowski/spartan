@@ -305,10 +305,9 @@ ul {
 .day, .excercise {
     vertical-align: top;
     border-radius: 0.3em;
-    border: 1px solid $color-border;
     border-left: 2px solid $color-border-accent;
     margin-bottom: 0.5em;
-    background: linear-gradient(135deg, $color-border 0%, $color-background 100%);
+    background: lighten($color-background, 5%);
 
     &.active {
         border-left: 2px solid $color-accent;
