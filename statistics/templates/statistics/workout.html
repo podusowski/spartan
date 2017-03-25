@@ -15,19 +15,22 @@
 <section>
     <h2>goal</h2>
     {% if goal %}
-        <dl>
-            <dt>progress</dt>
+        <dl class="metric-long">
+            <dt>current volume</dt>
             <dd>{{ goal.progress }}</dd>
+        </dl>
+        <dl class="metric-long">
+            <dt>% of goal</dt>
+            <dd>{{ goal.percent }}</dd>
         </dl>
     {% endif %}
 
-    <h2>set new</h2>
     <form action="{% url 'add_goal' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="name" value="{{ workout.name }}" />
         <ul>
             <li>
-                <label for="volume">volume:</label>
+                <label for="volume">set new volume</label>
                 <input type="number" name="volume" value="{{ goal.volume }}" required />
                 <input type="submit" value="save" />
             </li>
@@ -41,6 +44,8 @@
             <input type="submit" class="dangerous" value="delete" onclick="return confirm('are you sure you want to delete this goal?')" />
         </form>
     {% endif %}
+
+    <p class="note">Enter <strong>number of total reps</strong> for strength excercises or <strong>number of kilometers</strong> for GPS tracked activities.</p>
 </section>
 
 {% endblock %}
