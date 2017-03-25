@@ -227,16 +227,16 @@ class ClienStrengthTestCase(ClientTestCase):
         self.assertEqual([], list(statistics.most_common_reps()))
 
         self._do_some_pushups([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-        self.assertEqual([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], list(statistics.most_common_reps()))
+        self.assertEqual([10, 9, 8], list(statistics.most_common_reps(3)))
 
         self._do_some_pushups([11])
-        self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 2], list(statistics.most_common_reps()))
+        self.assertEqual([11, 10, 9], list(statistics.most_common_reps(3)))
 
         self._do_some_pushups([10, 10, 10])
-        self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 2], list(statistics.most_common_reps()))
+        self.assertEqual([11, 10, 9], list(statistics.most_common_reps(3)))
 
         self._do_some_pushups([1, 1, 1])
-        self.assertEqual([11, 10, 9, 8, 7, 6, 5, 4, 3, 1], list(statistics.most_common_reps()))
+        self.assertEqual([11, 10, 1], list(statistics.most_common_reps(3)))
 
     def test_showing_empty_explorer_page(self):
         self.get('/explorer')

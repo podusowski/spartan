@@ -205,9 +205,9 @@ class Statistics:
     def most_common_excercises(self):
         return Excercise.objects.filter(workout__user=self.user).values_list('name').annotate(count=Count('name')).order_by('-count')
 
-    def most_common_reps(self):
+    def most_common_reps(self, limit=4):
         return sorted(Reps.objects \
                           .values_list('reps') \
                           .annotate(rep_count=Count('reps')) \
                           .order_by('-rep_count', '-reps') \
-                          .values_list('reps', flat=True)[:10], reverse=True)
+                          .values_list('reps', flat=True)[:limit], reverse=True)
