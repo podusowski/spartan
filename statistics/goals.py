@@ -11,7 +11,7 @@ from statistics import models
 from statistics.statistics import Statistics
 
 
-Forecast = enum.Enum('Forecast', ['AHEAD', 'ON_TRACK', 'BEHIND'])
+Forecast = enum.Enum('Forecast', ['AHEAD', 'ON_TRACK', 'BEHIND', 'DONE'])
 Goal = collections.namedtuple('Goal', ['name', 'volume', 'progress', 'percent', 'left', 'forecast'])
 
 
@@ -44,6 +44,9 @@ class Goals:
 
         def calculate_forecast(percent):
             date_progress = dates.this_month(now=now).progress(now)
+
+            if percent >= 100:
+                return Forecast.DONE
 
             if percent > date_progress + 10:
                 return Forecast.AHEAD

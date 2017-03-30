@@ -522,6 +522,10 @@ nav {
     &.AHEAD > div {
         background-color: green;
     }
+
+    &.DONE {
+        visibility: hidden;
+    }
 }
 
 footer {
