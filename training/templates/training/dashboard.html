@@ -2,7 +2,7 @@
 
 {%block content%}
 
-<section class="quick_stats">
+<section>
     {% if statistics.favourites_this_month %}
         <h2>top 3 this month <a href="{% url 'statistics_this_month' %}">more</a></h2>
         {% for excercise in statistics.favourites_this_month|slice:":3" %}
@@ -17,7 +17,7 @@
     {% endif %}
 </section>
 
-<section class="quick_stats">
+<section>
     <h2>goals <a href="{% url 'goals' %}">manage</a></h2>
     {% for goal in goals.all %}
         <a href="{% url 'workout_statistics' goal.name %}">
