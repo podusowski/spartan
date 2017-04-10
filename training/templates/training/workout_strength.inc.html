@@ -19,14 +19,9 @@
 <section>
     <h2>excercises</h2>
 
-            <div>
-                {% if workout.live %}
-                    <a class="form-value-shortcut" href="{% url 'undo' workout.id %}" onclick="return confirm('are you sure you want to undo last rep?')">undo</a>
-                {% endif %}
-            </div>
-
     {% for excercise in workout.excercise_set.all %}
         <div class="excercise {% if forloop.first and workout.live %}active{% endif %}">
+
             <div class="name">
                 {% if forloop.first and not workout.finished %}
                     <span class="note" data-stopwatch-from="{{excercise.time_started.isoformat}}">{{excercise.duration|duration}}</span>
@@ -48,6 +43,11 @@
                     {% if excercise.reps_set.count > 1 %}
                         <li><strong>{{excercise.total_reps}}</strong></li>
                     {% endif %}
+
+                    {% if forloop.first and not workout.finished %}
+                        <li><a class="undo" href="{% url 'undo' workout.id %}" onclick="return confirm('are you sure you want to undo last rep?')">undo</a></li>
+                    {% endif %}
+
                 </ul>
             </div>
 
@@ -58,6 +58,7 @@
                         });
                     </script>
                 {% endif %}
+
                 {% if forloop.first and not workout.finished %}
                     <div class="toolbox">
                         <form action="{% url 'add_reps' excercise.id %}" method="post" id="add_reps">
