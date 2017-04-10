@@ -45,9 +45,10 @@
                     {% endif %}
 
                     {% if forloop.first and not workout.finished %}
-                        <li><a class="undo" href="{% url 'undo' workout.id %}" onclick="return confirm('are you sure you want to undo last rep?')">undo</a></li>
+                        <li>
+                            <a class="undo" href="{% url 'undo' workout.id %}" onclick="return confirm('are you sure you want to undo last rep?')">{% if excercise.reps_set.count > 0 %}undo{% else %}delete{% endif %}</a>
+                        </li>
                     {% endif %}
-
                 </ul>
             </div>
 
