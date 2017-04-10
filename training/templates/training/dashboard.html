@@ -2,8 +2,8 @@
 
 {%block content%}
 
-<section>
-    {% if statistics.favourites_this_month %}
+{% if statistics.favourites_this_month %}
+    <section>
         <h2>top 3 this month <a href="{% url 'statistics_this_month' %}">more</a></h2>
         {% for excercise in statistics.favourites_this_month|slice:":3" %}
             <a href="{% url 'workout_statistics' excercise.name %}">
@@ -14,8 +14,8 @@
                 </dl>
             </a>
         {% endfor %}
-    {% endif %}
-</section>
+    </section>
+{% endif %}
 
 <section>
     <h2>goals <a href="{% url 'goals' %}">manage</a></h2>
@@ -54,35 +54,37 @@
 
 {% for week in weeks %}
     <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
-        {% for day in week.days %}
-            <div class="day {{ day.workouts|yesno:"active,inactive" }}">
-                <div class="name">
-                    {{ day.start_time|date:"D" }}
-                </div>
-                <div class="content">
-                    {% for workout in day.workouts %}
-                        <a href="{% url 'workout' workout.id %}">
-                            <dl class="dashboard-workout">
-                                <dt>
-                                    <span class="note">
-                                        {{ workout.started|date:"P" }}
-                                    </span>
-                                    {{ workout.workout_type }}
-                                </dt>
-                                <dd>
-                                    {{ workout.volume }}
-                                    <span class="note">
-                                        {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
-                                    </span>
-                                </dd>
-                            </dl>
-                        </a>
-                    {% empty %}
-                        rest
-                    {% endfor %}
-                </div>
+    {% for day in week.days %}
+        <div class="day {{ day.workouts|yesno:"active,inactive" }}">
+            <div class="name">
+                {{ day.start_time|date:"D" }}
             </div>
-        {% endfor %}
+            <div class="content">
+                {% for workout in day.workouts %}
+                    <a href="{% url 'workout' workout.id %}">
+                        <dl class="dashboard-workout">
+                            <dt>
+                                <span class="note">
+                                    {{ workout.started|date:"P" }}
+                                </span>
+                                {{ workout.workout_type }}
+                            </dt>
+                            <dd>
+                                {{ workout.volume }}
+                                <span class="note">
+                                    {% if workout.live %}live{% else %}{{ workout.duration|duration }}{% endif %}
+                                </span>
+                            </dd>
+                        </dl>
+                    </a>
+                {% empty %}
+                    rest
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% empty %}
+    <p>your workouts will show up here</p>
 {% endfor %}
 
 <p class="pagination">{% show_pages %}</p>

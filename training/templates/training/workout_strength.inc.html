@@ -1,18 +1,20 @@
 {% load training_format %}
 
-<section>
-    {%if workout.live%}
+{%if workout.live%}
+    <section>
         <dl class="metric"><dt>duration</dt><dd><span data-stopwatch-from="{{workout.started.isoformat}}">--:--</span></dd></dl>
         <dl class="metric"><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
-    {% endif %}
+    </section>
+{% endif %}
 
-    {% if workout.finished %}
+{% if workout.finished %}
+    <section>
         <dl class="metric"><dt>started</dt><dd>{{workout.started}}</dd></dl>
         <dl class="metric"><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
-    {% endif %}
-</section>
+    </section>
+{% endif %}
 
 <section>
     <h2>excercises</h2>
@@ -28,6 +30,12 @@
 
             <div class="name">
                 {{ excercise.name }}
+            </div>
+
+            <div>
+                {% if workout.live %}
+                    <a href="{% url 'undo' workout.id %}" onclick="return confirm('are you sure you want to undo last rep?')">undo</a>
+                {% endif %}
             </div>
 
             <div class="content">

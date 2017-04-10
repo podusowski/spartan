@@ -71,6 +71,10 @@
                     {% block toolbox %}
                     {% endblock %}
                 </div>
+            {% else %}
+                <div id="menu-content">
+                    <a href="{% url 'index' %}">home</a>
+                </div>
             {% endif %}
             </div>
         </nav>
