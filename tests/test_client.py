@@ -319,12 +319,12 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
         excercise = workout.excercise_set.latest('pk')
 
-        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
-        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
-        self.assertEqual(units.Volume(reps=10), workout.volume())
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '2'})
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '3'})
+        self.assertEqual(units.Volume(reps=5), workout.volume())
 
         self.post('/strength/undo/{}'.format(workout.id))
-        self.assertEqual(units.Volume(reps=5), workout.volume())
+        self.assertEqual(units.Volume(reps=2), workout.volume())
 
 
 class UserProfileTestCase(ClientTestCase):
