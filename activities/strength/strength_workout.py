@@ -54,6 +54,14 @@ def add_reps(user, excercise_id, reps):
 
 def undo(user, workout_id):
     workout = models.Workout.objects.get(pk=workout_id, user=user)
+
+    if workout.excercise_set.count() == 0:
+        return
+
     current_excercise = workout.excercise_set.latest('pk')
-    latest_set = current_excercise.reps_set.latest('pk')
-    latest_set.delete()
+
+    if current_excercise.reps_set.count() > 0:
+        latest_set = current_excercise.reps_set.latest('pk')
+        latest_set.delete()
+    else:
+        current_excercise.delete()

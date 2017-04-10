@@ -326,6 +326,20 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.post('/strength/undo/{}'.format(workout.id))
         self.assertEqual(units.Volume(reps=2), workout.volume())
 
+    def test_undo_last_excercise(self):
+        workout = self._start_workout()
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+        self.assertEqual(1, workout.excercise_set.count())
+
+        self.post('/strength/undo/{}'.format(workout.id))
+        self.assertEqual(0, workout.excercise_set.count())
+
+    def test_undo_does_nothing_where_there_is_nothing_to_do(self):
+        workout = self._start_workout()
+        self.post('/strength/undo/{}'.format(workout.id))
+        self.assertEqual(0, workout.excercise_set.count())
+
 
 class UserProfileTestCase(ClientTestCase):
     def test_user_profile(self):
