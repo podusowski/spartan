@@ -10,7 +10,7 @@ from tests.utils import time, ClientTestCase
 from tests import utils
 
 
-class ClienStrengthTestCase(ClientTestCase):
+class TrashTestCase(ClientTestCase):
     def _view_workout(self, workout_id, status_code=200):
         return self.get('/workout/{}'.format(workout_id), status_code=status_code)
 
@@ -21,13 +21,6 @@ class ClienStrengthTestCase(ClientTestCase):
 
     def _get_statistics_from_dashboard(self):
         return self.get('/dashboard').context['statistics']
-
-    def test_create_workout_and_delete_it(self):
-        workout = self._start_workout()
-
-        self.post('/delete_workout/{}/'.format(workout.id))
-
-        self._view_workout(workout.id, status_code=404)
 
     def _strength_workout(self, name, series):
         workout = self._start_workout()
@@ -43,56 +36,6 @@ class ClienStrengthTestCase(ClientTestCase):
 
     def _do_some_pushups(self, series):
         return self._strength_workout('push-up', series)
-
-    def test_add_some_excercises_and_reps(self):
-        self._start_workout()
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
-
-        self.assertIsNone(workout.started)
-        self.assertIsNone(workout.finished)
-
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
-
-        self.assertIsNotNone(workout.started)
-        self.assertIsNone(workout.finished)
-
-        excercise = workout.excercise_set.latest('pk')
-
-        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '10'})
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'pull-up'})
-
-        excercise = workout.excercise_set.latest('pk')
-
-        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
-        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
-
-        self.assertEqual(units.Volume(reps=20), workout.volume())
-
-        self.post('/strength/finish_workout/{}'.format(workout.id))
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
-
-        self.assertIsNotNone(workout.started)
-        self.assertIsNotNone(workout.finished)
-
-    def test_undo_last_rep(self):
-        workout = self._start_workout()
-
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
-        excercise = workout.excercise_set.latest('pk')
-
-        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
-        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
-        self.assertEqual(units.Volume(reps=10), workout.volume())
-
-        self.post('/strength/undo/{}'.format(workout.id))
-        self.assertEqual(units.Volume(reps=5), workout.volume())
 
     def test_finish_workout_without_any_excercise(self):
         workout = self._start_workout()
@@ -313,6 +256,75 @@ class ClienStrengthTestCase(ClientTestCase):
         self._import_gpx('3p_simplest.gpx')
 
         self.assertEqual(1, self._find_statistics_field('running', 'total workouts'))
+
+
+class StrengthWorkoutTestCase(ClientTestCase):
+    def _start_workout(self):
+        workout = self.get('/strength/start_workout').context['workout']
+        self._view_workout(workout.id)
+        return workout
+
+    def _view_workout(self, workout_id, status_code=200):
+        return self.get('/workout/{}'.format(workout_id), status_code=status_code)
+
+    def test_create_workout_and_delete_it(self):
+        workout = self._start_workout()
+        self.post('/delete_workout/{}/'.format(workout.id))
+
+        self._view_workout(workout.id, status_code=404)
+
+    def _get_statistics_from_dashboard(self):
+        return self.get('/dashboard').context['statistics']
+
+    def test_add_some_excercises_and_reps(self):
+        self._start_workout()
+
+        statistics = self._get_statistics_from_dashboard()
+        workout = statistics.previous_workouts()[0]
+
+        self.assertIsNone(workout.started)
+        self.assertIsNone(workout.finished)
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+
+        statistics = self._get_statistics_from_dashboard()
+        workout = statistics.previous_workouts()[0]
+
+        self.assertIsNotNone(workout.started)
+        self.assertIsNone(workout.finished)
+
+        excercise = workout.excercise_set.latest('pk')
+
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '10'})
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'pull-up'})
+
+        excercise = workout.excercise_set.latest('pk')
+
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+
+        self.assertEqual(units.Volume(reps=20), workout.volume())
+
+        self.post('/strength/finish_workout/{}'.format(workout.id))
+
+        statistics = self._get_statistics_from_dashboard()
+        workout = statistics.previous_workouts()[0]
+
+        self.assertIsNotNone(workout.started)
+        self.assertIsNotNone(workout.finished)
+
+    def test_undo_last_rep(self):
+        workout = self._start_workout()
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+        excercise = workout.excercise_set.latest('pk')
+
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self.assertEqual(units.Volume(reps=10), workout.volume())
+
+        self.post('/strength/undo/{}'.format(workout.id))
+        self.assertEqual(units.Volume(reps=5), workout.volume())
 
 
 class UserProfileTestCase(ClientTestCase):
