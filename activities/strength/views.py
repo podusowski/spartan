@@ -23,6 +23,12 @@ def add_reps(request, excercise_id):
 
 
 @login_required
+def undo(request, workout_id):
+    strength_workout.undo(request.user, workout_id)
+    return redirect('workout', workout_id)
+
+
+@login_required
 def finish_workout(request, training_session_id):
     strength_workout.finish_workout(None, training_session_id)
     return redirect('workout', training_session_id)

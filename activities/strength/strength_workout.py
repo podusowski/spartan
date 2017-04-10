@@ -50,3 +50,10 @@ def add_reps(user, excercise_id, reps):
     s.time_updated = django.utils.timezone.now()
     s.save()
     return s.workout.id
+
+
+def undo(user, workout_id):
+    workout = models.Workout.objects.get(pk=workout_id, user=user)
+    current_excercise = workout.excercise_set.latest('pk')
+    latest_set = current_excercise.reps_set.latest('pk')
+    latest_set.delete()

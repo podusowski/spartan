@@ -81,6 +81,19 @@ class ClienStrengthTestCase(ClientTestCase):
         self.assertIsNotNone(workout.started)
         self.assertIsNotNone(workout.finished)
 
+    def test_undo_last_rep(self):
+        workout = self._start_workout()
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+        excercise = workout.excercise_set.latest('pk')
+
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
+        self.assertEqual(units.Volume(reps=10), workout.volume())
+
+        self.post('/strength/undo/{}'.format(workout.id))
+        self.assertEqual(units.Volume(reps=5), workout.volume())
+
     def test_finish_workout_without_any_excercise(self):
         workout = self._start_workout()
 
