@@ -18,6 +18,13 @@
 
 <section>
     <h2>excercises</h2>
+
+            <div>
+                {% if workout.live %}
+                    <a class="form-value-shortcut" href="{% url 'undo' workout.id %}" onclick="return confirm('are you sure you want to undo last rep?')">undo</a>
+                {% endif %}
+            </div>
+
     {% for excercise in workout.excercise_set.all %}
         <div class="excercise {% if forloop.first and workout.live %}active{% endif %}">
             <div class="name">
@@ -30,12 +37,6 @@
 
             <div class="name">
                 {{ excercise.name }}
-            </div>
-
-            <div>
-                {% if workout.live %}
-                    <a href="{% url 'undo' workout.id %}" onclick="return confirm('are you sure you want to undo last rep?')">undo</a>
-                {% endif %}
             </div>
 
             <div class="content">
