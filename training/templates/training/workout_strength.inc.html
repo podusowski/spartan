@@ -1,11 +1,21 @@
 {% load training_format %}
+{% load staticfiles %}
 
 {%if workout.live%}
     <section>
-        <dl class="metric"><dt>duration</dt><dd><span data-stopwatch-from="{{workout.started.isoformat}}">--:--</span></dd></dl>
-        <dl class="metric"><dt>since last</dt><dd><span id="last_update_stopwatch">--:--</span></dd></dl>
+        <dl class="metric"><dt>duration</dt>
+            <dd><span data-stopwatch-from="{{workout.started.isoformat}}">--:--</span></dd>
+        </dl>
+
+        <dl class="metric">
+            <dt>since last</dt>
+            <dd><span id="last_update_stopwatch" data-beep-sound="#last-update-stopwatch-sound" data-beep-every="30">--:--</span></dd>
+        </dl>
+
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     </section>
+
+    <audio src="{% static 'training/Beep_Short.mp3' %}" id="last-update-stopwatch-sound"></audio>
 {% endif %}
 
 {% if workout.finished %}
@@ -59,7 +69,7 @@
                 {% if forloop.first and excercise.time_updated and not workout.finished %}
                     <script>
                         $(document).ready(function() {
-                            stopwatch("last_update_stopwatch", new Date("{{ excercise.time_updated.isoformat }}"));
+                            stopwatch("#last_update_stopwatch", new Date("{{ excercise.time_updated.isoformat }}"));
                         });
                     </script>
                 {% endif %}

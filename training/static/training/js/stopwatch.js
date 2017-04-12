@@ -6,12 +6,27 @@ function time_on_server(on_server)
     time_difference_between_server = now - on_server;
 }
 
+function beep(element, seconds)
+{
+    var beepSound = element.attr('data-beep-sound');
+    var beepInterval = element.attr('data-beep-every');
+
+    if (beepInterval != undefined && seconds % beepInterval == 0)
+    {
+        $(beepSound)[0].play();
+    }
+}
+
 function stopwatch(html_element_id, start_time)
 {
+    element = $(html_element_id);
+
     var now = new Date();
     var diff = now.getTime() - start_time.getTime() - time_difference_between_server;
+    var seconds = Math.round(diff / 1000);
+    beep(element, seconds);
 
-    document.getElementById(html_element_id).innerHTML = format_timespan(diff);
+    element.text(format_timespan(diff));
     setTimeout(function() { stopwatch(html_element_id, start_time); }, 500);
 }
 
@@ -20,6 +35,8 @@ function stopwatch2(element)
     var start_time = new Date(element.attr('data-stopwatch-from'));
     var now = new Date();
     var diff = now.getTime() - start_time.getTime() - time_difference_between_server;
+    var seconds = Math.round(diff / 1000);
+    beep(element, seconds);
 
     element.text(format_timespan(diff));
     setTimeout(function() { stopwatch2(element); }, 500);
