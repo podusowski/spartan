@@ -1,10 +1,14 @@
-{%extends "training/base.html"%}
+{% extends "training/base.html" %}
 
-{%block content%}
+{% block content %}
 
-<h2>logout</h2>
-<div class="box">
-    <p>bye</p>
-</div>
+<section>
+    <h2>Bye</h2>
+    <p>You have been logged out.</p>
 
-{%endblock%}
+    <form action="{% url 'login' %}">
+        <input type="submit" value="login again" />
+    </form>
+</section>
+
+{% endblock %}
