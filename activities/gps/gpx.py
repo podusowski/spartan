@@ -3,7 +3,6 @@ import os
 import logging
 import json
 import decimal
-import pyproj
 import math
 from math import sqrt
 
