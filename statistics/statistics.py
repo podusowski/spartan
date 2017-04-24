@@ -70,15 +70,20 @@ class WorkoutStatistics:
         from django.apps import apps
         import importlib
 
-        result = {}
+        def get_statistics_from_app(name):
+            try:
+                app_statistics = importlib.import_module('{}.local_statistics'.format(name))
+                logging.debug('looking for stats in {}'.format(name))
+                return app_statistics.workout(self.user, self.name)
+            except ImportError as e:
+                logging.debug('can\'t import app {}'.format(name))
+
+        result = []
 
         for app in apps.get_app_configs():
-            try:
-                app_statistics = importlib.import_module('{}.local_statistics'.format(app.name))
-                logging.debug('looking for stats in {}'.format(app.name))
-                result.update(app_statistics.workout(self.user, self.name))
-            except ImportError as e:
-                pass
+            stats = get_statistics_from_app(app.name)
+            if stats:
+                result.extend(stats)
 
         return result
 

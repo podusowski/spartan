@@ -20,8 +20,8 @@ def workout(user, name):
     series = models.Reps.objects.filter(excercise__workout__user=user,
                                         excercise__name=name).count()
 
-    return {'total workouts': source.count(),
-            'total reps': units.Volume(reps=reps),
-            'total series': series,
-            'average reps per series': round(reps / series),
-            'average reps per workout': round(reps / source.count())}
+    return [('total workouts', source.count()),
+            ('total series', series),
+            ('total reps', units.Volume(reps=reps)),
+            ('average reps per workout', round(reps / source.count())),
+            ('average reps per series', round(reps / series))]

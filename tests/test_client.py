@@ -3,6 +3,7 @@ import datetime
 import pytz
 import unittest.mock
 from unittest.mock import patch, Mock, PropertyMock
+import logging
 
 from training import models, units, dates
 
@@ -233,7 +234,13 @@ class TrashTestCase(ClientTestCase):
     def _find_statistics_field(self, name, field):
         statistics = self._get_statistics_from_dashboard()
         workout_statistics = statistics.workout_statistics(name)
-        return workout_statistics.metrics()[field]
+        metrics = workout_statistics.metrics()
+
+        for n, value in metrics:
+            if n == field:
+                return value
+
+        logging.warn('no "{}" in {}'.format(field, metrics))
 
     def test_strength_statistics(self):
         self.switch_user(self.other_user)

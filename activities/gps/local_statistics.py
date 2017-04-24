@@ -17,6 +17,6 @@ def workout(user, name):
 
     total_distance = _sum(source, 'distance')
 
-    return {'total workouts': source.count(),
-            'total distance': units.Volume(meters=total_distance),
-            'average distance per workout': units.Volume(meters=total_distance/source.count())}
+    return [('total workouts', source.count()),
+            ('total distance', units.Volume(meters=total_distance)),
+            ('average distance per workout', units.Volume(meters=total_distance/source.count()))]
