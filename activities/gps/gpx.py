@@ -13,18 +13,11 @@ from django.utils import timezone
 import gpxpy
 
 from training import models
+from . import gps_workout
+
 
 class WorkoutAlreadyExists(Exception):
     pass
-
-def _workout_already_exists(user, started, finished):
-    try:
-        models.Workout.objects.get(user=user, started=started, finished=finished)
-        logging.debug("workout already exists")
-        return True
-    except:
-        logging.debug("workout not there")
-        return False
 
 
 def upload_gpx(request):
@@ -38,7 +31,7 @@ def save_gpx(user, content):
     parsed = gpxpy.parse(content)
 
     started, finished = parsed.get_time_bounds()
-    if _workout_already_exists(user, started, finished):
+    if gps_workout.exists(user, started, finished):
         raise WorkoutAlreadyExists()
 
     workout = models.Workout.objects.create(user=user,
@@ -106,9 +99,9 @@ def synchronize_endomondo(user, max_results=None):
 
     count = 0
     for endomondo_workout in endomondo_workouts:
-        if not _workout_already_exists(user,
-                                       endomondo_workout.start_time,
-                                       endomondo_workout.start_time + endomondo_workout.duration):
+        if not gps_workout.exists(user,
+                                  endomondo_workout.start_time,
+                                  endomondo_workout.start_time + endomondo_workout.duration):
             try:
                 _import_endomondo_workout(user, endomondo_workout)
                 count += 1
