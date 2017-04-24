@@ -5,6 +5,7 @@ from django.shortcuts import *
 from django.http import JsonResponse
 
 from . import gpx
+from . import endomondo as endo
 
 
 def _make_form(form_type, request, initial=None):
@@ -39,12 +40,12 @@ class ConnectWithEndomondoForm(forms.Form):
 
 @login_required
 def endomondo(request):
-    key = gpx.endomondo_key(request.user)
+    key = endo.endomondo_key(request.user)
 
     form = _make_form(ConnectWithEndomondoForm, request)
 
     if form.is_bound and form.is_valid():
-        gpx.connect_to_endomondo(request.user, request.POST["email"], request.POST["password"])
+        endo.connect_to_endomondo(request.user, request.POST["email"], request.POST["password"])
         return redirect('endomondo')
 
     return render(request, 'training/endomondo.html', {'form': form, 'key': key})
@@ -52,26 +53,26 @@ def endomondo(request):
 
 @login_required
 def synchronize_endomondo(request):
-    gpx.synchronize_endomondo(request.user)
+    endo.synchronize_endomondo(request.user)
     return redirect('endomondo')
 
 
 @login_required
 @never_cache
 def synchronize_endomondo_ajax(request):
-    count = gpx.synchronize_endomondo(request.user, 10)
+    count = endo.synchronize_endomondo(request.user, 10)
     return JsonResponse({"imported_count": count})
 
 
 @login_required
 def disconnect_endomondo(request):
-    gpx.disconnect_endomondo(request.user)
+    endo.disconnect_endomondo(request.user)
     return redirect('endomondo')
 
 
 @login_required
 def purge_endomondo(request):
-    gpx.purge_endomondo_workouts(request.user)
+    endo.purge_endomondo_workouts(request.user)
     return redirect('dashboard')
 
 
