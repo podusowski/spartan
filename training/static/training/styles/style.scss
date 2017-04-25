@@ -213,12 +213,21 @@ form {
     // select a label before input
     .file_input_label {
         @include button($color-accent);
-
     }
 
     .file_input {
         position: absolute;
         left: -1000px;
+    }
+
+    ul .errorlist {
+        margin-top: 1em;
+
+        li {
+            color: white;
+            padding: 0.5em;
+            background: #e81e1e;
+        }
     }
 }
 
