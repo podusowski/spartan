@@ -45,8 +45,11 @@ def endomondo(request):
     form = _make_form(ConnectWithEndomondoForm, request)
 
     if form.is_bound and form.is_valid():
-        endo.connect_to_endomondo(request.user, request.POST["email"], request.POST["password"])
-        return redirect('endomondo')
+        try:
+            endo.connect_to_endomondo(request.user, request.POST["email"], request.POST["password"])
+            return redirect('endomondo')
+        except:
+            form.add_error(None, 'Endomondo has rejected your credentials')
 
     return render(request, 'training/endomondo.html', {'form': form, 'key': key})
 
