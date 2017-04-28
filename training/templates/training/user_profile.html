@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<h2>{{ user.username }} user profile</h2>
-
 <section>
+    <h2>{{ user.username }} user profile</h2>
+
     <form enctype="multipart/form-data" action="{% url 'user_profile' %}" method="post">
         {% csrf_token %}
         <ul>
