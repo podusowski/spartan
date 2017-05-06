@@ -1,12 +1,15 @@
-var time_difference_between_server = 0;
+var spartan = spartan || {};
+spartan.stopwatch = spartan.stopwatch || {};
 
-function time_on_server(on_server)
+spartan.stopwatch.time_difference_between_server = 0;
+
+spartan.stopwatch.saveTimeOnServer = function(on_server)
 {
     var now = new Date();
-    time_difference_between_server = now - on_server;
+    spartan.stopwatch.time_difference_between_server = now - on_server;
 }
 
-function beep(element, seconds)
+spartan.stopwatch.beep = function(element, seconds)
 {
     var beepSound = element.attr('data-beep-sound');
     var beepInterval = element.attr('data-beep-every');
@@ -17,45 +20,45 @@ function beep(element, seconds)
     }
 }
 
-function stopwatch(html_element_id, start_time)
+spartan.stopwatch.stopwatch = function this_function(html_element_id, start_time)
 {
     element = $(html_element_id);
 
     var now = new Date();
-    var diff = now.getTime() - start_time.getTime() - time_difference_between_server;
+    var diff = now.getTime() - start_time.getTime() - spartan.stopwatch.time_difference_between_server;
     var seconds = Math.round(diff / 1000);
-    beep(element, seconds);
+    spartan.stopwatch.beep(element, seconds);
 
-    element.text(format_timespan(diff));
-    setTimeout(function() { stopwatch(html_element_id, start_time); }, 500);
+    element.text(formatTime(diff));
+    setTimeout(function() { this_function(html_element_id, start_time); }, 500);
 }
 
-function stopwatch2(element)
+spartan.stopwatch.stopwatch2 = function this_function(element)
 {
     var start_time = new Date(element.attr('data-stopwatch-from'));
     var now = new Date();
-    var diff = now.getTime() - start_time.getTime() - time_difference_between_server;
+    var diff = now.getTime() - start_time.getTime() - spartan.stopwatch.time_difference_between_server;
     var seconds = Math.round(diff / 1000);
-    beep(element, seconds);
+    spartan.stopwatch.beep(element, seconds);
 
-    element.text(format_timespan(diff));
-    setTimeout(function() { stopwatch2(element); }, 500);
+    element.text(formatTime(diff));
+    setTimeout(function() { this_function(element); }, 500);
 }
 
-function format_number(number)
+function formatTime(ms)
 {
-    if (number > 9)
+    function format_number(number)
     {
-        return '' + number
+        if (number > 9)
+        {
+            return '' + number
+        }
+        else
+        {
+            return '0' + number
+        }
     }
-    else
-    {
-        return '0' + number
-    }
-}
 
-function format_timespan(ms)
-{
     if (ms < 0)
     {
         return "--";
@@ -88,14 +91,14 @@ function format_timespan(ms)
     }
 }
 
-function start_all_stopwatches()
+spartan.stopwatch.startAllStopwatchesWithAttribute = function()
 {
     $("[data-stopwatch-from]").each(function()
     {
-        stopwatch2($(this));
+        spartan.stopwatch.stopwatch2($(this));
     });
 }
 
 $(document).ready(function() {
-    start_all_stopwatches();
+    spartan.stopwatch.startAllStopwatchesWithAttribute();
 });

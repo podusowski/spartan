@@ -16,7 +16,7 @@
 <script src="{% static 'training/js/stopwatch.js' %}"></script>
 
 <script>
-    time_on_server(new Date("{% now 'c' %}"));
+    spartan.stopwatch.saveTimeOnServer(new Date("{% now 'c' %}"));
 </script>
 
 {% if workout.is_gpx %}

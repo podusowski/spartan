@@ -69,7 +69,7 @@
                 {% if forloop.first and excercise.time_updated and not workout.finished %}
                     <script>
                         $(document).ready(function() {
-                            stopwatch("#last_update_stopwatch", new Date("{{ excercise.time_updated.isoformat }}"));
+                            spartan.stopwatch.stopwatch($('#last_update_stopwatch'), new Date("{{ excercise.time_updated.isoformat }}"));
                         });
                     </script>
                 {% endif %}
