@@ -102,8 +102,4 @@ spartan.stopwatch.startAllStopwatchesWithAttribute = function() {
 $(document).ready(function() {
     spartan.stopwatch.initializePreciseTimer();
     spartan.stopwatch.startAllStopwatchesWithAttribute();
-
-    spartan.stopwatch.eachSecond(function(seconds) {
-        console.log('seconds: ' + seconds);
-    });
 });
