@@ -2,6 +2,32 @@ var spartan = spartan || {};
 spartan.stopwatch = spartan.stopwatch || {};
 
 spartan.stopwatch.timeDifferenceBetweenServer = 0;
+spartan.stopwatch.eachSecondHandlers = [];
+spartan.stopwatch.lastSecondTime = new Date().valueOf();
+
+/**
+ * Using built-in setTimeout function is susceptible to time drifts, using
+ * precise timers will reduce this effect giving a beat on each second.
+ */
+spartan.stopwatch.initializePreciseTimer = function() {
+    function evaluateTimers() {
+        var now = new Date().valueOf();
+        var drift = now - spartan.stopwatch.lastSecondTime;
+
+        spartan.stopwatch.eachSecondHandlers.forEach(function(e) {
+            e();
+        });
+
+        spartan.stopwatch.lastSecondTime += 1000;
+        setTimeout(evaluateTimers, 1000 - drift);
+    }
+
+    evaluateTimers();
+}
+
+spartan.stopwatch.eachSecond = function(handler) {
+    spartan.stopwatch.eachSecondHandlers.push(handler);
+}
 
 spartan.stopwatch.saveTimeOnServer = function(time) {
     var now = new Date();
@@ -57,16 +83,14 @@ spartan.stopwatch.stopwatch = function thisFunction(element, startTime) {
         startTime = new Date(element.attr('data-stopwatch-from'));
     }
 
-    var now = new Date();
-    var diff = now.getTime() - startTime.getTime() - spartan.stopwatch.timeDifferenceBetweenServer;
-    var seconds = Math.round(diff / 1000);
-    spartan.stopwatch.beep(element, seconds);
+    spartan.stopwatch.eachSecond(function() {
+        var now = new Date();
+        var diff = now.getTime() - startTime.getTime() - spartan.stopwatch.timeDifferenceBetweenServer;
+        var seconds = Math.round(diff / 1000);
 
-    element.text(formatTime(diff));
-
-    setTimeout(function() {
-        thisFunction(element, startTime);
-    }, 500);
+        spartan.stopwatch.beep(element, seconds);
+        element.text(formatTime(diff));
+    });
 }
 
 spartan.stopwatch.startAllStopwatchesWithAttribute = function() {
@@ -76,5 +100,10 @@ spartan.stopwatch.startAllStopwatchesWithAttribute = function() {
 }
 
 $(document).ready(function() {
+    spartan.stopwatch.initializePreciseTimer();
     spartan.stopwatch.startAllStopwatchesWithAttribute();
+
+    spartan.stopwatch.eachSecond(function(seconds) {
+        console.log('seconds: ' + seconds);
+    });
 });
