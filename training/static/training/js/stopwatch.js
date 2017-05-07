@@ -43,16 +43,8 @@ spartan.stopwatch.beep = function(element, seconds) {
     }
 }
 
-spartan.stopwatch.stopwatch = function thisFunction(element, startTime) {
+spartan.stopwatch.stopwatch = function(element, startTime) {
     function formatTime(ms) {
-        function formatNumber(number) {
-            if (number > 9) {
-                return '' + number
-            } else {
-                return '0' + number
-            }
-        }
-
         if (ms < 0) {
             return "--";
         }
@@ -67,6 +59,14 @@ spartan.stopwatch.stopwatch = function thisFunction(element, startTime) {
         ms = ms % (60 * 1000);
 
         var second = Math.floor(ms / 1000);
+
+        function formatNumber(number) {
+            if (number > 9) {
+                return '' + number
+            } else {
+                return '0' + number
+            }
+        }
 
         var minsAndSecs = formatNumber(minute) + 'm:' + formatNumber(second) + 's';
 
