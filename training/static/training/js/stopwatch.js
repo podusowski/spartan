@@ -39,7 +39,8 @@ spartan.stopwatch.beep = function(element, seconds) {
     var beepInterval = element.attr('data-beep-every');
 
     if (beepInterval != undefined && seconds % beepInterval == 0) {
-        $(beepSound)[0].play();
+        audio = new Audio(beepSound);
+        audio.play();
     }
 }
 

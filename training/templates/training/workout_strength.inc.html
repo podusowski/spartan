@@ -9,13 +9,11 @@
 
         <dl class="metric">
             <dt>since last</dt>
-            <dd><span id="last_update_stopwatch" data-beep-sound="#last-update-stopwatch-sound" data-beep-every="30">--:--</span></dd>
+            <dd><span id="last_update_stopwatch" data-beep-sound="{% static 'training/Beep_Short.mp3' %}" data-beep-every="30">--:--</span></dd>
         </dl>
 
         <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
     </section>
-
-    <audio src="{% static 'training/Beep_Short.mp3' %}" id="last-update-stopwatch-sound"></audio>
 {% endif %}
 
 {% if workout.finished %}
