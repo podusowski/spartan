@@ -4,6 +4,7 @@ from django.db import transaction
 
 from training import models
 from . import gpx
+from . import gps_workout
 
 @transaction.atomic
 def _import_endomondo_workout(user, endomondo_workout):
