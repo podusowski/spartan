@@ -108,6 +108,19 @@ class Reps(models.Model):
         ordering = ['pk']
 
 
+class Timers(models.Model):
+    '''
+    Timer based excercises tracks time instead of reps. Example
+    of such workout is plank.
+    '''
+    excercise = models.ForeignKey(Excercise)
+    time_started = models.DateTimeField(null=True, default=None)
+    time_finished = models.DateTimeField(null=True, default=None)
+
+    class Meta:
+        ordering = ['pk']
+
+
 from django.db import models
 from django.utils.six import with_metaclass
 
