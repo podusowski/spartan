@@ -2,6 +2,8 @@ var activityCharts = {};
 
 activityCharts.setGlobalSettings = function()
 {
+    Chart.defaults.global.maintainAspectRatio = false;
+
     Chart.defaults.global.elements.rectangle.borderColor = 'rgba(207, 74, 8, 0.8)';
     Chart.defaults.global.elements.rectangle.backgroundColor = 'rgba(207, 74, 8, 0.1)';
 
@@ -10,8 +12,15 @@ activityCharts.setGlobalSettings = function()
 
     Chart.defaults.global.elements.line.borderColor = 'rgba(207, 74, 8, 0.8)';
     Chart.defaults.global.elements.line.backgroundColor = 'rgba(207, 74, 8, 0.05)';
+
     Chart.defaults.global.legend.display = true;
-    Chart.defaults.global.legend.position = "right";
+    Chart.defaults.global.legend.position = "top";
+    Chart.defaults.global.legend.fullWidth = true;
+    Chart.defaults.global.legend.labels.boxWidth = 12;
+
+    Chart.defaults.global.legend.labels.filter = function(item, data) {
+        return item.text.indexOf('AVG') == -1;
+    };
 
     Chart.defaults.global.hover.intersect = false;
 
@@ -97,17 +106,11 @@ activityCharts.render = function(charts_id, points)
         options: {
             scales: {
                 yAxes: [{
-                    gridLines: {
-                        color: "rgba(207, 74, 8, 0.1)"
-                    },
                     ticks: {
                         beginAtZero: false
                     }
                 }],
                 xAxes: [{
-                    gridLines: {
-                        color: "rgba(207, 74, 8, 0.1)"
-                    },
                     ticks: {
                         maxTicksLimit: 10,
                         minRotation: 0,

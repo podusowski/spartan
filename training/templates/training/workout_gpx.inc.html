@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://openlayers.org/en/v3.19.1/css/ol.css" type="text/css">
 
 <script src="https://openlayers.org/en/v3.19.1/build/ol.js"></script>
-<script src="{% static 'training/activity_charts.js' %}"></script>
+<script src="{% static 'training/js/charts.js' %}"></script>
 <script src="{% static 'training/activity_map.js' %}"></script>
 
 <section>
@@ -30,7 +30,7 @@
 </section>
 
 <section>
-    <canvas id="charts" width="8" height="1"></canvas>
+    <canvas id="charts" style="height: 10em"></canvas>
 </section>
 
 <script>
@@ -38,7 +38,6 @@
         var points = {{ gpx.points_as_json|safe }};
 
         activityMap.renderMap('map', activityMap.makeGpsLayer(points));
-
         activityCharts.render('#charts', points);
     });
 </script>
