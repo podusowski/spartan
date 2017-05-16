@@ -49,14 +49,11 @@ activityCharts.render = function(charts_id, points)
     var hr_data = points.map(function(point) { return point.hr; });
     var cad_data = points.map(function(point) { return point.cad; });
 
-    var time_data = points.map(function (point)
-    {
-        var started_time = new Date(points[0].time).getTime();
-        var actual_time = new Date(point.time).getTime();
-        var delta_time_in_ms = actual_time - started_time;
-        const one_minute_in_ms = 1000;
+    var time_data = points.map(function (point) {
+        var timeStarted = new Date(points[0].time);
+        var timeCurrent = new Date(point.time);
 
-        return delta_time_in_ms / one_minute_in_ms;
+        return spartan.utils.formatTime(timeCurrent - timeStarted);
     });
 
     var datasets = [];
