@@ -1,6 +1,7 @@
-var activityCharts = {};
+var spartan = spartan || {};
+spartan.charts = spartan.charts || {};
 
-activityCharts.setGlobalSettings = function()
+spartan.charts.setGlobalSettings = function()
 {
     Chart.defaults.global.maintainAspectRatio = false;
 
@@ -38,23 +39,58 @@ activityCharts.setGlobalSettings = function()
     };
 }
 
-activityCharts.render = function(charts_id, points)
-{
-    this.setGlobalSettings();
+spartan.charts.Points = function(points) {
+    this.points = points;
+};
 
-    var isPresent = function(data) {
-        return data.length > 0 && data[0] != null;
-    };
+spartan.charts.Points.prototype._valuesOrNull = function(data) {
+    return data.length > 0 && data[0] != null ? data : null;
+};
 
-    var hr_data = points.map(function(point) { return point.hr; });
-    var cad_data = points.map(function(point) { return point.cad; });
+spartan.charts.Points.prototype._average = function(data) {
+    sum = data.reduce(function(a, b) { return a + b; });
+    avg = sum / data.length;
 
-    var time_data = points.map(function (point) {
-        var timeStarted = new Date(points[0].time);
+    result = new Array(data.length);
+    result.fill(avg);
+
+    return result;
+};
+
+spartan.charts.Points.prototype.hr = function() {
+    var data = this.points.map(function(point) { return point.hr; });
+    return this._valuesOrNull(data);
+};
+
+spartan.charts.Points.prototype.cad = function() {
+    var data = this.points.map(function(point) { return point.cad; });
+    return this._valuesOrNull(data);
+};
+
+spartan.charts.Points.prototype.averageCad = function() {
+    return this._average(this.cad());
+};
+
+spartan.charts.Points.prototype.averageHr = function() {
+    return this._average(this.hr());
+};
+
+spartan.charts.Points.prototype.time = function() {
+    var _this = this;
+
+    return this.points.map(function(point) {
+        var timeStarted = new Date(_this.points[0].time);
         var timeCurrent = new Date(point.time);
 
         return spartan.utils.formatTime(timeCurrent - timeStarted);
     });
+};
+
+spartan.charts.render = function(charts_id, points)
+{
+    this.setGlobalSettings();
+
+    var p = new this.Points(points);
 
     var datasets = [];
 
@@ -78,26 +114,26 @@ activityCharts.render = function(charts_id, points)
         };
     };
 
-    if (isPresent(hr_data))
+    if (p.hr() !== null)
     {
         datasets = datasets.concat([
-            makeDataset(hr_data, "HR", 'rgba(153, 0, 0, 0.8)'),
-            makeDataset(makeAverage(hr_data), "AVG HR", 'rgba(153, 0, 0, 0.4)')
+            makeDataset(p.hr(), "HR", 'rgba(153, 0, 0, 0.8)'),
+            makeDataset(p.averageHr(), "AVG HR", 'rgba(153, 0, 0, 0.4)')
         ]);
     }
 
-    if (isPresent(cad_data))
+    if (p.cad() !== null)
     {
         datasets = datasets.concat([
-            makeDataset(cad_data, "CADENCE", 'rgba(0, 76, 153, 0.8)'),
-            makeDataset(makeAverage(cad_data), "AVG CADENCE", 'rgba(0, 76, 153, 0.4)')
+            makeDataset(p.cad(), "CADENCE", 'rgba(0, 76, 153, 0.8)'),
+            makeDataset(p.averageCad(), "AVG CADENCE", 'rgba(0, 76, 153, 0.4)')
         ]);
     }
 
     chart = new Chart($(charts_id), {
         type: "line",
         data: {
-            labels: time_data,
+            labels: p.time(),
             datasets: datasets
         },
         options: {

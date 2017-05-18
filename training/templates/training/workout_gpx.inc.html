@@ -38,7 +38,7 @@
         var points = {{ gpx.points_as_json|safe }};
 
         activityMap.renderMap('map', activityMap.makeGpsLayer(points));
-        activityCharts.render('#charts', points);
+        spartan.charts.render('#charts', points);
     });
 </script>
 
