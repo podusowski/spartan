@@ -11,6 +11,9 @@ spartan.charts.setGlobalSettings = function()
     Chart.defaults.bar.scales.xAxes[0].categoryPercentage = 0.9;
     Chart.defaults.bar.scales.xAxes[0].barPercentage = 1;
 
+    Chart.defaults.line.scales.yAxes = [{ticks: {beginAtZero: true}}];
+    Chart.defaults.line.scales.xAxes = [{ticks: {maxRotation: 0}}];
+
     Chart.defaults.global.elements.line.borderColor = 'rgba(207, 74, 8, 0.8)';
     Chart.defaults.global.elements.line.backgroundColor = 'rgba(207, 74, 8, 0.05)';
 
@@ -94,16 +97,6 @@ spartan.charts.render = function(charts_id, points)
 
     var datasets = [];
 
-    var makeAverage = function(data) {
-        sum = data.reduce(function(a, b) { return a + b; });
-        avg = sum / data.length;
-
-        result = new Array(data.length);
-        result.fill(avg);
-
-        return result;
-    };
-
     var makeDataset = function(data, label, color='rgba(153, 0, 0, 0.8)') {
         return {
             borderColor: color,
@@ -135,22 +128,6 @@ spartan.charts.render = function(charts_id, points)
         data: {
             labels: p.time(),
             datasets: datasets
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        maxTicksLimit: 10,
-                        minRotation: 0,
-                        maxRotation: 0
-                    }
-                }]
-            }
         }
     });
 }
