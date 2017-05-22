@@ -52,6 +52,20 @@ def add_reps(user, excercise_id, reps):
     return s.workout.id
 
 
+def start_timer(user, excercise_id):
+    excercise = models.Excercise.objects.get(pk=excercise_id, workout__user=user)
+    excercise.timers_set.create(time_started=django.utils.timezone.now())
+    return excercise.workout.id
+
+
+def stop_timer(user, excercise_id):
+    excercise = models.Excercise.objects.get(pk=excercise_id, workout__user=user)
+    timer = excercise.timers_set.latest('pk')
+    timer.time_finished = django.utils.timezone.now()
+    timer.save()
+    return excercise.workout.id
+
+
 def undo(user, workout_id):
     workout = models.Workout.objects.get(pk=workout_id, user=user)
 

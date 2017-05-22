@@ -23,6 +23,18 @@ def add_reps(request, excercise_id):
 
 
 @login_required
+def start_timer(request, excercise_id):
+    workout_id = strength_workout.start_timer(request.user, excercise_id)
+    return redirect('workout', workout_id)
+
+
+@login_required
+def stop_timer(request, excercise_id):
+    workout_id = strength_workout.stop_timer(request.user, excercise_id)
+    return redirect('workout', workout_id)
+
+
+@login_required
 def undo(request, workout_id):
     strength_workout.undo(request.user, workout_id)
     return redirect('workout', workout_id)
