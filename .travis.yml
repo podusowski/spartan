@@ -7,12 +7,14 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install codecov
+  - pip install python-coveralls
 
 script:
   - coverage run manage.py test
 
 after_success:
   - codecov
+  - coveralls
 
 notifications:
   email: false
