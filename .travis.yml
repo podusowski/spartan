@@ -10,7 +10,7 @@ install:
   - pip install python-coveralls
 
 script:
-  - coverage run manage.py test
+  - coverage run --omit 'env/*' manage.py test
 
 after_success:
   - codecov
