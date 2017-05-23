@@ -14,6 +14,16 @@ class UnitsTestCase(TestCase):
         self.assertEqual("1.00km", str(units.Volume(meters=1000)))
         self.assertEqual("15.12km", str(units.Volume(meters=15123)))
 
+    def test_goal(self):
+        self.assertEqual("done", units.Volume(reps=1).left_to(1))
+        self.assertEqual("done", units.Volume(reps=2).left_to(1))
+
+        # for distance, we treat number as km
+        self.assertEqual("done", units.Volume(meters=1000).left_to(1))
+
+        self.assertEqual("1 left", units.Volume(reps=1).left_to(2))
+        self.assertEqual("1.00km left", units.Volume(meters=1000).left_to(2))
+
     def test_adding(self):
         self.assertEqual(Volume(reps=3), Volume(reps=1) + Volume(reps=2))
         self.assertEqual(Volume(meters=3), Volume(meters=1) + Volume(meters=2))
