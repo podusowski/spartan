@@ -1,3 +1,6 @@
+from copy import copy
+
+
 def mpkm_from_mps(m_per_s):
     try:
         c = 16.666666666667
@@ -44,10 +47,8 @@ class Volume:
             self.value = meters
         elif seconds is not None:
             self.type = Volume.Type.DURATION
-            self.multiplier = 1
+            self.multiplier = 60
             self.value = seconds
-
-        self.distance = meters is not None
 
     def __str__(self):
         if self.type == Volume.Type.DISTANCE:
@@ -78,4 +79,6 @@ class Volume:
         return self.value / self.multiplier
 
     def _make_new(self, value):
-        return Volume(meters=value) if self.distance else Volume(reps=value)
+        ret = copy(self)
+        ret.value = value
+        return ret
