@@ -351,6 +351,11 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.assertIsNotNone(workout.started)
         self.assertIsNotNone(workout.finished)
 
+    ONE_O_CLOCK = time(2016, 1, 1, 13, 0, 0)
+    TWO_O_CLOCK = time(2016, 1, 1, 14, 0, 0)
+    THREE_O_CLOCK = time(2016, 1, 1, 15, 0, 0)
+    FOUR_O_CLOCK = time(2016, 1, 1, 16, 0, 0)
+
     def test_timer_based_excercises(self):
         self._start_workout()
 
@@ -360,30 +365,19 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'plank front'})
         excercise = workout.excercise_set.latest('pk')
 
-        first_timer_start = time(2016, 7, 30, 6, 22, 5)
-
         with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = first_timer_start
+            now.return_value = self.ONE_O_CLOCK
             self.post('/strength/start_timer/{}'.format(excercise.id))
 
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
-        excercise = workout.excercise_set.get()
-
-        self.assertEqual(1, len(excercise.timers_set.all()))
-
-        first_timer = excercise.timers_set.all()[0]
-        self.assertEqual(first_timer_start, first_timer.time_started)
-
-        first_timer_stop = time(2016, 7, 30, 6, 22, 6)
-
         with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = first_timer_stop
+            now.return_value = self.TWO_O_CLOCK
             self.post('/strength/stop_timer/{}'.format(excercise.id))
 
+        self.assertEqual(1, len(excercise.timers_set.all()))
         first_timer = excercise.timers_set.all()[0]
 
-        self.assertEqual(first_timer_stop, first_timer.time_finished)
+        self.assertEqual(self.ONE_O_CLOCK, first_timer.time_started)
+        self.assertEqual(self.TWO_O_CLOCK, first_timer.time_finished)
 
     def test_undo_last_rep(self):
         workout = self._start_workout()
