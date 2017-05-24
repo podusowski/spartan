@@ -7,6 +7,7 @@ def mpkm_from_mps(m_per_s):
     except:
         return '-'
 
+
 def km_from_m(m):
     if m is None:
         return None
@@ -18,17 +19,43 @@ def km_from_m(m):
         return '{}m'.format(m)
 
 
+def _format_duration(secs):
+    mins = secs // 60
+    if mins > 0:
+        return "{}min".format(mins)
+    else:
+        return "{}sec".format(secs)
+
+
 class Volume:
-    def __init__(self, reps:int=None, meters:int=None) -> None:
+    class Type:
+        DISTANCE = 1
+        REPS = 2
+        DURATION = 3
+
+    def __init__(self, reps:int=None, meters:int=None, seconds:int=None) -> None:
+        if reps is not None:
+            self.type = Volume.Type.REPS
+            self.multiplier = 1
+            self.value = reps
+        elif meters is not None:
+            self.type = Volume.Type.DISTANCE
+            self.multiplier = 1000
+            self.value = meters
+        elif seconds is not None:
+            self.type = Volume.Type.DURATION
+            self.multiplier = 1
+            self.value = seconds
+
         self.distance = meters is not None
-        self.multiplier = 1000 if self.distance else 1
-        self.value = meters if self.distance else reps
 
     def __str__(self):
-        if self.distance:
+        if self.type == Volume.Type.DISTANCE:
             return km_from_m(self.value)
-        else:
+        elif self.type == Volume.Type.REPS:
             return str(self.value)
+        elif self.type == Volume.Type.DURATION:
+            return _format_duration(self.value)
 
     __repr__ = __str__
 

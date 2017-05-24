@@ -28,6 +28,10 @@ class UnitsTestCase(TestCase):
         self.assertEqual(Volume(reps=3), Volume(reps=1) + Volume(reps=2))
         self.assertEqual(Volume(meters=3), Volume(meters=1) + Volume(meters=2))
 
+    def test_duration_volume(self):
+        self.assertEqual("1sec", str(units.Volume(seconds=1)))
+        self.assertEqual("1min", str(units.Volume(seconds=60)))
+
     def test_pace_convertion_from_mps_to_mpkm(self):
         self.assertEqual('3:59min/km', units.mpkm_from_mps(4.17))
         self.assertEqual('5:03min/km', units.mpkm_from_mps(3.3))
