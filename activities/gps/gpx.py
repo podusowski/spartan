@@ -20,7 +20,7 @@ class WorkoutAlreadyExists(Exception):
 
 def upload_gpx(request):
     content = request.FILES['gpxfile'].read().decode('utf-8')
-    save_gpx(request.user, content)
+    return save_gpx(request.user, content)
 
 
 def save_gpx(user, content):
@@ -48,6 +48,8 @@ def save_gpx(user, content):
                                              hr=point.extensions.get('hr', None),
                                              cad=point.extensions.get('cad', None),
                                              time=point.time)
+
+    return workout.id
 
 
 def workout_types(user):

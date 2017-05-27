@@ -47,7 +47,7 @@ class TrashTestCase(ClientTestCase):
     def _import_gpx(self, filename):
         path = os.path.join(utils.GPX_DIR, filename)
         with open(path, 'r') as f:
-            self.post('/gps/upload_gpx/', {'gpxfile': f})
+            return self.post('/gps/upload_gpx/', {'gpxfile': f})
 
     def _get_latest_workout_from_dashboard(self):
         statistics = self._get_statistics_from_dashboard()
@@ -55,9 +55,7 @@ class TrashTestCase(ClientTestCase):
         return statistics.previous_workouts()[0]
 
     def test_gpx_import(self):
-        self._import_gpx('3p_simplest.gpx')
-
-        workout = self._get_latest_workout_from_dashboard()
+        workout = self._import_gpx('3p_simplest.gpx').context['workout']
 
         self.assertTrue(workout.is_gpx());
         self.assertEqual(time(2016, 7, 30, 6, 22, 5), workout.started)

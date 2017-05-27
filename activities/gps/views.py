@@ -8,6 +8,10 @@ from . import gpx
 from . import endomondo as endo
 
 
+def workout(workout_id):
+    pass
+
+
 def _make_form(form_type, request, initial=None):
     if request.method == "POST":
         return form_type(request.POST, request.FILES)
@@ -24,8 +28,8 @@ def upload_gpx(request):
     if request.method == "POST":
         form = UploadGpxForm(request.POST, request.FILES)
         if form.is_valid():
-            gpx.upload_gpx(request)
-            return redirect('dashboard')
+            workout_id = gpx.upload_gpx(request)
+            return redirect('workout', workout_id)
         else:
             return render(request, 'training/upload_gpx.html', {'form': form})
     else:

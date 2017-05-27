@@ -2,10 +2,12 @@ import os
 import logging
 import pytz
 import pytz.exceptions
+import importlib
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.utils import timezone
+from django.apps import apps
 from django import forms
 
 from .models import *
@@ -52,6 +54,18 @@ def dashboard(request):
 
 @login_required
 def workout(request, training_session_id):
+
+    for app in apps.get_app_configs():
+        try:
+            activity_module = importlib.import_module('{}.activity'.format(app))
+            logging.debug('looking for activity in app called {}'.format(app))
+
+            if activity_module.supported(training_session_id):
+                logging.debug('redirecting to {}'.format(app))
+                activity_module.redirect_to_workout(training_session_id)
+        except ImportError as e:
+            logging.debug('can\'t import app {}'.format(app))
+
     workout = get_object_or_404(Workout, pk=training_session_id, user=request.user)
 
     gpx = None
