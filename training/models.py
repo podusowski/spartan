@@ -13,6 +13,7 @@ from . import units
 
 class Workout(models.Model):
     user = models.ForeignKey(User)
+    activity_type = models.CharField(max_length=200, default=None)
 
     @property
     def workout_type(self):
@@ -23,7 +24,7 @@ class Workout(models.Model):
     finished = models.DateTimeField(null=True, default=None)
 
     def __str__(self):
-        return "{} at {} by {}".format(self.workout_type, self.started, self.user)
+        return "{}.{} at {} by {}".format(self.activity_type, self.workout_type, self.started, self.user)
 
     def is_gpx(self):
         return len(self.gpx_set.all()) > 0
