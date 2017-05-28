@@ -61,9 +61,9 @@ class TrashTestCase(ClientTestCase):
         self.assertEqual(time(2016, 7, 30, 6, 22, 5), workout.started)
         self.assertEqual(time(2016, 7, 30, 6, 22, 7), workout.finished)
 
-        gpx_workout = workout.gpx_set.get()
-        self.assertEqual("running", gpx_workout.name)
-        self.assertEqual(4, gpx_workout.distance)
+        gpx = workout.gpx_set.get()
+        self.assertEqual("running", gpx.name)
+        self.assertEqual(4, gpx.distance)
 
     def _import_gpx_and_check_activity_type(self, filename, name):
         self._import_gpx(filename)

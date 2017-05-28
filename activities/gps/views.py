@@ -4,12 +4,18 @@ from django.views.decorators.cache import never_cache
 from django.shortcuts import *
 from django.http import JsonResponse
 
+from statistics.statistics import *
 from . import gpx
 from . import endomondo as endo
 
 
-def workout(workout_id):
-    pass
+def workout(request, workout_id):
+    workout = get_object_or_404(Workout, pk=workout_id, user=request.user)
+    gpx = workout.gpx_set.get()
+
+    return render(request, 'training/workout.html', {'workout': workout,
+                                                     'statistics': Statistics(request.user),
+                                                     'gpx': gpx})
 
 
 def _make_form(form_type, request, initial=None):

@@ -10,5 +10,5 @@ urlpatterns = [
     url('^synchronize_endomondo_ajax/$', views.synchronize_endomondo_ajax, name='synchronize_endomondo_ajax'),
     url('^purge_endomondo/$', views.purge_endomondo, name='purge_endomondo'),
 
-    url('^workout/(?P<workout_id>[0-9]+)/$', views.workout, name='workout'),
+    url('^workout/(?P<workout_id>[0-9]+)/$', views.workout, name='show_gps_workout'),
 ]
