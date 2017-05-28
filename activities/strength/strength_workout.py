@@ -6,7 +6,7 @@ from training import models
 
 
 def start_workout(user):
-    workout = models.Workout.objects.create(user=user)
+    workout = models.Workout.objects.create(user=user, activity_type='strength')
     return workout.id
 
 
