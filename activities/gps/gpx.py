@@ -12,6 +12,7 @@ import gpxpy
 
 from training import models
 from . import gps_workout
+from . import activity
 
 
 class WorkoutAlreadyExists(Exception):
@@ -34,7 +35,8 @@ def save_gpx(user, content):
 
     workout = models.Workout.objects.create(user=user,
                                             started=started,
-                                            finished=finished)
+                                            finished=finished,
+                                            activity_type=activity.TYPE)
 
     gpx = models.Gpx.objects.create(workout=workout,
                                     name=parsed.tracks[0].type,

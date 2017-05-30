@@ -3,6 +3,9 @@ from django.shortcuts import *
 from training import models
 
 
+TYPE = 'gps'
+
+
 def supported(workout):
     return workout.gpx_set.count() > 0
 
