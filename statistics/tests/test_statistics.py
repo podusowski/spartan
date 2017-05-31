@@ -33,7 +33,9 @@ class StatisticsTestCase(TestCase):
         '''
 
         workout = models.Workout.objects.create(user=user,
-                                                started=FIRST_SEPT_2016, finished=SECOND_SEPT_2016)
+                                                activity_type='test',
+                                                started=FIRST_SEPT_2016,
+                                                finished=SECOND_SEPT_2016)
 
         for name, series in stuff.items():
             excercise = workout.excercise_set.create(name=name)
@@ -55,6 +57,7 @@ class StatisticsTestCase(TestCase):
 
     def test_weeks(self):
         models.Workout.objects.create(user=self.user,
+                                      activity_type='test',
                                       started=FIRST_SEPT_2016,
                                       finished=datetime.datetime(2016, 9, 1, 0, 0, 1, tzinfo=pytz.utc))
 
