@@ -5,10 +5,12 @@ from django.db import transaction
 from training import models
 from . import gpx
 from . import gps_workout
+from . import activity
 
 @transaction.atomic
 def _import_endomondo_workout(user, endomondo_workout):
     workout = models.Workout.objects.create(user=user,
+                                            activity_type=activity.TYPE,
                                             started=endomondo_workout.start_time,
                                             finished=endomondo_workout.start_time + endomondo_workout.duration)
 
