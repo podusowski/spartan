@@ -56,28 +56,10 @@ def dashboard(request):
 def workout(request, training_session_id):
     workout = get_object_or_404(Workout, pk=training_session_id, user=request.user)
 
-    for app in apps.get_app_configs():
-        try:
-            logging.debug('looking for activity in app called {}'.format(app.name))
-            activity_module = importlib.import_module('{}.activity'.format(app.name))
+    logging.debug('workout type: {}'.format(workout.activity_type))
 
-            if activity_module.supported(workout):
-                logging.debug('redirecting to {}'.format(app))
-                return activity_module.redirect_to_workout(workout)
-        except ImportError as e:
-            logging.debug('can\'t import app {}'.format(app))
-
-    logging.warning('fallback to old workout page')
-
-    gpx = None
-    try:
-        gpx = workout.gpx_set.get()
-    except:
-        pass
-
-    return render(request, 'training/workout.html', {'workout': workout,
-                                                     'statistics': Statistics(request.user),
-                                                     'gpx': gpx})
+    activity_module = importlib.import_module('activities.{}.activity'.format(workout.activity_type))
+    return activity_module.redirect_to_workout(workout)
 
 
 @login_required

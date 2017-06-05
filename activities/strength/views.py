@@ -2,6 +2,16 @@ from django.shortcuts import *
 from django.contrib.auth.decorators import login_required
 
 from . import strength_workout
+import training.models
+from statistics.statistics import *
+
+
+@login_required
+def workout(request, workout_id):
+    workout = get_object_or_404(training.models.Workout, pk=workout_id, user=request.user)
+
+    return render(request, 'training/workout.html', {'workout': workout,
+                                                     'statistics': Statistics(request.user)})
 
 
 @login_required
