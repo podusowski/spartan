@@ -282,7 +282,16 @@ class StrengthWorkoutTestCase(ClientTestCase):
     THREE_O_CLOCK = time(2016, 1, 1, 15, 0, 0)
     FOUR_O_CLOCK = time(2016, 1, 1, 16, 0, 0)
 
-    def test_timer_based_excercises(self):
+    def _timer_rep(self, excercise_id, time_start, time_finished):
+        with patch('django.utils.timezone.now', autospec=True) as now:
+            now.return_value = time_start
+            self.post('/strength/start_timer/{}'.format(excercise_id))
+
+        with patch('django.utils.timezone.now', autospec=True) as now:
+            now.return_value = time_finished
+            self.post('/strength/stop_timer/{}'.format(excercise_id))
+
+    def test_timer_based_excercise_with_two_reps(self):
         self._start_workout()
 
         statistics = self._get_statistics_from_dashboard()
@@ -293,13 +302,7 @@ class StrengthWorkoutTestCase(ClientTestCase):
 
         # add first rep
 
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = self.ONE_O_CLOCK
-            self.post('/strength/start_timer/{}'.format(excercise.id))
-
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = self.TWO_O_CLOCK
-            self.post('/strength/stop_timer/{}'.format(excercise.id))
+        self._timer_rep(excercise.id, self.ONE_O_CLOCK, self.TWO_O_CLOCK)
 
         self.assertEqual(1, len(excercise.timers_set.all()))
         first_timer = excercise.timers_set.all()[0]
@@ -309,13 +312,7 @@ class StrengthWorkoutTestCase(ClientTestCase):
 
         # add second rep
 
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = self.THREE_O_CLOCK
-            self.post('/strength/start_timer/{}'.format(excercise.id))
-
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = self.FOUR_O_CLOCK
-            self.post('/strength/stop_timer/{}'.format(excercise.id))
+        self._timer_rep(excercise.id, self.THREE_O_CLOCK, self.FOUR_O_CLOCK)
 
         self.assertEqual(2, len(excercise.timers_set.all()))
         second_timer = excercise.timers_set.all()[1]
