@@ -63,8 +63,6 @@ class WorkoutStatistics:
     def __init__(self, user, name):
         self.user = user
         self.name = name
-        self._source = Excercise.objects.filter(workout__user=user, name=name)
-        self._aggregations = self._basic_aggregations()
 
     def metrics(self):
         from django.apps import apps
@@ -86,34 +84,6 @@ class WorkoutStatistics:
                 result.extend(stats)
 
         return result
-
-    def _basic_aggregations(self):
-        return self._source.aggregate(count=Count('name'),
-                                      earliest=Min('workout__started'),
-                                      latest=Max('workout__started'))
-
-    def _aggregate(self, **kwargs):
-        '''
-        django can't do multiple aggregation in one expression
-        '''
-        return self._source.aggregate(**kwargs)
-
-    @property
-    def volume(self):
-        volume = _sum_volume(self._source, 'reps__reps')
-        return units.Volume(reps=volume)
-
-    @property
-    def count(self):
-        return self._aggregations['count']
-
-    @property
-    def earliest(self):
-        return self._aggregations['earliest']
-
-    @property
-    def average_reps(self):
-        return self._aggregate(value=Avg('reps__reps'))['value']
 
 
 class Statistics:

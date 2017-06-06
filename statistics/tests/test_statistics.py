@@ -27,34 +27,6 @@ class StatisticsTestCase(TestCase):
 
         self.statistics = statistics.Statistics(self.user)
 
-    def _create_workout(self, user, stuff):
-        '''
-        usage: _create_excercises({'push-up': [10, 10], 'sit-up': [5, 5, 5]})
-        '''
-
-        workout = models.Workout.objects.create(user=user,
-                                                activity_type='test',
-                                                started=FIRST_SEPT_2016,
-                                                finished=SECOND_SEPT_2016)
-
-        for name, series in stuff.items():
-            excercise = workout.excercise_set.create(name=name)
-
-            for reps in series:
-                excercise.reps_set.create(reps=reps)
-
-    def test_strength_workout_statistics(self):
-        self._create_workout(self.user, {'push-up': [8, 12]})
-        self._create_workout(self.other_user, {'push-up': [1]})
-
-        workout_statistics = self.statistics.workout_statistics('push-up')
-
-        self.assertEqual('push-up', workout_statistics.name)
-        self.assertEqual(units.Volume(reps=20), workout_statistics.volume)
-        self.assertEqual(1, workout_statistics.count)
-        self.assertEqual(FIRST_SEPT_2016, workout_statistics.earliest)
-        self.assertEqual(10, workout_statistics.average_reps)
-
     def test_weeks(self):
         models.Workout.objects.create(user=self.user,
                                       activity_type='test',
