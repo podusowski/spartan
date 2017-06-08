@@ -15,6 +15,7 @@ from statistics.statistics import *
 from statistics.goals import Goals
 from training import userprof
 from training import heatmap
+import activities.registry
 
 
 def _make_form(form_type, request, initial=None):
@@ -55,10 +56,7 @@ def dashboard(request):
 @login_required
 def workout(request, training_session_id):
     workout = get_object_or_404(Workout, pk=training_session_id, user=request.user)
-
-    logging.debug('workout type: {}'.format(workout.activity_type))
-
-    activity_module = importlib.import_module('activities.{}.activity'.format(workout.activity_type))
+    activity_module = activities.registry.import_module(workout)
     return activity_module.redirect_to_workout(workout)
 
 
