@@ -122,10 +122,6 @@ class Timers(models.Model):
         ordering = ['pk']
 
 
-from django.db import models
-from django.utils.six import with_metaclass
-
-
 class SportField(models.CharField):
     def __init__(self, *args, **kwargs):
         super(SportField, self).__init__(*args, **kwargs)
