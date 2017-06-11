@@ -1,29 +1,20 @@
 from unittest.mock import patch
 
 from tests.utils import time, ClientTestCase
+from tests import utils
 from training import units
 
 
 class StrengthWorkoutTestCase(ClientTestCase):
-    def _strength_workout(self, name, series):
-        workout = self._start_workout()
-
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': name})
-
-        excercise = workout.excercise_set.latest('pk')
-
-        for reps in series:
-            self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': reps})
-
-        return self.post('/strength/finish_workout/{}'.format(workout.id)).context['workout']
-
-    def _start_workout(self):
-        workout = self.get('/strength/start_workout').context['workout']
-        self._view_workout(workout.id)
-        return workout
+    _strength_workout = utils.strength_workout
+    _start_workout = utils.start_workout
 
     def _view_workout(self, workout_id, status_code=200):
         return self.get('/workout/{}'.format(workout_id), status_code=status_code)
+
+    def test_workout_can_be_viewed_after_starting(self):
+        workout = self._start_workout()
+        self._view_workout(workout.id)
 
     def test_finish_workout_without_any_excercise(self):
         workout = self._start_workout()
@@ -162,7 +153,7 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.post('/strength/undo/{}'.format(workout.id))
         self.assertEqual(0, workout.excercise_set.count())
 
-    def _do_some_pushups(self, series):
+    def _pushups(self, series):
         return self._strength_workout('push-up', series)
 
     def test_most_common_reps(self):
@@ -170,14 +161,14 @@ class StrengthWorkoutTestCase(ClientTestCase):
 
         self.assertEqual([], list(statistics.most_common_reps()))
 
-        self._do_some_pushups([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        self._pushups([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         self.assertEqual([10, 9, 8], list(statistics.most_common_reps(3)))
 
-        self._do_some_pushups([11])
+        self._pushups([11])
         self.assertEqual([11, 10, 9], list(statistics.most_common_reps(3)))
 
-        self._do_some_pushups([10, 10, 10])
+        self._pushups([10, 10, 10])
         self.assertEqual([11, 10, 9], list(statistics.most_common_reps(3)))
 
-        self._do_some_pushups([1, 1, 1])
+        self._pushups([1, 1, 1])
         self.assertEqual([11, 10, 1], list(statistics.most_common_reps(3)))

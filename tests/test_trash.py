@@ -12,28 +12,11 @@ from tests import utils
 
 
 class TrashTestCase(ClientTestCase):
-    def _view_workout(self, workout_id, status_code=200):
-        return self.get('/workout/{}'.format(workout_id), status_code=status_code)
-
-    def _start_workout(self):
-        workout = self.get('/strength/start_workout').context['workout']
-        self._view_workout(workout.id)
-        return workout
-
     def _get_statistics_from_dashboard(self):
         return self.get('/dashboard').context['statistics']
 
-    def _strength_workout(self, name, series):
-        workout = self._start_workout()
-
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': name})
-
-        excercise = workout.excercise_set.latest('pk')
-
-        for reps in series:
-            self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': reps})
-
-        return self.post('/strength/finish_workout/{}'.format(workout.id)).context['workout']
+    _start_workout = utils.start_workout
+    _strength_workout = utils.strength_workout
 
     def _import_gpx(self, filename):
         path = os.path.join(utils.GPX_DIR, filename)
@@ -166,9 +149,6 @@ class TrashTestCase(ClientTestCase):
         self.assertEqual('push-up', month[1].name)
         self.assertEqual(1, month[1].count)
         self.assertEqual(units.Volume(reps=22), month[1].volume)
-
-    def test_showing_empty_explorer_page(self):
-        self.get('/explorer')
 
     def _find_statistics_field(self, name, field):
         statistics = self._get_statistics_from_dashboard()

@@ -34,3 +34,21 @@ class ClientTestCase(TestCase):
         response = self.client.post(uri, data, follow=True)
         self.assertEqual(status_code, response.status_code)
         return response
+
+
+def start_workout(self):
+    workout = self.get('/strength/start_workout').context['workout']
+    return workout
+
+
+def strength_workout(self, name, series):
+    workout = start_workout(self)
+
+    self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': name})
+
+    excercise = workout.excercise_set.latest('pk')
+
+    for reps in series:
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': reps})
+
+    return self.post('/strength/finish_workout/{}'.format(workout.id)).context['workout']
