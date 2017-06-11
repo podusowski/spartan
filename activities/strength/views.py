@@ -10,7 +10,7 @@ from statistics.statistics import *
 def workout(request, workout_id):
     workout = get_object_or_404(training.models.Workout, pk=workout_id, user=request.user)
 
-    return render(request, 'training/workout.html', {'workout': workout,
+    return render(request, 'strength/workout.html', {'workout': workout,
                                                      'statistics': Statistics(request.user)})
 
 
