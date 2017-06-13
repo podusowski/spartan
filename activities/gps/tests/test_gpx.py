@@ -30,7 +30,6 @@ class GpxTestCase(TestCase):
         gpx.upload_gpx(self.request)
 
         workout = models.Workout.objects.get()
-        self.assertTrue(workout.is_gpx());
         self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc), workout.started)
         self.assertEqual(datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc), workout.finished)
 

@@ -10,6 +10,7 @@ from django.db.models import Sum, Avg
 from django.utils import timezone
 
 from . import units
+import activities.registry
 
 class Workout(models.Model):
     user = models.ForeignKey(User)
@@ -25,9 +26,6 @@ class Workout(models.Model):
 
     def __str__(self):
         return "{}.{} at {} by {}".format(self.activity_type, self.workout_type, self.started, self.user)
-
-    def is_gpx(self):
-        return len(self.gpx_set.all()) > 0
 
     def status(self):
         if self.live():
@@ -64,18 +62,9 @@ class Workout(models.Model):
         else:
             return datetime.timedelta()
 
-    def _total_reps(self):
-        return Reps.objects.filter(excercise__workout=self).aggregate(Sum('reps'))['reps__sum'] or 0
-
-    def _total_distance(self):
-        ''' for gpx workouts '''
-        return self.gpx_set.get().distance
-
+    @property
     def volume(self):
-        if self.is_gpx():
-            return units.Volume(meters=self._total_distance() or 0)
-        else:
-            return units.Volume(reps=self._total_reps() or 0)
+        return activities.registry.import_module(self).volume(self)
 
     class Meta:
         ordering = ['-started']

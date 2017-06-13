@@ -31,13 +31,13 @@ class TrashTestCase(ClientTestCase):
     def test_gpx_import(self):
         workout = self._import_gpx('3p_simplest.gpx').context['workout']
 
-        self.assertTrue(workout.is_gpx());
         self.assertEqual(time(2016, 7, 30, 6, 22, 5), workout.started)
         self.assertEqual(time(2016, 7, 30, 6, 22, 7), workout.finished)
 
         gpx = workout.gpx_set.get()
         self.assertEqual("running", gpx.name)
         self.assertEqual(4, gpx.distance)
+        self.assertEqual(units.Volume(meters=4), workout.volume)
 
     def _import_gpx_and_check_activity_type(self, filename, name):
         self._import_gpx(filename)
