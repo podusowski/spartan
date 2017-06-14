@@ -57,6 +57,8 @@ class Volume:
             return str(self.value)
         elif self.type == Volume.Type.DURATION:
             return _format_duration(self.value)
+        else:
+            return '-'
 
     __repr__ = __str__
 
