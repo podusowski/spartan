@@ -2,13 +2,14 @@ from django.shortcuts import *
 
 from training import models
 from training import units
+from . import views
 
 
 TYPE = 'gps'
 
 
 def redirect_to_workout(workout):
-    return redirect('show_gps_workout', workout.id)
+    return redirect(views.workout, workout.id)
 
 
 def volume(workout):

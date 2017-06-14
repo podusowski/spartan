@@ -3,10 +3,11 @@ import logging
 import django.utils.timezone
 
 from training import models
+from . import activity
 
 
 def start_workout(user):
-    workout = models.Workout.objects.create(user=user, activity_type='strength')
+    workout = models.Workout.objects.create(user=user, activity_type=activity.TYPE)
     return workout.id
 
 
