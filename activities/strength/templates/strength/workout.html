@@ -63,11 +63,11 @@
             <div class="content">
                 <ul class="reps">
                     {% for reps in excercise.reps_set.all %}
-                        <li>{{reps.reps}}</li>
+                        <li>{{ reps.reps }}</li>
                     {% endfor %}
 
                     {% if excercise.reps_set.count > 1 %}
-                        <li><strong>{{excercise.total_reps}}</strong></li>
+                        <li><strong>{{ excercise.volume }}</strong></li>
                     {% endif %}
 
                     {% if forloop.first and not workout.finished %}

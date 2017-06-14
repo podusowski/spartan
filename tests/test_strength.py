@@ -64,6 +64,7 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '5'})
 
         self.assertEqual(units.Volume(reps=20), workout.volume)
+        self.assertEqual(units.Volume(reps=10), excercise.volume)
 
         self.post('/strength/finish_workout/{}'.format(workout.id))
 

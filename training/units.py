@@ -49,6 +49,8 @@ class Volume:
             self.type = Volume.Type.DURATION
             self.multiplier = 60
             self.value = seconds
+        else:
+            self.value = None
 
     def __str__(self):
         if self.type == Volume.Type.DISTANCE:
