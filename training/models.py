@@ -105,7 +105,7 @@ class Timers(models.Model):
     '''
     excercise = models.ForeignKey(Excercise)
     time_started = models.DateTimeField(null=True, default=None)
-    time_finished = models.DateTimeField(null=True, default=None)
+    duration = models.DurationField(null=True, default=None)
 
     class Meta:
         ordering = ['pk']

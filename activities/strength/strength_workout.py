@@ -62,7 +62,7 @@ def start_timer(user, excercise_id):
 def stop_timer(user, excercise_id):
     excercise = models.Excercise.objects.get(pk=excercise_id, workout__user=user)
     timer = excercise.timers_set.latest('pk')
-    timer.time_finished = django.utils.timezone.now()
+    timer.duration = django.utils.timezone.now() - timer.time_started
     timer.save()
     return excercise.workout.id
 

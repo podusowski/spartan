@@ -1,4 +1,5 @@
 from unittest.mock import patch
+from datetime import timedelta
 
 from tests.utils import time, ClientTestCase
 from tests import utils
@@ -77,6 +78,8 @@ class StrengthWorkoutTestCase(ClientTestCase):
     THREE_O_CLOCK = time(2016, 1, 1, 15, 0, 0)
     FOUR_O_CLOCK = time(2016, 1, 1, 16, 0, 0)
 
+    ONE_HOUR = timedelta(hours=1)
+
     def _timer_rep(self, excercise_id, time_start, time_finished):
         with patch('django.utils.timezone.now', autospec=True) as now:
             now.return_value = time_start
@@ -101,7 +104,7 @@ class StrengthWorkoutTestCase(ClientTestCase):
         first_timer = excercise.timers_set.all()[0]
 
         self.assertEqual(self.ONE_O_CLOCK, first_timer.time_started)
-        self.assertEqual(self.TWO_O_CLOCK, first_timer.time_finished)
+        self.assertEqual(self.ONE_HOUR, first_timer.duration)
 
         statistics = self._get_statistics_from_dashboard()
         excercises = statistics.most_popular_workouts()
@@ -128,7 +131,7 @@ class StrengthWorkoutTestCase(ClientTestCase):
         second_timer = excercise.timers_set.all()[1]
 
         self.assertEqual(self.THREE_O_CLOCK, second_timer.time_started)
-        self.assertEqual(self.FOUR_O_CLOCK, second_timer.time_finished)
+        self.assertEqual(self.ONE_HOUR, second_timer.duration)
 
     def test_undo_last_rep(self):
         workout = self._start_workout()
