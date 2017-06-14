@@ -73,7 +73,13 @@ class Workout(models.Model):
 class Excercise(models.Model):
     @property
     def volume(self):
-        return units.Volume(reps=self.reps_set.aggregate(Sum('reps'))['reps__sum'] or 0)
+        reps = self.reps_set.aggregate(Sum('reps'))['reps__sum']
+        duration = self.timers_set.aggregate(value=Sum('duration'))['value']
+
+        if reps:
+            return units.Volume(reps=reps)
+        else:
+            return units.Volume(seconds=duration.total_seconds())
 
     def duration(self):
         if self.time_started is not None and self.time_finished is not None:

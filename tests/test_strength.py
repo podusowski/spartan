@@ -112,8 +112,8 @@ class StrengthWorkoutTestCase(ClientTestCase):
 
         self.assertEqual('plank front', excercises[0].name)
         self.assertEqual(1, excercises[0].count)
-        #self.assertEqual(units.Volume(seconds=15), excercises[0].volume)
 
+        self.assertEqual(units.Volume(seconds=self.ONE_HOUR.total_seconds()), excercise.volume)
         self.assertEqual(units.Volume(seconds=60*60), workout.volume)
 
     def test_timer_based_excercise_with_two_reps(self):
