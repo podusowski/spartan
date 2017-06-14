@@ -16,6 +16,10 @@ class StrengthWorkoutTestCase(ClientTestCase):
         workout = self._start_workout()
         self._view_workout(workout.id)
 
+    def test_strength_workout_type_when_starting_workout(self):
+        workout = self._start_workout()
+        self.assertEqual('strength', workout.workout_type)
+
     def test_finish_workout_without_any_excercise(self):
         workout = self._start_workout()
 

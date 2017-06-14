@@ -48,12 +48,6 @@ class TrashTestCase(ClientTestCase):
         self._import_gpx_and_check_activity_type('3p_cycling.gpx', 'cycling')
         self._import_gpx_and_check_activity_type('3p_simplest.gpx', 'running')
 
-    def test_strength_workout_type_when_starting_workout(self):
-        self._start_workout()
-
-        workout = self._get_latest_workout_from_dashboard()
-        self.assertEqual('strength', workout.workout_type)
-
     def test_most_popular_excercises(self):
         self._import_gpx('3p_simplest.gpx')
         self._import_gpx('3p_simplest_2.gpx')
