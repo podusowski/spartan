@@ -6,9 +6,27 @@ from tests import utils
 from training import units
 
 
+def _timer_rep(self, excercise_id, time_start, time_finished):
+    with patch('django.utils.timezone.now', autospec=True) as now:
+        now.return_value = time_start
+        self.post('/strength/start_timer/{}'.format(excercise_id))
+
+    with patch('django.utils.timezone.now', autospec=True) as now:
+        now.return_value = time_finished
+        self.post('/strength/stop_timer/{}'.format(excercise_id))
+
+
+ONE_O_CLOCK = time(2016, 1, 1, 13, 0, 0)
+TWO_O_CLOCK = time(2016, 1, 1, 14, 0, 0)
+THREE_O_CLOCK = time(2016, 1, 1, 15, 0, 0)
+FOUR_O_CLOCK = time(2016, 1, 1, 16, 0, 0)
+ONE_HOUR = timedelta(hours=1)
+
+
 class StrengthWorkoutTestCase(ClientTestCase):
     _strength_workout = utils.strength_workout
     _start_workout = utils.start_workout
+    _timer_rep = _timer_rep
 
     def _view_workout(self, workout_id, status_code=200):
         return self.get('/workout/{}'.format(workout_id), status_code=status_code)
@@ -37,18 +55,12 @@ class StrengthWorkoutTestCase(ClientTestCase):
         return self.get('/dashboard').context['statistics']
 
     def test_add_some_excercises_and_reps(self):
-        self._start_workout()
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
+        workout = self._start_workout()
 
         self.assertIsNone(workout.started)
         self.assertIsNone(workout.finished)
 
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
+        workout = self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'}).context['workout']
 
         self.assertIsNotNone(workout.started)
         self.assertIsNone(workout.finished)
@@ -66,73 +78,24 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.assertEqual(units.Volume(reps=20), workout.volume)
         self.assertEqual(units.Volume(reps=10), excercise.volume)
 
-        self.post('/strength/finish_workout/{}'.format(workout.id))
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
+        workout = self.post('/strength/finish_workout/{}'.format(workout.id)).context['workout']
 
         self.assertIsNotNone(workout.started)
         self.assertIsNotNone(workout.finished)
 
-    ONE_O_CLOCK = time(2016, 1, 1, 13, 0, 0)
-    TWO_O_CLOCK = time(2016, 1, 1, 14, 0, 0)
-    THREE_O_CLOCK = time(2016, 1, 1, 15, 0, 0)
-    FOUR_O_CLOCK = time(2016, 1, 1, 16, 0, 0)
-
-    ONE_HOUR = timedelta(hours=1)
-
-    def _timer_rep(self, excercise_id, time_start, time_finished):
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = time_start
-            self.post('/strength/start_timer/{}'.format(excercise_id))
-
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = time_finished
-            self.post('/strength/stop_timer/{}'.format(excercise_id))
-
     def test_timer_based_excercise(self):
-        self._start_workout()
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
+        workout = self._start_workout()
 
         self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'plank front'})
         excercise = workout.excercise_set.latest('pk')
 
-        self._timer_rep(excercise.id, self.ONE_O_CLOCK, self.TWO_O_CLOCK)
+        self._timer_rep(excercise.id, ONE_O_CLOCK, TWO_O_CLOCK)
 
         self.assertEqual(1, len(excercise.timers_set.all()))
         first_timer = excercise.timers_set.all()[0]
 
-        self.assertEqual(self.ONE_O_CLOCK, first_timer.time_started)
-        self.assertEqual(self.ONE_HOUR, first_timer.duration)
-
-        statistics = self._get_statistics_from_dashboard()
-        excercises = statistics.most_popular_workouts()
-
-        self.assertEqual('plank front', excercises[0].name)
-        self.assertEqual(1, excercises[0].count)
-
-        self.assertEqual(units.Volume(seconds=self.ONE_HOUR.total_seconds()), excercise.volume)
-        self.assertEqual(units.Volume(seconds=self.ONE_HOUR.total_seconds()), workout.volume)
-
-    def test_timer_based_excercise_with_two_reps(self):
-        self._start_workout()
-
-        statistics = self._get_statistics_from_dashboard()
-        workout = statistics.previous_workouts()[0]
-
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'plank front'})
-        excercise = workout.excercise_set.latest('pk')
-
-        self._timer_rep(excercise.id, self.ONE_O_CLOCK, self.TWO_O_CLOCK)
-        self._timer_rep(excercise.id, self.THREE_O_CLOCK, self.FOUR_O_CLOCK)
-
-        self.assertEqual(2, len(excercise.timers_set.all()))
-        second_timer = excercise.timers_set.all()[1]
-
-        self.assertEqual(self.THREE_O_CLOCK, second_timer.time_started)
-        self.assertEqual(self.ONE_HOUR, second_timer.duration)
+        self.assertEqual(ONE_O_CLOCK, first_timer.time_started)
+        self.assertEqual(ONE_HOUR, first_timer.duration)
 
     def test_undo_last_rep(self):
         workout = self._start_workout()
@@ -180,3 +143,42 @@ class StrengthWorkoutTestCase(ClientTestCase):
 
         self._pushups([1, 1, 1])
         self.assertEqual([11, 10, 1], list(statistics.most_common_reps(3)))
+
+
+class StatisticsTestCase(ClientTestCase):
+    _start_workout = utils.start_workout
+    _timer_rep = _timer_rep
+
+    def _get_statistics_from_dashboard(self):
+        return self.get('/dashboard').context['statistics']
+
+    def test_timer_based_excercise_is_visible_on_statistics_page(self):
+        workout = self._start_workout()
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'plank front'})
+        excercise = workout.excercise_set.latest('pk')
+
+        self._timer_rep(excercise.id, ONE_O_CLOCK, TWO_O_CLOCK)
+
+        statistics = self._get_statistics_from_dashboard()
+        excercises = statistics.most_popular_workouts()
+
+        self.assertEqual('plank front', excercises[0].name)
+        #self.assertEqual(units.Volume(seconds=ONE_HOUR.total_seconds()), excercises[0].volume)
+        self.assertEqual(1, excercises[0].count)
+
+    def test_timer_based_excercise_with_two_reps(self):
+        workout = self._start_workout()
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'plank front'})
+        excercise = workout.excercise_set.latest('pk')
+
+        self._timer_rep(excercise.id, ONE_O_CLOCK, TWO_O_CLOCK)
+        self._timer_rep(excercise.id, THREE_O_CLOCK, FOUR_O_CLOCK)
+
+        self.assertEqual(2, len(excercise.timers_set.all()))
+        second_timer = excercise.timers_set.all()[1]
+
+        self.assertEqual(THREE_O_CLOCK, second_timer.time_started)
+        self.assertEqual(ONE_HOUR, second_timer.duration)
+

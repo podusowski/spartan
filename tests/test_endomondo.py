@@ -40,7 +40,7 @@ class EndomondoTestCase(ClientTestCase):
             endomondo.return_value.fetch.assert_called_once_with(max_results=10, before=None, after=None)
 
             statistics = self._get_statistics_from_dashboard()
-            self.assertEqual(0, len(statistics.previous_workouts()))
+            self.assertEqual(0, len(statistics.most_popular_workouts()))
 
     def test_import_many_workouts_from_endomondo(self):
 
@@ -71,4 +71,8 @@ class EndomondoTestCase(ClientTestCase):
             endomondo.return_value.fetch.assert_called_once_with(max_results=10, before=None, after=None)
 
             statistics = self._get_statistics_from_dashboard()
-            self.assertEqual(10, len(statistics.previous_workouts()))
+            most_popular_workouts = statistics.most_popular_workouts()
+
+            self.assertEqual(1, len(most_popular_workouts))
+            self.assertEqual('running', most_popular_workouts[0].name)
+            self.assertEqual(10, most_popular_workouts[0].count)

@@ -24,13 +24,21 @@ class Day:
 
 class Week:
     def __init__(self, statistics, start_time, end_time):
-        self.statistics = statistics
         self.start_time = start_time
         self.end_time = end_time
+        self.user = statistics.user
+
+    def _previous_workouts(self, begin=None, end=None):
+        if begin is not None and end is not None:
+            return Workout.objects.filter(user=self.user,
+                                          started__gt=begin,
+                                          started__lt=end).order_by('-started')
+        else:
+            return Workout.objects.filter(user=self.user).order_by('-started')
 
     @property
     def workouts(self):
-        return self.statistics.previous_workouts(self.start_time, self.end_time)
+        return self._previous_workouts(self.start_time, self.end_time)
 
     @property
     def days(self):
@@ -165,14 +173,6 @@ class Statistics:
             return []
 
         return [Week(self, *week_bounds) for week_bounds in dates.week_range(start=start, end=end_time)]
-
-    def previous_workouts(self, begin=None, end=None):
-        if begin is not None and end is not None:
-            return Workout.objects.filter(user=self.user,
-                                          started__gt=begin,
-                                          started__lt=end).order_by('-started')
-        else:
-            return Workout.objects.filter(user=self.user).order_by('-started')
 
     def not_started_workouts(self):
         return Workout.objects.filter(user=self.user, started__isnull=True)
