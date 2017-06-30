@@ -65,7 +65,10 @@ class Volume:
     __repr__ = __str__
 
     def __eq__(self, other):
-        return self.value == other.value
+        if isinstance(other, Volume):
+            return self.__dict__ == other.__dict__
+
+        return False
 
     def __add__(self, other):
         return self._make_new(self.value + other.value)
