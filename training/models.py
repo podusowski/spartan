@@ -27,14 +27,6 @@ class Workout(models.Model):
     def __str__(self):
         return "{}.{} at {} by {}".format(self.activity_type, self.workout_type, self.started, self.user)
 
-    def status(self):
-        if self.live():
-            return 'live'
-        elif self.finished is not None:
-            return 'finished'
-        else:
-            return 'not started'
-
     def live(self):
         return self.started is not None and self.finished is None
 
