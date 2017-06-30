@@ -97,6 +97,8 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.assertEqual(ONE_O_CLOCK, first_timer.time_started)
         self.assertEqual(ONE_HOUR, first_timer.duration)
 
+        self.assertEqual(units.Volume(seconds=ONE_HOUR.total_seconds()), workout.volume)
+
     def test_undo_last_rep(self):
         workout = self._start_workout()
 
