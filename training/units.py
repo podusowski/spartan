@@ -36,18 +36,19 @@ class Volume:
         REPS = 2
         DURATION = 3
 
+    MULTIPLIERS = {Type.DISTANCE: 1000,
+                   Type.REPS: 1,
+                   Type.DURATION: 60}
+
     def __init__(self, reps:int=None, meters:int=None, seconds:int=None) -> None:
         if reps is not None:
             self.type = Volume.Type.REPS
-            self.multiplier = 1
             self.value = reps
         elif meters is not None:
             self.type = Volume.Type.DISTANCE
-            self.multiplier = 1000
             self.value = meters
         elif seconds is not None:
             self.type = Volume.Type.DURATION
-            self.multiplier = 60
             self.value = seconds
         else:
             self.value = None
@@ -73,8 +74,12 @@ class Volume:
     def __add__(self, other):
         return self._make_new(self.value + other.value)
 
+    @property
+    def _multiplier(self):
+        return Volume.MULTIPLIERS[self.type]
+
     def left_to(self, goal: int) -> str:
-        new = goal * self.multiplier - self.value
+        new = goal * self._multiplier - self.value
         val = self._make_new(abs(new))
 
         if new > 0:
@@ -83,7 +88,7 @@ class Volume:
             return "done"
 
     def number(self):
-        return self.value / self.multiplier
+        return self.value / self._multiplier
 
     def _make_new(self, value):
         ret = copy(self)
