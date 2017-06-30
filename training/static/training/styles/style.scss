@@ -22,8 +22,8 @@ $font: 'Exo 2', sans-serif;
 }
 
 @mixin box($color) {
-    background-color: lighten($color, 5%);
-    background: linear-gradient(135deg, lighten($color, 5%) 0%, darken($color, 2%) 100%);
+    //background-color: lighten($color, 5%);
+    //background: linear-gradient(135deg, lighten($color, 5%) 0%, darken($color, 2%) 100%);
     border: 1px solid lighten($color, 3%);
     padding: 0.5em;
     overflow: auto;
