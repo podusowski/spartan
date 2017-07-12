@@ -94,3 +94,13 @@ class Volume:
         ret = copy(self)
         ret.value = value
         return ret
+
+
+class MultiVolume:
+    def __init__(self, volumes=None):
+        self.volumes = volumes if volumes is not None else []
+
+    def __str__(self):
+        return ', '.join([str(volume) for volume in self.volumes])
+
+    __repr__ = __str__

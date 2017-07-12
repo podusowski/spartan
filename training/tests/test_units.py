@@ -1,4 +1,5 @@
 from training import units
+from training.units import *
 from django.test import TestCase
 from training.units import Volume
 
@@ -38,3 +39,7 @@ class UnitsTestCase(TestCase):
         self.assertEqual('3:59min/km', units.mpkm_from_mps(4.17))
         self.assertEqual('5:03min/km', units.mpkm_from_mps(3.3))
         self.assertEqual('-', units.mpkm_from_mps(0))
+
+    def test_multivolume(self):
+        reps_and_time = MultiVolume([Volume(reps=1), Volume(seconds=2)])
+        self.assertEqual('1, 2sec', str(reps_and_time))
