@@ -72,7 +72,10 @@ class Volume:
         return False
 
     def __add__(self, other):
-        return self._make_new(self.value + other.value)
+        if isinstance(other, Volume):
+            return self._make_new(self.value + other.value)
+        else:
+            return other + self
 
     @property
     def _multiplier(self):
@@ -98,9 +101,26 @@ class Volume:
 
 class MultiVolume:
     def __init__(self, volumes=None):
-        self.volumes = volumes if volumes is not None else []
+        self.volumes = {}
+        if volumes is not None:
+            for volume in volumes:
+                if volume.type in self.volumes:
+                    self.volumes[volume.type] += volume
+                else:
+                    self.volumes[volume.type] = volume
 
     def __str__(self):
-        return ', '.join([str(volume) for volume in self.volumes])
+        if self.volumes:
+            return ', '.join([str(volume) for _, volume in self.volumes.items()])
+        else:
+            return '-'
 
     __repr__ = __str__
+
+    def __add__(self, other):
+        if isinstance(other, Volume):
+            return MultiVolume([*self.volumes.values(), other])
+        elif isinstance(other, MultiVolume):
+            return MultiVolume([*self.volumes.values(), *other.volumes.values()])
+
+        raise TypeError('can\'t add {} and {}'.format(self.__class__, other.__class__))

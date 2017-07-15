@@ -41,5 +41,27 @@ class UnitsTestCase(TestCase):
         self.assertEqual('-', units.mpkm_from_mps(0))
 
     def test_multivolume(self):
+        empty = MultiVolume()
+        self.assertEqual('-', str(empty))
+
         reps_and_time = MultiVolume([Volume(reps=1), Volume(seconds=2)])
         self.assertEqual('1, 2sec', str(reps_and_time))
+
+    def test_adding_multivolume(self):
+        reps = MultiVolume() + Volume(reps=1)
+        self.assertEqual('1', str(reps))
+
+        reps = Volume(reps=1) + MultiVolume()
+        self.assertEqual('1', str(reps))
+
+        reps = MultiVolume() + Volume(reps=1) + Volume(reps=1)
+        self.assertEqual('2', str(reps))
+
+        reps = MultiVolume() + Volume(reps=1) + Volume(seconds=1)
+        self.assertEqual('1, 1sec', str(reps))
+
+        reps = MultiVolume([Volume(reps=1)]) + MultiVolume([Volume(seconds=1)])
+        self.assertEqual('1, 1sec', str(reps))
+
+        with self.assertRaises(TypeError):
+            MultiVolume() + 1
