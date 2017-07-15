@@ -65,3 +65,12 @@ class UnitsTestCase(TestCase):
 
         with self.assertRaises(TypeError):
             MultiVolume() + 1
+
+    def test_compare_multivalue(self):
+        self.assertEqual(MultiVolume([Volume(reps=1)]), MultiVolume([Volume(reps=1)]))
+
+        self.assertNotEqual(MultiVolume([Volume(reps=1)]), MultiVolume([Volume(seconds=1)]))
+        self.assertNotEqual(MultiVolume([Volume(reps=1)]), MultiVolume([Volume(reps=2)]))
+
+        self.assertEqual(MultiVolume([Volume(reps=1)]), Volume(reps=1))
+        self.assertEqual(Volume(reps=1), MultiVolume([Volume(reps=1)]))
