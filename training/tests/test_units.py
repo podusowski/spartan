@@ -74,3 +74,5 @@ class UnitsTestCase(TestCase):
 
         self.assertEqual(MultiVolume([Volume(reps=1)]), Volume(reps=1))
         self.assertEqual(Volume(reps=1), MultiVolume([Volume(reps=1)]))
+
+        self.assertNotEqual(MultiVolume([Volume(reps=1), Volume(seconds=1)]), Volume(reps=1))

@@ -120,7 +120,7 @@ class MultiVolume:
     def __eq__(self, other):
         if isinstance(other, MultiVolume):
             return self.__dict__ == other.__dict__
-        elif isinstance(other, Volume):
+        elif isinstance(other, Volume) and len(self.volumes) == 1:
             return next(iter(self.volumes.values())) == other
 
     def __add__(self, other):
