@@ -99,6 +99,22 @@ class StrengthWorkoutTestCase(ClientTestCase):
 
         self.assertEqual(units.Volume(seconds=ONE_HOUR.total_seconds()), workout.volume)
 
+    def test_timer_mixed_with_reps_workout(self):
+        workout = self._start_workout()
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'plank front'})
+        excercise = workout.excercise_set.latest('pk')
+        self._timer_rep(excercise.id, ONE_O_CLOCK, TWO_O_CLOCK)
+
+        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'push-up'})
+        excercise = workout.excercise_set.latest('pk')
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '2'})
+        self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': '1'})
+
+        self.assertEqual(units.MultiVolume([units.Volume(seconds=ONE_HOUR.total_seconds()),
+                                            units.Volume(reps=3)]),
+                         workout.volume)
+
     def test_undo_last_rep(self):
         workout = self._start_workout()
 

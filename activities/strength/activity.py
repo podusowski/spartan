@@ -15,9 +15,14 @@ def redirect_to_workout(workout):
 
 def volume(workout):
     duration = models.Timers.objects.filter(excercise__workout=workout).aggregate(value=Sum('duration'))['value']
-    reps = models.Reps.objects.filter(excercise__workout=workout).aggregate(Sum('reps'))['reps__sum'] or 0
+    reps = models.Reps.objects.filter(excercise__workout=workout).aggregate(Sum('reps'))['reps__sum']
+
+    values = []
 
     if duration:
-        return units.Volume(seconds=duration.total_seconds())
-    else:
-        return units.Volume(reps=reps)
+        values.append(units.Volume(seconds=duration.total_seconds()))
+
+    if reps:
+        values.append(units.Volume(reps=reps))
+
+    return units.MultiVolume(values)
