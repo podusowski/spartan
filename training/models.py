@@ -21,6 +21,10 @@ class Workout(models.Model):
         from_gpx = list(map(lambda x: x.name.lower(), self.gpx_set.all()))
         return from_gpx[0] if len(from_gpx) > 0 else 'strength'
 
+    @property
+    def color(self):
+        return activities.registry.import_module(self).color(self)
+
     started = models.DateTimeField(null=True, default=None)
     finished = models.DateTimeField(null=True, default=None)
 

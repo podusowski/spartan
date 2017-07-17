@@ -62,7 +62,7 @@
             <div class="content">
                 {% for workout in day.workouts %}
                     <a href="{% url 'workout' workout.id %}">
-                        <dl class="dashboard-workout">
+                        <dl class="dashboard-workout workout-color-{{ workout.color }}">
                             <dt>
                                 <span class="note">
                                     {{ workout.started|date:"P" }}

@@ -15,3 +15,7 @@ def redirect_to_workout(workout):
 def volume(workout):
     distance = workout.gpx_set.get().distance
     return units.Volume(meters=distance)
+
+
+def color(workout):
+    return 'green'

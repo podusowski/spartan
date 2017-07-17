@@ -33,6 +33,7 @@ class TrashTestCase(ClientTestCase):
         self.assertEqual("running", gpx.name)
         self.assertEqual(4, gpx.distance)
         self.assertEqual(units.Volume(meters=4), workout.volume)
+        self.assertEqual('green', workout.color)
 
     def _import_gpx_and_check_activity_type(self, filename, name):
         workout = self._import_gpx(filename)

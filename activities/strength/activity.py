@@ -26,3 +26,7 @@ def volume(workout):
         values.append(units.Volume(reps=reps))
 
     return units.MultiVolume(values)
+
+
+def color(workout):
+    return 'silver'
