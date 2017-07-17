@@ -5,12 +5,10 @@ $font: 'Exo 2', sans-serif;
 
 @mixin text {
     color: $color-text;
-    text-shadow: 1px 1px 1px #000;
 }
 
 @mixin text-accent {
     color: $color-accent-text;
-    text-shadow: 1px 1px 1px #000;
     font-weight: 300;
 }
 
@@ -30,7 +28,7 @@ $font: 'Exo 2', sans-serif;
 
 @mixin button($color) {
     @include text;
-    color: lighten($color, 70%);
+    //color: lighten($color, 70%);
     display: inline-block;
 
     background: linear-gradient(to top,
@@ -69,7 +67,7 @@ body {
 
 a {
     text-decoration: none;
-    color: darken(white, 20%);
+    color: #333;
 }
 
 header {
@@ -84,7 +82,7 @@ header .container {
 
 h2, h3, h4, h5 {
     margin: 0 0 0.2em 0;
-    color: darken($color-text, 10%);
+    color: $color-header;
     font-weight: 100;
     font-size: 1.5em;
     text-transform: uppercase;
@@ -323,7 +321,7 @@ ul {
     border-radius: 0.3em;
     border-left: 2px solid $color-border-accent;
     margin-bottom: 0.5em;
-    background: lighten($color-background, 5%);
+    //background: $color-background-upper;
 
     &.active {
         border-left: 2px solid $color-accent;
@@ -351,7 +349,7 @@ ul {
 
     .toolbox {
         border-top: 1px solid #111;
-        background: #080808;
+        background: $color-background-upper;
         padding: 0.2em;
     }
 
@@ -459,8 +457,8 @@ nav {
 
 @media screen and (min-width: 650px) {
     section, nav .container, header .container {
-        margin-left: 10%;
-        margin-right: 10%;
+        //margin-left: 10%;
+        //margin-right: 10%;
     }
 
     section {
