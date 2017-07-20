@@ -6,9 +6,6 @@ from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
 
-GPX_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gpx')
-
-
 def time(y, month, d, h=0, m=0, s=0, ms=0):
     return datetime.datetime(y, month, d, h, m, s, ms, tzinfo=pytz.utc)
 
@@ -52,3 +49,12 @@ def strength_workout(self, name, series):
         self.post('/strength/add_reps/{}/'.format(excercise.id), {'reps': reps})
 
     return self.post('/strength/finish_workout/{}'.format(workout.id)).context['workout']
+
+
+GPX_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gpx')
+
+
+def import_gpx(self, filename):
+    path = os.path.join(GPX_DIR, filename)
+    with open(path, 'r') as f:
+        return self.post('/gps/upload_gpx/', {'gpxfile': f}).context['workout']
