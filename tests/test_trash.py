@@ -104,36 +104,3 @@ class TrashTestCase(ClientTestCase):
         self.assertEqual('push-up', month[1].name)
         self.assertEqual(1, month[1].count)
         self.assertEqual(units.Volume(reps=22), month[1].volume)
-
-    def _find_statistics_field(self, name, field):
-        statistics = self._get_statistics_from_dashboard()
-        workout_statistics = statistics.workout_statistics(name)
-        metrics = workout_statistics.metrics()
-
-        for n, value in metrics:
-            if n == field:
-                return value
-
-        logging.warn('no "{}" in {}'.format(field, metrics))
-
-    def test_strength_statistics(self):
-        self.switch_user(self.other_user)
-
-        self._strength_workout('push-up', [1])
-
-        self.switch_user(self.user)
-
-        self._strength_workout('push-up', [1, 2, 3])
-        self._strength_workout('push-up', [2, 2])
-        self._strength_workout('push-up', [10])
-
-        self.assertEqual(3, self._find_statistics_field('push-up', 'total workouts'))
-        self.assertEqual(units.Volume(reps=20), self._find_statistics_field('push-up', 'total reps'))
-        self.assertEqual(6, self._find_statistics_field('push-up', 'total series'))
-        self.assertEqual(3, self._find_statistics_field('push-up', 'average reps per series'))
-        self.assertEqual(7, self._find_statistics_field('push-up', 'average reps per workout'))
-
-    def test_gps_statistics(self):
-        self._import_gpx('3p_simplest.gpx')
-
-        self.assertEqual(1, self._find_statistics_field('running', 'total workouts'))

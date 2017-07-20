@@ -1,7 +1,7 @@
 from unittest.mock import patch
 from datetime import timedelta
 
-from tests.utils import time, ClientTestCase
+from tests.utils import *
 from tests import utils
 from training import units
 
@@ -14,13 +14,6 @@ def _timer_rep(self, excercise_id, time_start, time_finished):
     with patch('django.utils.timezone.now', autospec=True) as now:
         now.return_value = time_finished
         self.post('/strength/stop_timer/{}'.format(excercise_id))
-
-
-ONE_O_CLOCK = time(2016, 1, 1, 13, 0, 0)
-TWO_O_CLOCK = time(2016, 1, 1, 14, 0, 0)
-THREE_O_CLOCK = time(2016, 1, 1, 15, 0, 0)
-FOUR_O_CLOCK = time(2016, 1, 1, 16, 0, 0)
-ONE_HOUR = timedelta(hours=1)
 
 
 class StrengthWorkoutTestCase(ClientTestCase):
@@ -170,21 +163,6 @@ class StatisticsTestCase(ClientTestCase):
 
     def _get_statistics_from_dashboard(self):
         return self.get('/dashboard').context['statistics']
-
-    def test_timer_based_excercise_is_visible_on_statistics_page(self):
-        workout = self._start_workout()
-
-        self.post('/strength/add_excercise/{}/'.format(workout.id), {'name': 'plank front'})
-        excercise = workout.excercise_set.latest('pk')
-
-        self._timer_rep(excercise.id, ONE_O_CLOCK, TWO_O_CLOCK)
-
-        statistics = self._get_statistics_from_dashboard()
-        excercises = statistics.most_popular_workouts()
-
-        self.assertEqual('plank front', excercises[0].name)
-        #self.assertEqual(units.Volume(seconds=ONE_HOUR.total_seconds()), excercises[0].volume)
-        self.assertEqual(1, excercises[0].count)
 
     def test_timer_based_excercise_with_two_reps(self):
         workout = self._start_workout()

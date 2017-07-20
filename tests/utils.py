@@ -10,6 +10,13 @@ def time(y, month, d, h=0, m=0, s=0, ms=0):
     return datetime.datetime(y, month, d, h, m, s, ms, tzinfo=pytz.utc)
 
 
+ONE_O_CLOCK = time(2016, 1, 1, 13, 0, 0)
+TWO_O_CLOCK = time(2016, 1, 1, 14, 0, 0)
+THREE_O_CLOCK = time(2016, 1, 1, 15, 0, 0)
+FOUR_O_CLOCK = time(2016, 1, 1, 16, 0, 0)
+ONE_HOUR = datetime.timedelta(hours=1)
+
+
 class ClientTestCase(TestCase):
     def setUp(self):
         self.client = Client()
