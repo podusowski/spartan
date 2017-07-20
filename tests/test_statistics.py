@@ -64,11 +64,7 @@ class StatisticsTestCase(ClientTestCase):
         workout_statistics = statistics.workout_statistics(name)
         metrics = workout_statistics.metrics()
 
-        for n, value in metrics:
-            if n == field:
-                return value
-
-        logging.warn('no "{}" in {}'.format(field, metrics))
+        return dict(metrics)[field]
 
     def test_strength_statistics(self):
         self.switch_user(self.other_user)
