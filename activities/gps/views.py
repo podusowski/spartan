@@ -5,9 +5,10 @@ from django.shortcuts import *
 from django.http import JsonResponse
 
 from statistics.statistics import *
+from training import models
+
 from . import gpx
 from . import endomondo as endo
-from training import models
 
 
 def workout(request, workout_id):

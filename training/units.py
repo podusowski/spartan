@@ -125,8 +125,8 @@ class MultiVolume:
 
     def __add__(self, other):
         if isinstance(other, Volume):
-            return MultiVolume([*self.volumes.values(), other])
+            return MultiVolume(list(self.volumes.values()) + [other])
         elif isinstance(other, MultiVolume):
-            return MultiVolume([*self.volumes.values(), *other.volumes.values()])
+            return MultiVolume(list(self.volumes.values()) + list(other.volumes.values()))
 
         raise TypeError('can\'t add {} and {}'.format(self.__class__, other.__class__))
