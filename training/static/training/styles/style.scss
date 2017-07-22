@@ -78,6 +78,13 @@ header {
     background-color: $color-accent;
     background-size: contain;
     background-repeat: no-repeat;
+    color: #fff;
+
+    a
+    {
+        color: #eee;
+        text-decoration: underline;
+    }
 }
 
 header .container {
