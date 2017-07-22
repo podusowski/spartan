@@ -16,5 +16,14 @@ def volume(workout):
     return units.Volume(meters=distance)
 
 
+COLORS = {'running': 'green',
+          'cycling': 'red'}
+
+
 def color(workout):
-    return 'green'
+    name = workout.gpx_set.get().name
+
+    try:
+        return COLORS[name]
+    except:
+        return 'silver'

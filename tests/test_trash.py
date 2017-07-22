@@ -31,6 +31,13 @@ class TrashTestCase(ClientTestCase):
         self.assertEqual(units.Volume(meters=4), workout.volume)
         self.assertEqual('green', workout.color)
 
+    def test_color_for_cycling(self):
+        workout = self._import_gpx('3p_cycling.gpx')
+
+        gpx = workout.gpx_set.get()
+        self.assertEqual("cycling", gpx.name)
+        self.assertEqual('red', workout.color)
+
     def _import_gpx_and_check_activity_type(self, filename, name):
         workout = self._import_gpx(filename)
         self.assertEqual(name, workout.workout_type)
