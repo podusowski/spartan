@@ -13,8 +13,7 @@ $font: 'Exo 2', sans-serif;
 }
 
 @mixin text-helper {
-    color: lighten($color-accent, 30%);
-    text-shadow: 1px 1px 1px #000;
+    color: lighten($color-text, 30%);
     font-weight: 300;
     font-size: 0.7em;
 }
@@ -27,8 +26,6 @@ $font: 'Exo 2', sans-serif;
 }
 
 @mixin button($color) {
-    @include text;
-    //color: lighten($color, 70%);
     display: inline-block;
 
     background: linear-gradient(to top,
@@ -37,7 +34,6 @@ $font: 'Exo 2', sans-serif;
 
     padding: 0.5em;
     border: 1px solid darken($color, 30%);
-    border-radius: 4px;
     font-weight: normal;
 
     &:hover {
@@ -46,6 +42,10 @@ $font: 'Exo 2', sans-serif;
                                     lighten($darker, 8%) 0%,
                                     darken($darker, 8%) 100%);
     }
+}
+
+@mixin box-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 * {
@@ -83,7 +83,7 @@ header .container {
 h2, h3, h4, h5 {
     margin: 0 0 0.2em 0;
     color: $color-header;
-    font-weight: 100;
+    font-weight: 400;
     font-size: 1.5em;
     text-transform: uppercase;
 
@@ -306,10 +306,9 @@ dl.metric {
 section {
     margin: 0 0.5em 1em 0.5em;
     padding: 0.5em;
-    opacity: 0.9;
     background-color: $color-background-accent;
     overflow: auto;
-    border-radius: .3em;
+    @include box-shadow;
 }
 
 ul {
@@ -413,16 +412,13 @@ nav {
             padding: 0.5em;
             border-top: 1px solid #222;
         }
-
-        a:first-of-type {
-            border-top: none;
-        }
     }
 }
 
 nav .container {
-    background-color: lighten($color-background, 5%);
+    background-color: $color-background-accent;
     padding: 0.3em;
+    @include box-shadow;
 }
 
 nav {
@@ -437,7 +433,7 @@ nav {
         #menu-content {
             display: inline-block;
             a {
-                @include button(darken($color-secondary-background, 10%))
+                @include button($color-secondary-background)
                 display: inline-block;
 
             }
@@ -452,6 +448,15 @@ nav {
 @media screen and (max-width: 650px) {
     .desktop {
         display: none;
+    }
+
+    nav
+    {
+        #menu-content {
+            a:first-of-type {
+                border-top: none;
+            }
+        }
     }
 }
 
@@ -475,7 +480,7 @@ nav {
 }
 
 .button {
-    @include button(darken($color-secondary-background, 10%))
+    @include button($color-secondary-background)
 }
 
 .red_button,
