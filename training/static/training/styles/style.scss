@@ -200,10 +200,7 @@ form {
     input[type="number"],
     select {
         color: $color-text;
-        background: linear-gradient(0deg, lighten($color-background, 10%) 0%,
-                                          lighten($color-background, 5%) 100%);
-        border: 1px solid black;
-        border-radius: 0.2em;
+        border: 1px solid $color-border;
         padding: 0.5em;
         margin-right: 0.1em;
     }
@@ -360,8 +357,6 @@ ul {
     }
 
     .toolbox {
-        border-top: 1px solid #111;
-        background: $color-background-upper;
         padding: 0.2em;
     }
 
