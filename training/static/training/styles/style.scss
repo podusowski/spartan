@@ -424,6 +424,11 @@ nav {
     }
 }
 
+.scrollable {
+    white-space: nowrap;
+    overflow: scroll;
+}
+
 nav .container {
     background-color: $color-background-accent;
     padding: 0.3em;

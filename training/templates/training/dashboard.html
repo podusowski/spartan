@@ -4,8 +4,9 @@
 
 {% if statistics.favourites_this_month %}
     <section>
-        <h2>top 3 this month <a href="{% url 'statistics_this_month' %}">more</a></h2>
-        {% for excercise in statistics.favourites_this_month|slice:":3" %}
+        <h2>this month <a href="{% url 'statistics_this_month' %}">more</a></h2>
+        <div class="scrollable">
+        {% for excercise in statistics.favourites_this_month %}
             <a href="{% url 'workout_statistics' excercise.name %}">
                 <dl class="metric">
                     <dt>{{ excercise.name }}</dt>
@@ -14,6 +15,7 @@
                 </dl>
             </a>
         {% endfor %}
+        </div>
     </section>
 {% endif %}
 
