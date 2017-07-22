@@ -9,8 +9,8 @@
             <a href="{% url 'workout_statistics' excercise.name %}">
                 <dl class="metric">
                     <dt>{{ excercise.name }}</dt>
-                    <dd>{{ excercise.count }} times</dd>
                     <dd>{{ excercise.volume }}</dd>
+                    <dd>{{ excercise.count }} times</dd>
                 </dl>
             </a>
         {% endfor %}
