@@ -409,7 +409,7 @@ nav {
         }
 
         a.dangerous {
-            @include button(darken(red, 30%))
+            @include button($color-red-warning)
         }
     }
 
