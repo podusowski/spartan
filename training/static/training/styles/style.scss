@@ -236,7 +236,7 @@ form {
 }
 
 dl.dashboard-workout {
-    background-color: $color-workout;
+    //background-color: $color-workout;
     padding: 0.5em;
     margin-right: 0.2em;
     margin-bottom: 0.5em;
@@ -565,10 +565,15 @@ footer {
 
 .workout-color-silver
 {
-    border-color: silver;
+    background-color: #fff;
 }
 
 .workout-color-green
 {
-    border-color: #2ECC40;
+    background-color: #ABFFA3;
+}
+
+.workout-color-red
+{
+    background-color: #ffd9d9;
 }
