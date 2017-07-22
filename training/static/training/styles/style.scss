@@ -48,6 +48,10 @@ $font: 'Exo 2', sans-serif;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+@mixin box-shadow-polite {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -228,7 +232,8 @@ form {
 }
 
 dl.dashboard-workout {
-    @include box(#222);
+    background-color: $color-workout;
+    padding: 0.5em;
     margin-right: 0.2em;
     margin-bottom: 0.5em;
     overflow: hidden;
@@ -236,6 +241,7 @@ dl.dashboard-workout {
     font-size: smaller;
     min-width: 7em;
     white-space: nowrap;
+    @include box-shadow-polite;
 
     dt {
         @include text;
@@ -317,10 +323,9 @@ ul {
 
 .day, .excercise {
     vertical-align: top;
-    border-radius: 0.3em;
     border-left: 2px solid $color-border-accent;
     margin-bottom: 0.5em;
-    //background: $color-background-upper;
+    background: $color-background-upper;
 
     &.active {
         border-left: 2px solid $color-accent;
