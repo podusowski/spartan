@@ -400,7 +400,7 @@ nav {
     .toolbox {
         a {
             margin-top: 0.5em;
-            @include button(darken($color-secondary-background, 30%))
+            @include button($color-secondary-background)
             font-size: smaller;
         }
 
