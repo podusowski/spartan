@@ -3,14 +3,13 @@ from django.db.models import Sum, Avg
 
 from training import units
 from training import models
-from . import views
 
 
 TYPE = 'strength'
 
 
 def redirect_to_workout(workout):
-    return redirect(views.workout, workout.id)
+    return redirect('show_strength_workout', workout.id)
 
 
 def volume(workout):
