@@ -45,11 +45,14 @@ $font: 'Exo 2', sans-serif;
 }
 
 @mixin box-shadow {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    //box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    //box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
 }
 
 @mixin box-shadow-polite {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
 * {
@@ -262,9 +265,10 @@ dl.dashboard-workout {
 }
 
 dl.metric, dl.metric-long {
-    font-size: 1em;
-    padding: 0.2em;
+    font-size: smaller;
+    padding: 0.5em;
     min-width: 6.2em;
+    margin-left: 0.2em;
 
     dt {
         white-space: nowrap;
@@ -307,6 +311,7 @@ dl.metric-long {
 }
 
 dl.metric {
+    //@include box-shadow-polite;
     display: inline-block;
 
     dt {
@@ -329,16 +334,16 @@ ul {
 
 .day, .excercise {
     vertical-align: top;
-    border-left: 2px solid $color-border-accent;
+    border-left: 1px solid $color-border-accent;
     margin-bottom: 0.5em;
-    background: $color-background-upper;
+    //background: $color-background-upper;
 
     &.active {
-        border-left: 2px solid $color-accent;
+        border-left: 1px solid $color-accent;
     }
 
     &.inactive {
-        border-left: 2px solid $color-border-accent;
+        border-left: 1px solid $color-border-accent;
     }
 
     .name, .stopwatch {
@@ -426,7 +431,7 @@ nav {
 
 .scrollable {
     white-space: nowrap;
-    overflow: scroll;
+    overflow-x: scroll;
 }
 
 nav .container {
