@@ -6,6 +6,9 @@
 
     {% load sass_tags %}
     {% load staticfiles %}
+    {% load compress %}
+
+    {% compress js/css %}
 
     <link href="{% sass_src 'training/styles/style.scss' %}" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Exo+2:100,300,400,800" rel="stylesheet">
@@ -24,6 +27,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
 
     <script src="{% static 'training/js/utils.js' %}"></script>
+
+    {% endcompress %}
 
     <title>spartan</title>
 </head>

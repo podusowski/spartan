@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'sass_processor',
     'el_pagination',
+    'compressor',
 )
 
 MIDDLEWARE_CLASSES = (
