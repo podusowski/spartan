@@ -4,22 +4,20 @@
 
 <aside>
 
+<section>
 {% if statistics.favourites_this_month %}
-    <section>
         <h2>this month <a href="{% url 'statistics_this_month' %}">more</a></h2>
-        <div class="scrollable">
         {% for excercise in statistics.favourites_this_month %}
             <a href="{% url 'workout_statistics' excercise.name %}">
-                <dl class="metric">
+                <dl class="metric-long">
                     <dt>{{ excercise.name }}</dt>
                     <dd>{{ excercise.volume }}</dd>
                     <dd>{{ excercise.count }} times</dd>
                 </dl>
             </a>
         {% endfor %}
-        </div>
-    </section>
 {% endif %}
+</section>
 
 <section>
     <h2>goals <a href="{% url 'goals' %}">manage</a></h2>
@@ -40,6 +38,8 @@
 
 {% load training_format %}
 {% load el_pagination_tags %}
+
+<article>
 
 <section>
 
@@ -96,5 +96,6 @@
 <p class="pagination">{% show_pages %}</p>
 
 </section>
+</article>
 
 {% endblock %}
