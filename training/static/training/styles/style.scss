@@ -90,10 +90,10 @@ header {
         color: #eee;
         text-decoration: underline;
     }
-}
 
-header .container {
-    padding: 0.3em;
+    .container {
+        padding: 0.3em;
+    }
 }
 
 h2, h3, h4, h5 {
@@ -313,6 +313,11 @@ dl.metric-mixed {
     }
 }
 
+dl.metric-long, dl.metric-mixed {
+    padding-bottom: 0.2em;
+    border-bottom: 1px solid $color-background;
+}
+
 dl.metric {
     display: inline-block;
     width: auto;
@@ -404,6 +409,7 @@ ul {
 }
 
 nav {
+    background-color: $color-primary-3;
     margin-bottom: 1em;
 
     .toolbox {
@@ -425,11 +431,18 @@ nav {
     }
 
     #menu-content {
+        display: none;
+
         a {
             display: block;
             padding: 0.5em;
             border-top: 1px solid #222;
         }
+    }
+
+    .container {
+        padding: 0.3em;
+        @include box-shadow;
     }
 }
 
@@ -438,27 +451,15 @@ nav {
     overflow-x: scroll;
 }
 
-nav .container {
-    background-color: $color-background-accent;
-    padding: 0.3em;
-    @include box-shadow;
-}
-
-nav {
-    background-color: lighten($color-background, 5%);
-    #menu-content {
-        display: none;
-    }
-}
-
 @media screen and (min-width: 650px) {
     nav {
         #menu-content {
             display: inline-block;
             a {
-                @include button($color-secondary-background)
+                border: none;
                 display: inline-block;
-
+                color: #fff;
+                text-transform: uppercase;
             }
         }
     }
