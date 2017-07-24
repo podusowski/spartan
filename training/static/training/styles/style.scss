@@ -265,54 +265,92 @@ dl.dashboard-workout {
 }
 
 dl.metric, dl.metric-long {
-    font-size: smaller;
-    padding: 0.5em;
-    min-width: 6.2em;
-    margin-right: 0.2em;
+//    font-size: smaller;
+//    padding: 0.5em;
+//    min-width: 6.2em;
+//    margin-right: 0.2em;
+//
+//    dt {
+//        white-space: nowrap;
+//        text-transform: uppercase;
+//        text-overflow: ellipsis;
+//        overflow: hidden;
+//    }
+//
+//    dd {
+//        @include text;
+//    }
+//
+//    dd:first-of-type {
+//        color: $color-accent;
+//    }
+//
+//    &.active {
+//        border-top: 2px solid $color-accent;
+//    }
+//
+//    &.inactive {
+//        border-top: 2px solid #333;
+//    }
+//
+//    &.interactive {
+//        cursor: pointer;
+//    }
+}
+
+dl.metric-long, dl.metric-mixed, dl.metric {
+    display: flex;
+    flex-flow: row wrap;
 
     dt {
         white-space: nowrap;
         text-transform: uppercase;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    dd {
-        @include text;
-    }
-
-    dd:first-of-type {
-        color: $color-accent;
-    }
-
-    &.active {
-        border-top: 2px solid $color-accent;
-    }
-
-    &.inactive {
-        border-top: 2px solid #333;
-    }
-
-    &.interactive {
-        cursor: pointer;
-    }
-}
-
-dl.metric-long {
-    dt {
-        width: 20em;
+        flex: 0 0 100%;
     }
 
     dd {
         font-size: 1.5em;
+        flex: 0 0 100%;
+        text-align: right;
+        color: $color-primary-1;
+        font-size: 1.2em;
+    }
+
+    dd:first-of-type {
+        flex: 1 auto;
+        text-align: left;
+        color: $color-primary-0;
     }
 
     margin-bottom: 0.5em;
+    width: 100%;
+}
+
+dl.metric-mixed {
+    dt {
+        flex: 0 0 100%;
+    }
+
+    dd {
+        flex: 1 0 0;
+        text-align: right;
+        color: $color-primary-1;
+        font-size: 1.2em;
+    }
+
+    dd:first-of-type {
+        flex: 2 0 0;
+        text-align: left;
+        color: $color-primary-0;
+    }
 }
 
 dl.metric {
     //@include box-shadow-polite;
     display: inline-block;
+    //max-width: 6.1em;
+    width: auto;
+    margin-right: 1em;
 
     dt {
         max-width: 5.1em;
@@ -536,12 +574,12 @@ nav {
 .percent-bar {
     margin-top: 0.5em;
     display: block;
-    height: 2px;
-    background-color: #222;
+    height: 0.5em;
+    background-color: $color-background;
     overflow: hidden;
 
     div {
-        height: 2px;
+        height: 0.5em;
         background-color: silver;
         display: block;
     }
@@ -610,7 +648,7 @@ header, nav, footer {
     }
 
     article {
-        flex: 5;
+        flex: 4;
     }
 
     section {
