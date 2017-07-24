@@ -4,35 +4,38 @@
 
 <aside>
 
-<section>
-{% if statistics.favourites_this_month %}
-        <h2>this month <a href="{% url 'statistics_this_month' %}">more</a></h2>
-        {% for excercise in statistics.favourites_this_month %}
-            <a href="{% url 'workout_statistics' excercise.name %}">
+    <section>
+        <h2>goals</h2>
+        {% for goal in goals.all %}
+            <a href="{% url 'workout_statistics' goal.name %}">
                 <dl class="metric-mixed">
-                    <dt>{{ excercise.name }}</dt>
-                    <dd>{{ excercise.volume }}</dd>
-                    <dd>{{ excercise.count }} times</dd>
+                    <dt>{{ goal.name }}</dt>
+                    <dd>{{ goal.left }}</dd>
+                    <dd><div class="percent-bar {{ goal.forecast.name }}"><div style="width: {{ goal.percent }}%"> </div></div></dd>
                 </dl>
             </a>
+        {% empty %}
+            <p class="note">You have no goals defined, go ahead and add some.</p>
         {% endfor %}
-{% endif %}
-</section>
 
-<section>
-    <h2>goals <a href="{% url 'goals' %}">manage</a></h2>
-    {% for goal in goals.all %}
-        <a href="{% url 'workout_statistics' goal.name %}">
-            <dl class="metric-mixed">
-                <dt>{{ goal.name }}</dt>
-                <dd>{{ goal.left }}</dd>
-                <dd><div class="percent-bar {{ goal.forecast.name }}"><div style="width: {{ goal.percent }}%"> </div></div></dd>
-            </dl>
-        </a>
-    {% empty %}
-        <p class="note">You have no goals defined, go ahead and add some.</p>
-    {% endfor %}
-</section>
+        <a class="section-link" href="{% url 'goals' %}">manage</a>
+    </section>
+
+    <section>
+    {% if statistics.favourites_this_month %}
+            <h2>this month</h2>
+            {% for excercise in statistics.favourites_this_month %}
+                <a href="{% url 'workout_statistics' excercise.name %}">
+                    <dl class="metric-mixed">
+                        <dt>{{ excercise.name }}</dt>
+                        <dd>{{ excercise.volume }}</dd>
+                        <dd>{{ excercise.count }} times</dd>
+                    </dl>
+                </a>
+            {% endfor %}
+    {% endif %}
+        <a class="section-link" href="{% url 'statistics_this_month' %}">more</a>
+    </section>
 
 </aside>
 

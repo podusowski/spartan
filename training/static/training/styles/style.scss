@@ -65,7 +65,7 @@ $font: 'Quicksand', sans-serif;
 
 body {
     background-color: $color-background;
-    background-image: url(../background.svg);
+    //background-image: url(../background.svg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     font-family: $font;
@@ -335,6 +335,14 @@ section {
     background-color: $color-background-accent;
     overflow: auto;
     @include box-shadow;
+
+    .section-link {
+        width: 100%;
+        display: block;
+        text-align: center;
+        background-color: $color-background-upper;
+        padding: 0.2em;
+    }
 }
 
 ul {
@@ -460,6 +468,7 @@ nav {
                 display: inline-block;
                 color: #fff;
                 text-transform: uppercase;
+                border-right: 1px solid $color-primary-4;
             }
         }
     }
