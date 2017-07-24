@@ -1,5 +1,7 @@
 @import "colors";
 @import "loading_animation";
+@import "percentage_bar";
+@import "layout";
 
 $font: 'Exo 2', sans-serif;
 
@@ -264,40 +266,6 @@ dl.dashboard-workout {
     }
 }
 
-dl.metric, dl.metric-long {
-//    font-size: smaller;
-//    padding: 0.5em;
-//    min-width: 6.2em;
-//    margin-right: 0.2em;
-//
-//    dt {
-//        white-space: nowrap;
-//        text-transform: uppercase;
-//        text-overflow: ellipsis;
-//        overflow: hidden;
-//    }
-//
-//    dd {
-//        @include text;
-//    }
-//
-//    dd:first-of-type {
-//        color: $color-accent;
-//    }
-//
-//    &.active {
-//        border-top: 2px solid $color-accent;
-//    }
-//
-//    &.inactive {
-//        border-top: 2px solid #333;
-//    }
-//
-//    &.interactive {
-//        cursor: pointer;
-//    }
-}
-
 dl.metric-long, dl.metric-mixed, dl.metric {
     display: flex;
     flex-flow: row wrap;
@@ -346,9 +314,7 @@ dl.metric-mixed {
 }
 
 dl.metric {
-    //@include box-shadow-polite;
     display: inline-block;
-    //max-width: 6.1em;
     width: auto;
     margin-right: 1em;
 
@@ -518,11 +484,6 @@ nav {
 }
 
 @media screen and (min-width: 650px) {
-    section, nav .container, header .container {
-        //margin-left: 10%;
-        //margin-right: 10%;
-    }
-
     section {
         padding: 1em;
     }
@@ -571,36 +532,6 @@ nav {
     }
 }
 
-.percent-bar {
-    margin-top: 0.5em;
-    display: block;
-    height: 0.5em;
-    background-color: $color-background;
-    overflow: hidden;
-
-    div {
-        height: 0.5em;
-        background-color: silver;
-        display: block;
-    }
-
-    &.ON_TRACK > div {
-        background-color: $color-accent;
-    }
-
-    &.BEHIND > div {
-        background-color: red;
-    }
-
-    &.AHEAD > div {
-        background-color: green;
-    }
-
-    &.DONE {
-        visibility: hidden;
-    }
-}
-
 footer {
     font-size: smaller;
     text-align: center;
@@ -619,40 +550,5 @@ footer {
 .workout-color-red
 {
     border-bottom: 4px solid #ff7474;
-}
-
-// flex
-
-.flex-container {
-    display: flex;
-    flex-flow: row wrap;
-}
-
-header, nav, footer {
-    flex: 0 0 100%;
-}
-
-@media not all and (min-width: 768px) {
-    aside {
-        flex: 0 0 100%;
-    }
-
-    article {
-        flex: 0 0 100%;
-    }
-}
-
-@media all and (min-width: 768px) {
-    aside {
-        flex: 1;
-    }
-
-    article {
-        flex: 4;
-    }
-
-    section {
-        flex: 1 1 100%;
-    }
 }
 

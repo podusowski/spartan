@@ -1,0 +1,30 @@
+.percent-bar {
+    margin-top: 0.5em;
+    display: block;
+    height: 0.5em;
+    background-color: $color-background;
+    overflow: hidden;
+
+    div {
+        height: 0.5em;
+        background-color: silver;
+        display: block;
+    }
+
+    &.ON_TRACK > div {
+        background-color: $color-accent;
+    }
+
+    &.BEHIND > div {
+        background-color: red;
+    }
+
+    &.AHEAD > div {
+        background-color: green;
+    }
+
+    &.DONE {
+        visibility: hidden;
+    }
+}
+

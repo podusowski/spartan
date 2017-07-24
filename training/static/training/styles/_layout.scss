@@ -1,0 +1,33 @@
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+header, nav, footer {
+    flex: 0 0 100%;
+}
+
+@media not all and (min-width: 768px) {
+    aside {
+        flex: 0 0 100%;
+    }
+
+    article {
+        flex: 0 0 100%;
+    }
+}
+
+@media all and (min-width: 768px) {
+    aside {
+        flex: 1;
+    }
+
+    article {
+        flex: 4;
+    }
+
+    section {
+        flex: 1 1 100%;
+    }
+}
+
