@@ -21,8 +21,8 @@
         <a class="section-link" href="{% url 'goals' %}">manage</a>
     </section>
 
-    <section>
     {% if statistics.favourites_this_month %}
+    <section>
             <h2>this month</h2>
             {% for excercise in statistics.favourites_this_month %}
                 <a href="{% url 'workout_statistics' excercise.name %}">
@@ -33,9 +33,9 @@
                     </dl>
                 </a>
             {% endfor %}
-    {% endif %}
         <a class="section-link" href="{% url 'statistics_this_month' %}">more</a>
     </section>
+    {% endif %}
 
 </aside>
 
