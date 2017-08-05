@@ -15,6 +15,10 @@ header, nav, footer {
     article {
         flex: 0 0 100%;
     }
+
+    section {
+        flex: 1 1 100%;
+    }
 }
 
 @media all and (min-width: 768px) {
