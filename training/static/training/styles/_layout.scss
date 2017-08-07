@@ -7,7 +7,10 @@ header, nav, footer {
     flex: 0 0 100%;
 }
 
-@media not all and (min-width: 768px) {
+$media-small: "not all and (min-width: 768px)";
+$media-large: "all and (min-width: 768px)";
+
+@media #{$media-small} {
     aside {
         flex: 0 0 100%;
     }
@@ -21,7 +24,7 @@ header, nav, footer {
     }
 }
 
-@media all and (min-width: 768px) {
+@media #{$media-large} {
     aside {
         flex: 1;
     }

@@ -459,7 +459,7 @@ nav {
     overflow-x: scroll;
 }
 
-@media screen and (min-width: 650px) {
+@media #{$media-large} {
     nav {
         #menu-content {
             display: inline-block;
@@ -478,7 +478,7 @@ nav {
     }
 }
 
-@media screen and (max-width: 650px) {
+@media #{$media-small} {
     .desktop {
         display: none;
     }
@@ -493,7 +493,7 @@ nav {
     }
 }
 
-@media screen and (min-width: 650px) {
+@media #{$media-large} {
     section {
         padding: 1em;
     }
