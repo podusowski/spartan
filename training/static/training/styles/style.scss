@@ -35,8 +35,10 @@ $font: 'Quicksand', sans-serif;
                                 darken($color, 8%) 100%);
 
     padding: 0.5em;
-    border: 1px solid darken($color, 30%);
+    border: 1px solid darken($color, 20%);
     font-weight: normal;
+
+    @include box-shadow-polite;
 
     &:hover {
         $darker: darken($color, 5%);
@@ -49,8 +51,12 @@ $font: 'Quicksand', sans-serif;
 @mixin box-shadow {
     //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     //box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
-    //box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
+    //box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
+}
+
+@mixin bottom-shadow {
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
 @mixin box-shadow-polite {
@@ -97,16 +103,11 @@ header {
 }
 
 h2, h3, h4, h5 {
-    margin: 0 0 0.2em 0;
+    margin: 0 0 0.5em 0;
     color: $color-header;
     font-weight: 400;
     font-size: 1.5em;
     text-transform: uppercase;
-
-    a {
-        @include button(darken($color-secondary-background, 20%))
-        font-size: 0.5em;
-    }
 }
 
 h3 {
@@ -197,6 +198,7 @@ form {
         border-style: solid;
         font-size: 100%;
         box-sizing: border-box;
+        color: $color-text;
     }
 
     input[type="text"],
@@ -417,13 +419,22 @@ ul {
 }
 
 nav {
+    @include bottom-shadow;
     background-color: $color-primary-3;
     margin-bottom: 1em;
 
+    a {
+        display: inline-block;
+        padding: 0.5em;
+        text-transform: uppercase;
+        color: white;
+    }
+
     .toolbox {
+        //background-color: $color-primary-2;
         a {
             margin-top: 0.5em;
-            @include button($color-secondary-background)
+            //@include button($color-secondary-background)
             font-size: smaller;
         }
 
@@ -432,21 +443,6 @@ nav {
         }
     }
 
-    &.menu {
-        #toggle-menu {
-            @include button(darken($color-secondary-background, 20%))
-        }
-    }
-
-    #menu-content {
-        display: none;
-
-        a {
-            display: block;
-            padding: 0.5em;
-            border-top: 1px solid #222;
-        }
-    }
 
     .container {
         padding: 0.3em;
@@ -457,40 +453,6 @@ nav {
 .scrollable {
     white-space: nowrap;
     overflow-x: scroll;
-}
-
-@media #{$media-large} {
-    nav {
-        #menu-content {
-            display: inline-block;
-            a {
-                border: none;
-                display: inline-block;
-                color: #fff;
-                text-transform: uppercase;
-                border-right: 1px solid $color-primary-4;
-            }
-        }
-    }
-
-    .mobile {
-        display: none;
-    }
-}
-
-@media #{$media-small} {
-    .desktop {
-        display: none;
-    }
-
-    nav
-    {
-        #menu-content {
-            a:first-of-type {
-                border-top: none;
-            }
-        }
-    }
 }
 
 @media #{$media-large} {
@@ -561,4 +523,3 @@ footer {
 {
     border-bottom: 4px solid #ff7474;
 }
-

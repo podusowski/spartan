@@ -45,30 +45,10 @@
         </div>
     </header>
 
-    <script>
-        function makeMenu(button, content) {
-            $(button).click(function() {
-                $(content).toggle("fast");
-            });
-
-            $(window).resize(function() {
-                $(content).removeAttr("style");
-            });
-        }
-
-        $(document).ready(function() {
-            makeMenu("#toggle-menu", "#menu-content");
-        });
-    </script>
-
     {% block nav %}
         <nav class="menu">
             <div class="container">
             {% if request.user.is_authenticated %}
-                <span class="mobile">
-                    <a id="toggle-menu" href="#">&#9776;</a>
-                </span>
-
                 <div id="menu-content">
                     <a href="{% url 'dashboard' %}">dashboard</a>
                     <a href="{% url 'start_workout' %}">new workout</a>
