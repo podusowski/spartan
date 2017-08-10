@@ -441,7 +441,8 @@ nav {
         }
 
         a.dangerous {
-            @include button($color-red-warning)
+            background-color: $color-red-warning;
+            border-radius: 0.3em;
         }
     }
 
@@ -475,8 +476,7 @@ nav {
     @include button($color-secondary-background)
 }
 
-.red_button,
-.dangerous {
+.red_button {
     @include button(darken(red, 30%))
 }
 
