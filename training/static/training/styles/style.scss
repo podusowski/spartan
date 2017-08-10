@@ -49,7 +49,7 @@ $font: 'Quicksand', sans-serif;
 }
 
 @mixin box-shadow {
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);//, 0 1px 5px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);//, 0 1px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
 @mixin bottom-shadow {
@@ -334,8 +334,8 @@ section {
     background-color: $color-background-accent;
     overflow: auto;
     @include box-shadow;
-    border: 1px solid $color-border;
-    border-radius: 0.3em;
+    //border: 1px solid $color-border;
+    //border-radius: 0.3em;
 
     .section-link {
         width: 100%;
