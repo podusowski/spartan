@@ -9,6 +9,11 @@ def _sum(source, field_name):
     return value if value else 0
 
 
+def _max(source, field_name):
+    value = source.aggregate(value=Max(field_name))['value']
+    return value if value else 0
+
+
 def workout(user, name):
     source = models.Excercise.objects.filter(workout__user=user, name=name)
 
@@ -16,6 +21,7 @@ def workout(user, name):
         return {}
 
     reps = _sum(source, 'reps__reps')
+    max_reps_per_series = _max(source, 'reps__reps')
 
     series = models.Reps.objects.filter(excercise__workout__user=user,
                                         excercise__name=name).count()
@@ -24,4 +30,5 @@ def workout(user, name):
             ('total series', series),
             ('total reps', units.Volume(reps=reps)),
             ('average reps per workout', round(reps / source.count())),
-            ('average reps per series', round(reps / series))]
+            ('average reps per series', round(reps / series)),
+            ('max reps per series', max_reps_per_series)]

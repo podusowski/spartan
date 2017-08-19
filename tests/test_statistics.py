@@ -83,6 +83,12 @@ class StatisticsTestCase(ClientTestCase):
         self.assertEqual(3, self._find_statistics_field('push-up', 'average reps per series'))
         self.assertEqual(7, self._find_statistics_field('push-up', 'average reps per workout'))
 
+    def test_strength_max(self):
+        self._strength_workout('push-up', [5, 5, 5])
+        self._strength_workout('push-up', [10])
+
+        self.assertEqual(10, self._find_statistics_field('push-up', 'max reps per series'))
+
     def test_gps_statistics(self):
         self._import_gpx('3p_simplest.gpx')
         self._import_gpx('3p_simplest_2.gpx')
