@@ -4,6 +4,7 @@ import pytz
 from django import forms
 from django.utils import timezone as django_tz
 from django.utils.deprecation import MiddlewareMixin
+from django.core.exceptions import ObjectDoesNotExist
 
 from training import models
 
@@ -22,12 +23,9 @@ class UserProfileForm(forms.Form):
 
 def timezone(user):
     try:
-        tz = pytz.timezone(models.UserProfile.objects.get(user=user).timezone)
-    except Exception as e:
-        logging.debug(str(e))
-        tz = pytz.utc
-
-    return tz
+        return pytz.timezone(models.UserProfile.objects.get(user=user).timezone)
+    except Exception:
+        return pytz.utc
 
 
 def save_timezone(user, value):
