@@ -85,5 +85,8 @@ class StatisticsTestCase(ClientTestCase):
 
     def test_gps_statistics(self):
         self._import_gpx('3p_simplest.gpx')
+        self._import_gpx('3p_simplest_2.gpx')
 
-        self.assertEqual(1, self._find_statistics_field('running', 'total workouts'))
+        self.assertEqual(2, self._find_statistics_field('running', 'total workouts'))
+        self.assertEqual(units.Volume(meters=8), self._find_statistics_field('running', 'total distance'))
+        self.assertEqual(units.Volume(meters=4), self._find_statistics_field('running', 'average distance per workout'))

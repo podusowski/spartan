@@ -68,7 +68,7 @@ class Volume:
     def __eq__(self, other):
         if isinstance(other, Volume):
             return self.__dict__ == other.__dict__
-        else:
+        elif isinstance(other, MultiVolume):
             return other == self
 
     def __add__(self, other):
