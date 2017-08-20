@@ -59,11 +59,12 @@ class StatisticsTestCase(ClientTestCase):
         #self.assertEqual(units.Volume(seconds=ONE_HOUR.total_seconds()), excercises[0].volume)
         self.assertEqual(1, excercises[0].count)
 
-    def _find_statistics_field(self, name, field):
-        statistics = self._get_statistics_from_dashboard()
-        workout_statistics = statistics.workout_statistics(name)
-        metrics = workout_statistics.metrics()
+    def _get_workout_statistics(self, name):
+        return self.get('/statistics/workout/{}'.format(name)).context['workout']
 
+    def _find_statistics_field(self, name, field):
+        workout_statistics = self._get_workout_statistics(name)
+        metrics = workout_statistics.metrics()
         return dict(metrics)[field]
 
     def test_strength_statistics(self):
