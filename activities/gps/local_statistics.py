@@ -6,11 +6,6 @@ from training import units
 from statistics import utils
 
 
-def _max(source, field_name):
-    value = source.aggregate(value=Max(field_name))['value']
-    return value if value else 0
-
-
 def _sum_duration(source):
     '''
     Django's SQLite backend doesn't support datetime expressions so we
@@ -27,7 +22,7 @@ def workout(user, name):
         return {}
 
     total_distance = utils.sum(source, 'distance')
-    max_distance = _max(source, 'distance')
+    max_distance = utils.max(source, 'distance')
     total_duration = _sum_duration(workouts)
 
     return [

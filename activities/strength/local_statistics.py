@@ -2,16 +2,7 @@ from django.db.models import Sum, Min, Max
 
 from training import models
 from training import units
-
-
-def _sum(source, field_name):
-    value = source.aggregate(value=Sum(field_name))['value']
-    return value if value else 0
-
-
-def _max(source, field_name):
-    value = source.aggregate(value=Max(field_name))['value']
-    return value if value else 0
+from statistics import utils
 
 
 def workout(user, name):
@@ -20,8 +11,8 @@ def workout(user, name):
     if not source:
         return {}
 
-    reps = _sum(source, 'reps__reps')
-    max_reps_per_series = _max(source, 'reps__reps')
+    reps = utils.sum(source, 'reps__reps')
+    max_reps_per_series = utils.max(source, 'reps__reps')
 
     max_reps_per_workout = (source.annotate(total_reps=Sum('reps__reps'))
                                   .order_by('-total_reps')

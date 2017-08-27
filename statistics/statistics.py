@@ -11,6 +11,7 @@ from django.http import Http404
 from training.models import *
 from training import units
 from training import dates
+from . import utils
 
 
 class Day:
@@ -60,11 +61,6 @@ class Week:
 
 
 PopularWorkout = collections.namedtuple('PopularWorkout', ['name', 'count', 'volume', 'earliest', 'latest'])
-
-
-def _sum_volume(source, volume_field):
-    value = source.aggregate(value=Sum(volume_field))['value']
-    return value if value else 0
 
 
 class WorkoutStatistics:
@@ -124,7 +120,7 @@ class Statistics:
         annotated = self._basic_annotations(workouts)
 
         def decorate_gps_workout(workout):
-            volume = _sum_volume(workouts.filter(name=workout['name']), 'distance')
+            volume = utils.sum(workouts.filter(name=workout['name']), 'distance')
 
             return PopularWorkout(name=workout['name'],
                                   count=workout['count'],
@@ -139,7 +135,7 @@ class Statistics:
         annotated = self._basic_annotations(workouts)
 
         def decorate_strength_workout(workout):
-            volume = _sum_volume(workouts.filter(name=workout['name']), 'reps__reps')
+            volume = utils.sum(workouts.filter(name=workout['name']), 'reps__reps')
 
             return PopularWorkout(name=workout['name'],
                                   count=workout['count'],
