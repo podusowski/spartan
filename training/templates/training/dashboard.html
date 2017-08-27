@@ -62,7 +62,7 @@
 <p>{% show_pages %}</p>
 
 {% for week in weeks %}
-    <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
+    <h2>{{ week.time_range.start.date }}  .. {{ week.time_range.end.date }}</h2>
     {% for day in week.days %}
         <div class="day">
             <div class="name">
