@@ -18,7 +18,12 @@ class TimeRange:
     def fully_bound(self):
         return None not in [self.start, self.end]
 
-    def progress(self, date):
+    def progress(self, date) -> int:
+        '''
+        Return percentage of the date in the context of given TimeRange.
+        For example, if TimeRange is a month and middle day is given, it will
+        return 50.
+        '''
         s = self.start.toordinal()
         e = self.end.toordinal()
         d = date.toordinal()
