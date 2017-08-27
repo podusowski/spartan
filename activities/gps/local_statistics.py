@@ -3,11 +3,7 @@ from django.db.models import Sum, Min, Max, F
 
 from training import models
 from training import units
-
-
-def _sum(source, field_name):
-    value = source.aggregate(value=Sum(field_name))['value']
-    return value if value else 0
+from statistics import utils
 
 
 def _max(source, field_name):
@@ -30,7 +26,7 @@ def workout(user, name):
     if not source:
         return {}
 
-    total_distance = _sum(source, 'distance')
+    total_distance = utils.sum(source, 'distance')
     max_distance = _max(source, 'distance')
     total_duration = _sum_duration(workouts)
 
