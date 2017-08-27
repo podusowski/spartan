@@ -96,6 +96,7 @@ class StatisticsTestCase(ClientTestCase):
         self._import_gpx('3p_simplest_2.gpx')
 
         self.assertEqual(2, self._find_statistics_field('running', 'total workouts'))
+        self.assertEqual(datetime.timedelta(0, 4), self._find_statistics_field('running', 'total duration'))
         self.assertEqual(units.Volume(meters=8), self._find_statistics_field('running', 'total distance'))
         self.assertEqual(units.Volume(meters=4), self._find_statistics_field('running', 'average distance per workout'))
         self.assertEqual(units.Volume(meters=4), self._find_statistics_field('running', 'max distance'))
