@@ -33,6 +33,11 @@ class StatisticsTestCase(TestCase):
                                       started=FIRST_SEPT_2016,
                                       finished=datetime.datetime(2016, 9, 1, 0, 0, 1, tzinfo=pytz.utc))
 
+        models.Workout.objects.create(user=self.other_user,
+                                      activity_type='test',
+                                      started=FIRST_SEPT_2016,
+                                      finished=datetime.datetime(2016, 9, 1, 0, 0, 1, tzinfo=pytz.utc))
+
         weeks = self.statistics.weeks(start=datetime.datetime(2016, 9, 4, 23, 59, 59))
 
         self.assertEqual(1, len(weeks))

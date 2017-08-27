@@ -23,29 +23,30 @@ class Day:
         return str(self.workouts)
 
 
+def between_timerange(source, rng, time_field='started'):
+    if rng is not None and rng.fully_bound():
+        kwargs = {'{}__gte'.format(time_field): rng.start,
+                  '{}__lt'.format(time_field): rng.end}
+        return source.filter(**kwargs)
+    else:
+        return source
+
+
 class Week:
     def __init__(self, statistics, start_time, end_time):
-        self.start_time = start_time
-        self.end_time = end_time
+        self.time_range = dates.TimeRange(start_time, end_time)
         self.user = statistics.user
-
-    def _previous_workouts(self, begin=None, end=None):
-        if begin is not None and end is not None:
-            return Workout.objects.filter(user=self.user,
-                                          started__gt=begin,
-                                          started__lt=end).order_by('-started')
-        else:
-            return Workout.objects.filter(user=self.user).order_by('-started')
 
     @property
     def workouts(self):
-        return self._previous_workouts(self.start_time, self.end_time)
+        user_workouts = Workout.objects.filter(user=self.user)
+        return between_timerange(user_workouts, self.time_range, time_field='started')
 
     @property
     def days(self):
 
         def make_day(number):
-            start_time = self.start_time + datetime.timedelta(days=number)
+            start_time = self.time_range.start + datetime.timedelta(days=number)
             return Day(start_time)
 
         def in_past(day):
@@ -101,12 +102,9 @@ class Statistics:
         return self.most_popular_workouts(dates.this_month(now))
 
     def _activities_in_range(self, source, time_range=None):
-        source = source.filter(workout__user=self.user)
-
-        if time_range is not None and time_range.fully_bound():
-            source = source.filter(workout__started__gte=time_range.start, workout__started__lt=time_range.end)
-
-        return source
+        return between_timerange(source.filter(workout__user=self.user),
+                                 time_range,
+                                 time_field='workout__started')
 
     def _basic_annotations(self, source):
         return source.values('name') \
