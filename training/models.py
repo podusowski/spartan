@@ -77,6 +77,7 @@ class Excercise(models.Model):
         else:
             return units.Volume(seconds=duration.total_seconds())
 
+    @property
     def duration(self):
         if self.time_started is not None and self.time_finished is not None:
             return self.time_finished - self.time_started
