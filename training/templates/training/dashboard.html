@@ -64,7 +64,7 @@
 {% for week in weeks %}
     <h2>{{ week.start_time.date }}  .. {{ week.end_time.date }}</h2>
     {% for day in week.days %}
-        <div class="day {{ day.workouts|yesno:"active,inactive" }}">
+        <div class="day">
             <div class="name">
                 {{ day.start_time|date:"D" }}
             </div>
@@ -86,8 +86,6 @@
                             </dd>
                         </dl>
                     </a>
-                {% empty %}
-                    rest
                 {% endfor %}
             </div>
         </div>
