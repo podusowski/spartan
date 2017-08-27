@@ -3,6 +3,9 @@ language: python
 python:
   - 3.4
 
+before_install:
+  - sudo apt-get install ruby-sass
+
 install:
   - pip install -r requirements.txt
   - pip install python-coveralls
