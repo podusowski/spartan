@@ -37,3 +37,7 @@ pip install -r requirements.txt
 ```
 ./manage.py runserver
 ```
+
+### SASS
+
+You need to install sass processor, in debian it's ususally in package called `ruby-sass`.

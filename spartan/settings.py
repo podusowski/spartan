@@ -2,14 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'sd2+&z(gsmltdd2!9-0r2ezj4m+dah3=t-r6^y!z!usc0@$nv5'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['*']
 
@@ -26,7 +19,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'sass_processor',
     'el_pagination',
     'compressor',
 )
@@ -66,11 +58,14 @@ WSGI_APPLICATION = 'spartan.wsgi.application'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
     'compressor.finders.CompressorFinder',
 )
 
 COMPRESS_ENABLED = True
+
+COMPRESS_PRECOMPILERS = (
+    ('type/x-scss', 'sass --scss {infile} {outfile}'),
+)
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'

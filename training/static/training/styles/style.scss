@@ -492,7 +492,7 @@ nav {
 
 .undo {
     margin-top: 0.5em;
-    @include button(darken($color-secondary-background, 30%))
+    @include button(darken($color-secondary-background, 30%));
     font-size: smaller;
 }
 
