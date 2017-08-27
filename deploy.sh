@@ -31,7 +31,7 @@ sudo -E -u $production_user bash << EOF
     ./manage.py migrate || exit 1
     rm -vrf $production_dir/_files/static
     echo "static"
-    ./manage.py collectstatic --noinput
+    ./manage.py collectstatic --noinput -c
 EOF
 
 cp 000-default.conf $apache_sites_available_dir
