@@ -59,11 +59,14 @@ class StatisticsTestCase(ClientTestCase):
         #self.assertEqual(units.Volume(seconds=ONE_HOUR.total_seconds()), excercises[0].volume)
         self.assertEqual(1, excercises[0].count)
 
-    def _get_workout_statistics(self, name):
-        return self.get('/statistics/workout/{}'.format(name)).context['workout']
+    def _get_workout_statistics(self, name, rng=None):
+        if rng is None:
+            return self.get('/statistics/workout/{}'.format(name)).context['workout']
+        else:
+            return self.get('/statistics/workout/{}/{}'.format(name)).context['workout']
 
-    def _find_statistics_field(self, name, field):
-        workout_statistics = self._get_workout_statistics(name)
+    def _find_statistics_field(self, name, field, rng=None):
+        workout_statistics = self._get_workout_statistics(name, rng)
         return dict(workout_statistics)[field]
 
     def test_strength_statistics(self):
