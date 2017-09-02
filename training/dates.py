@@ -12,6 +12,9 @@ class TimeRange:
     def __str__(self) -> str:
         return "{} - {}".format(self.start, self.end)
 
+    def __repr__(self) -> str:
+        return "TimeRange({}, {})".format(repr(self.start), repr(self.end))
+
     def __eq__(self, other):
         return (self.start, self.end) == (other.start, other.end)
 
@@ -29,6 +32,24 @@ class TimeRange:
         d = date.toordinal()
 
         return round((d - s) / (e - s) * 100)
+
+    URL_SEP = '^'
+    FORMAT = '%Y-%m-%d %H:%M:%S.%f %z'
+
+    def tourl(self) -> str:
+        '''
+        Convert range to string suitable for URL parameters.
+        '''
+        parts = tuple(d.strftime(TimeRange.FORMAT) for d in (self.start, self.end))
+        return TimeRange.URL_SEP.join(parts)
+
+    @classmethod
+    def fromurl(cls, ordinal):
+        '''
+        Construct TimeRange from URL parameter.
+        '''
+        parts = tuple(datetime.datetime.strptime(s, TimeRange.FORMAT) for s in ordinal.split(TimeRange.URL_SEP))
+        return cls(*parts)
 
 
 def week_range(number=None, end=None, start=timezone.now()):

@@ -63,3 +63,8 @@ def test_progress_in_date_range():
 
 def test_days_left_in_month():
     assert 30 == dates.days_left_in_this_month(now=JANUARY_2016.start)
+
+
+def test_convert_timerange_to_ordinal_and_back():
+    s = JANUARY_2016.tourl()
+    assert JANUARY_2016 == dates.TimeRange.fromurl(s)
