@@ -64,8 +64,7 @@ class StatisticsTestCase(ClientTestCase):
 
     def _find_statistics_field(self, name, field):
         workout_statistics = self._get_workout_statistics(name)
-        metrics = workout_statistics.metrics()
-        return dict(metrics)[field]
+        return dict(workout_statistics)[field]
 
     def test_strength_statistics(self):
         self.switch_user(self.other_user)

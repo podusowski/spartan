@@ -65,26 +65,18 @@ class Week:
 PopularWorkout = collections.namedtuple('PopularWorkout', ['name', 'count', 'volume', 'earliest', 'latest'])
 
 
-class WorkoutStatistics:
-    def __init__(self, user, name):
-        self.user = user
-        self.name = name
-
-    def metrics(self):
-        result = []
-        for app_statistics in registry.modules('local_statistics'):
-            stats = app_statistics.workout(self.user, self.name)
-            if stats:
-                result.extend(stats)
-        return result
+def workout(user, workout_name):
+    result = []
+    for app_statistics in registry.modules('local_statistics'):
+        stats = app_statistics.workout(user, workout_name)
+        if stats:
+            result.extend(stats)
+    return result
 
 
 class Statistics:
     def __init__(self, user):
         self.user = user
-
-    def workout_statistics(self, name):
-        return WorkoutStatistics(self.user, name)
 
     def favourites_this_month(self, now=timezone.now()):
         return self.most_popular_workouts(dates.this_month(now))
