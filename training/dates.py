@@ -71,3 +71,8 @@ def month_range(number=None, end=None, start=timezone.now()):
 def this_month(now=timezone.now()):
     months = list(month_range(1, start=now))
     return TimeRange(*months[0])
+
+
+def days_left_in_this_month(now=timezone.now()):
+    month = this_month(now=now)
+    return month.end.toordinal() - now.toordinal()

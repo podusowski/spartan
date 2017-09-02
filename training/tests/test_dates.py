@@ -55,3 +55,6 @@ class UtilsTestCase(TestCase):
         self.assertEqual(0, JANUARY_2016.progress(FIRST_JAN_2016))
         self.assertEqual(30, JANUARY_2016.progress(TENTH_JAN_2016))
         self.assertEqual(100, JANUARY_2016.progress(LAST_JAN_2016))
+
+    def test_days_left_in_month(self):
+        self.assertEqual(30, dates.days_left_in_this_month(now=JANUARY_2016.start))

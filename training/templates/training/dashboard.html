@@ -18,6 +18,13 @@
             <p class="note">You have no goals defined, go ahead and add some.</p>
         {% endfor %}
 
+        <p class="note">
+            {% if days_left_in_this_month > 0 %}
+                you have today and <strong>{{days_left_in_this_month}}</strong> days left to finish your goals
+            {% else %}
+                today is the last day to finish your goals
+            {% endif %}
+        </p>
         <a class="section-link" href="{% url 'goals' %}">manage</a>
     </section>
 

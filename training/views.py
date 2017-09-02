@@ -15,6 +15,7 @@ from statistics.statistics import *
 from statistics.goals import Goals
 from training import userprof
 from training import heatmap
+from training import dates
 import activities.registry
 
 
@@ -50,7 +51,8 @@ def dashboard(request):
     statistics = Statistics(request.user) # type: Statistics
     goals = Goals(request.user)
     return render(request, 'training/dashboard.html', {'statistics': statistics,
-                                                       'goals': goals})
+                                                       'goals': goals,
+                                                       'days_left_in_this_month': dates.days_left_in_this_month()})
 
 
 @login_required
