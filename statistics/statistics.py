@@ -24,15 +24,6 @@ class Day:
         return str(self.workouts)
 
 
-def between_timerange(source, rng, time_field='started'):
-    if rng is not None and rng.fully_bound():
-        kwargs = {'{}__gte'.format(time_field): rng.start,
-                  '{}__lt'.format(time_field): rng.end}
-        return source.filter(**kwargs)
-    else:
-        return source
-
-
 class Week:
     def __init__(self, statistics, start_time, end_time):
         self.time_range = dates.TimeRange(start_time, end_time)
@@ -41,7 +32,7 @@ class Week:
     @property
     def workouts(self):
         user_workouts = Workout.objects.filter(user=self.user)
-        return between_timerange(user_workouts, self.time_range, time_field='started')
+        return utils.between_timerange(user_workouts, self.time_range, time_field='started')
 
     @property
     def days(self):
@@ -82,9 +73,9 @@ class Statistics:
         return self.most_popular_workouts(dates.this_month(now))
 
     def _activities_in_range(self, source, time_range=None):
-        return between_timerange(source.filter(workout__user=self.user),
-                                 time_range,
-                                 time_field='workout__started')
+        return utils.between_timerange(source.filter(workout__user=self.user),
+                                       time_range,
+                                       time_field='workout__started')
 
     def _basic_annotations(self, source):
         return source.values('name') \

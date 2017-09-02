@@ -15,3 +15,15 @@ def max(source, field_name):
     '''
     value = source.aggregate(value=Max(field_name))['value']
     return value if value else 0
+
+
+def between_timerange(source, rng, time_field='started'):
+    '''
+    Filter QuerySet with time range.
+    '''
+    if rng is not None and rng.fully_bound():
+        kwargs = {'{}__gte'.format(time_field): rng.start,
+                  '{}__lt'.format(time_field): rng.end}
+        return source.filter(**kwargs)
+    else:
+        return source
