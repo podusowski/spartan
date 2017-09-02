@@ -12,6 +12,7 @@ from training.models import *
 from training import units
 from training import dates
 from . import utils
+from activities import registry
 
 
 class Day:
@@ -70,24 +71,11 @@ class WorkoutStatistics:
         self.name = name
 
     def metrics(self):
-        from django.apps import apps
-        import importlib
-
-        def get_statistics_from_app(name):
-            try:
-                app_statistics = importlib.import_module('{}.local_statistics'.format(name))
-                logging.debug('looking for stats in {}'.format(name))
-                return app_statistics.workout(self.user, self.name)
-            except ImportError as e:
-                logging.debug('can\'t import app {}'.format(name))
-
         result = []
-
-        for app in apps.get_app_configs():
-            stats = get_statistics_from_app(app.name)
+        for app_statistics in registry.modules('local_statistics'):
+            stats = app_statistics.workout(self.user, self.name)
             if stats:
                 result.extend(stats)
-
         return result
 
 
