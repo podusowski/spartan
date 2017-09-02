@@ -5,6 +5,9 @@ django-compressor==2.1
 django-sass-processor==0.4.6
 django-el-pagination
 
+pytest
+pytest-django
+
 # it got some fixes for django 1.10
 git+https://github.com/podusowski/django-nested-inline.git
 
