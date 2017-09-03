@@ -1,3 +1,5 @@
+import pytest
+
 from tests.utils import *
 from tests import utils
 from training import units
@@ -37,3 +39,11 @@ class GoalsTestCase(ClientTestCase):
         goal = workout_statistics_page.context["goal"]
         assert 100 == goal.volume
         assert units.Volume(0) == goal.progress
+
+    def test_its_improssible_to_set_a_goal_without_a_name(self):
+        with pytest.raises(AttributeError):
+            self._set_goal("", 100)
+
+    def test_goal_value_must_have_positive_value(self):
+        with pytest.raises(AttributeError):
+            self._set_goal("push-up", 0)

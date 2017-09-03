@@ -33,8 +33,18 @@ def add_goal(request):
     goals = Goals(request.user)
 
     if request.method == "POST":
-        goals.set(request.POST['name'], request.POST['volume'])
-        return redirect('workout_statistics', request.POST['name'])
+        name = request.POST["name"]
+
+        if not name:
+            raise AttributeError()
+
+        volume = int(request.POST["volume"])
+
+        if not volume > 0:
+            raise AttributeError()
+
+        goals.set(name, volume)
+        return redirect('workout_statistics', name)
 
 
 @login_required
