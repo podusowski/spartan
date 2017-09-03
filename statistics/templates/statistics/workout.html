@@ -3,7 +3,7 @@
 {% block content %}
 
 <section>
-    <h2>{{ workout.name }}</h2>
+    <h2>{{ name }}</h2>
     {% for name, value in workout %}
         <dl class="metric-long">
             <dt>{{ name }}</dt>
@@ -27,7 +27,7 @@
 
     <form action="{% url 'add_goal' %}" method="post">
         {% csrf_token %}
-        <input type="hidden" name="name" value="{{ workout.name }}" />
+        <input type="hidden" name="name" value="{{ name }}" />
         <ul>
             <li>
                 <label for="volume">set new volume</label>

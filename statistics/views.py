@@ -20,7 +20,7 @@ def statistics_this_month(request):
 def workout(request, name):
     workout = statistics_mod.workout(request.user, name)
     goal = Goals(request.user).get(name)
-    return render(request, 'statistics/workout.html', {'workout': workout, 'goal': goal})
+    return render(request, 'statistics/workout.html', {'name': name, 'workout': workout, 'goal': goal})
 
 
 @login_required
