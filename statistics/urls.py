@@ -10,4 +10,5 @@ urlpatterns = [
     url('^add_goal$', views.add_goal, name='add_goal'),
     url('^delete_goal$', views.delete_goal, name='delete_goal'),
     url('^workout/(?P<name>.+)$', views.workout, name='workout_statistics'),
+    url('^workout/(?P<name>.+)/?P<rng>.+$', views.workout, name='workout_statistics_rng'),
 ]

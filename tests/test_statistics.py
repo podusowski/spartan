@@ -63,11 +63,16 @@ class StatisticsTestCase(ClientTestCase):
         if rng is None:
             return self.get('/statistics/workout/{}'.format(name)).context['workout']
         else:
-            return self.get('/statistics/workout/{}/{}'.format(name)).context['workout']
+            return self.get('/statistics/workout/{}/{}'.format(name, rng.tourl())).context['workout']
 
     def _find_statistics_field(self, name, field, rng=None):
-        workout_statistics = self._get_workout_statistics(name, rng)
-        return dict(workout_statistics)[field]
+        workout_statistics = dict(self._get_workout_statistics(name, rng))
+
+        try:
+            return workout_statistics[field]
+        except KeyError as e:
+            keys = ', '.join(["'{}'".format(k) for k in workout_statistics.keys()])
+            raise KeyError("there is no '{}': it has: {}".format(field, keys))
 
     def test_strength_statistics(self):
         self.switch_user(self.other_user)
@@ -81,6 +86,7 @@ class StatisticsTestCase(ClientTestCase):
         self._strength_workout('push-up', [10])
 
         self.assertEqual(3, self._find_statistics_field('push-up', 'total workouts'))
+        assert self._find_statistics_field('push-up', 'total duration') is not None
         self.assertEqual(units.Volume(reps=20), self._find_statistics_field('push-up', 'total reps'))
         self.assertEqual(6, self._find_statistics_field('push-up', 'total series'))
         self.assertEqual(3, self._find_statistics_field('push-up', 'average reps per series'))
