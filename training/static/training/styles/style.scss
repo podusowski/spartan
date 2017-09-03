@@ -38,7 +38,7 @@ $font: 'Quicksand', sans-serif;
     border: 1px solid darken($color, 20%);
     font-weight: normal;
 
-    @include box-shadow-polite;
+    color: darken($color, 50%);
 
     &:hover {
         $darker: darken($color, 5%);
@@ -195,6 +195,10 @@ form {
         color: $color-text;
     }
 
+    input:focus {
+        border: 1px solid $color-primary-2;
+    }
+
     input[type="text"],
     input[type="file"],
     input[type="password"],
@@ -203,11 +207,10 @@ form {
         color: $color-text;
         border: 1px solid $color-border;
         padding: 0.5em;
-        margin-right: 0.1em;
     }
 
     input[type="submit"] {
-        @include button($color-accent);
+        @include button(lighten($color-accent, 20%));
     }
 
     input[type="number"] {
@@ -471,16 +474,19 @@ nav {
     @include button(darken(green, 30%))
 }
 
-.form-value-shortcut {
-    @include button(darken($color-secondary-background, 15%));
-    margin-right: 0.2em;
-    font-size: 100%;
+.form-value-shortcuts {
+    display: flex;
+    flex-flow: row wrap;
 }
 
-.undo {
-    margin-top: 0.5em;
-    @include button(darken($color-secondary-background, 30%));
-    font-size: smaller;
+.form-value-shortcut, .undo {
+    margin-right: 0.2em;
+    background-color: $color-background-upper;
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin: 0.2em 0 0.2em 0.2em;
+    display: inline-block;
 }
 
 .endless_page_link,
