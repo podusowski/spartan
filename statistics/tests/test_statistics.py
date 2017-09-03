@@ -97,6 +97,13 @@ class StatisticsTestCase(TestCase):
             self.assertEqual(units.Volume(reps=1), all_goals[0].progress)
             self.assertEqual(33, all_goals[0].percent)
 
+    def test_setting_goal_to_zero(self):
+        """ This doesn't make sense but it is possible to set it. """
+        user_goals = goals.Goals(self.user)
+        user_goals.set("push-up", 0)
+
+        assert [0] == [g.volume for g in user_goals.all()]
+
     def test_workouts_without_goal(self):
         with patch('statistics.goals.Statistics', autospec=True) as StatisticsMock:
             statistics_mock = StatisticsMock.return_value

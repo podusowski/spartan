@@ -58,7 +58,10 @@ class Goals:
 
         def make_goal(goal):
             current = volumes.get(goal.name, units.Volume(0))
-            percent = round(current.number() / goal.volume * 100)
+
+            percent = 0
+            if goal.volume > 0:
+                percent = round(current.number() / goal.volume * 100)
 
             return Goal(name=goal.name,
                         volume=goal.volume,
