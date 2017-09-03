@@ -33,6 +33,8 @@ pip install -r requirements.txt
 ./manage.py test
 ```
 
+`pytest` is used as testing framework, this means that `assert` statements are preferred over `assert*` functions of `TestCase` base class.
+
 ### Running server
 ```
 ./manage.py runserver
