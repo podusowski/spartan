@@ -8,4 +8,4 @@ class Goal(models.Model):
     volume = models.IntegerField()
 
     def __str__(self):
-        return "{} of {} by {}".format(self.volume, self.name, self.user)
+        return "{}'s goal of making {} of {}".format(self.user, self.volume, self.name)
