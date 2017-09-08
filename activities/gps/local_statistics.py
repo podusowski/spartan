@@ -14,7 +14,7 @@ def _sum_duration(source):
     return sum([workout.finished - workout.started for workout in source], datetime.timedelta())
 
 
-def workout(user, name):
+def workout(user, name, rng=None):
     source = models.Gpx.objects.filter(workout__user=user, name=name)
     workouts = models.Workout.objects.filter(user=user, gpx__name=name)
 

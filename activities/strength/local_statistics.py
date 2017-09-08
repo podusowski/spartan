@@ -14,7 +14,7 @@ def _sum_duration(source):
     return sum([workout.duration for workout in source], datetime.timedelta())
 
 
-def workout(user, name):
+def workout(user, name, rng=None):
     source = models.Excercise.objects.filter(workout__user=user, name=name)
 
     if not source:

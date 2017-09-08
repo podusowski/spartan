@@ -56,10 +56,10 @@ class Week:
 PopularWorkout = collections.namedtuple('PopularWorkout', ['name', 'count', 'volume', 'earliest', 'latest'])
 
 
-def workout(user, workout_name):
+def workout(user, workout_name, rng=None):
     result = []
     for app_statistics in registry.modules('local_statistics'):
-        stats = app_statistics.workout(user, workout_name)
+        stats = app_statistics.workout(user, workout_name, rng)
         if stats:
             result.extend(stats)
     return result
