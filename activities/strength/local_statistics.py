@@ -7,15 +7,15 @@ from statistics import utils
 
 
 def _sum_duration(source):
-    '''
-    Django's SQLite backend doesn't support datetime expressions so we
+    """Django's SQLite backend doesn't support datetime expressions so we
     have to count this in python
-    '''
+    """
     return sum([workout.duration for workout in source], datetime.timedelta())
 
 
 def workout(user, name, rng=None):
     source = models.Excercise.objects.filter(workout__user=user, name=name)
+    source = utils.between_timerange(source, rng, time_field="workout__started")
 
     if not source:
         return {}
@@ -34,7 +34,9 @@ def workout(user, name, rng=None):
     total_duration = round_timedelta(_sum_duration(source))
 
     series = models.Reps.objects.filter(excercise__workout__user=user,
-                                        excercise__name=name).count()
+                                        excercise__name=name)
+
+    series = utils.between_timerange(series, rng, time_field="excercise__workout__started").count()
 
     return [
             ('total workouts', source.count()),

@@ -1,9 +1,10 @@
+from unittest.mock import patch
+
 from tests.utils import *
 from tests import utils
+from tests import test_strength
 from training import units
 from training import dates
-
-from tests import test_strength
 
 
 class StatisticsTestCase(ClientTestCase):
@@ -122,3 +123,22 @@ class StatisticsTestCase(ClientTestCase):
         assert units.Volume(meters=4) == self._find_statistics_field('running', 'total distance', rng)
         assert units.Volume(meters=4) == self._find_statistics_field('running', 'average distance per workout', rng)
         assert units.Volume(meters=4) == self._find_statistics_field('running', 'max distance', rng)
+
+    def test_strength_statistics_in_timerange(self):
+        with patch('django.utils.timezone.now', autospec=True) as now:
+            now.return_value = time(2016, 7, 1, 0, 0, 0)
+            self._strength_workout('push-up', [5])
+
+        with patch('django.utils.timezone.now', autospec=True) as now:
+            now.return_value = time(2016, 8, 1, 0, 0, 0)
+            self._strength_workout('push-up', [10])
+
+        rng = dates.TimeRange(time(2016, 8, 1, 0, 0, 0),
+                              time(2016, 8, 31, 23, 59, 59, 999999))
+
+        assert 1 == self._find_statistics_field('push-up', 'total workouts', rng)
+        assert self._find_statistics_field('push-up', 'total duration', rng) is not None
+        assert units.Volume(reps=10) == self._find_statistics_field('push-up', 'total reps', rng)
+        assert 1 == self._find_statistics_field('push-up', 'total series', rng)
+        assert 10 == self._find_statistics_field('push-up', 'average reps per series', rng)
+        assert 10 == self._find_statistics_field('push-up', 'average reps per workout', rng)
