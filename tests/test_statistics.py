@@ -1,6 +1,7 @@
 from tests.utils import *
 from tests import utils
 from training import units
+from training import dates
 
 from tests import test_strength
 
@@ -63,7 +64,7 @@ class StatisticsTestCase(ClientTestCase):
         if rng is None:
             return self.get('/statistics/workout/{}'.format(name)).context['workout']
         else:
-            return self.get('/statistics/workout/{}/{}'.format(name, rng.tourl())).context['workout']
+            return self.get('/statistics/workout_during_timerange/{}/{}'.format(name, rng.tourl())).context['workout']
 
     def _find_statistics_field(self, name, field, rng=None):
         workout_statistics = dict(self._get_workout_statistics(name, rng))
@@ -108,3 +109,16 @@ class StatisticsTestCase(ClientTestCase):
         self.assertEqual(units.Volume(meters=8), self._find_statistics_field('running', 'total distance'))
         self.assertEqual(units.Volume(meters=4), self._find_statistics_field('running', 'average distance per workout'))
         self.assertEqual(units.Volume(meters=4), self._find_statistics_field('running', 'max distance'))
+
+    def test_gps_statistics_in_timerange(self):
+        self._import_gpx('3p_simplest.gpx')
+        self._import_gpx('3p_simplest_2.gpx')
+
+        rng = dates.TimeRange(time(2016, 8, 1, 0, 0, 0),
+                              time(2016, 8, 31, 23, 59, 59, 999999))
+
+        assert 1 == self._find_statistics_field('running', 'total workouts', rng)
+        assert datetime.timedelta(0, 2) == self._find_statistics_field('running', 'total duration', rng)
+        assert units.Volume(meters=4) == self._find_statistics_field('running', 'total distance', rng)
+        assert units.Volume(meters=4) == self._find_statistics_field('running', 'average distance per workout', rng)
+        assert units.Volume(meters=4) == self._find_statistics_field('running', 'max distance', rng)

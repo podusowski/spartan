@@ -4,6 +4,7 @@ from django.shortcuts import *
 from . import statistics as statistics_mod
 from .statistics import Statistics
 from .goals import Goals
+from training.dates import TimeRange
 
 
 @login_required
@@ -18,8 +19,12 @@ def statistics_this_month(request):
 
 @login_required
 def workout(request, name, rng=None):
-    workout = statistics_mod.workout(request.user, name)
+    if rng is not None:
+        rng = TimeRange.fromurl(rng)
+
+    workout = statistics_mod.workout(request.user, name, rng)
     goal = Goals(request.user).get(name)
+
     return render(request, 'statistics/workout.html', {'name': name, 'workout': workout, 'goal': goal})
 
 

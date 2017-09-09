@@ -62,6 +62,10 @@ def workout(user, workout_name, rng=None):
         stats = app_statistics.workout(user, workout_name, rng)
         if stats:
             result.extend(stats)
+
+    if not result:
+        logging.warning("no stats found for '{}'".format(workout_name))
+
     return result
 
 

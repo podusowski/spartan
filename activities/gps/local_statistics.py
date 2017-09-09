@@ -16,7 +16,10 @@ def _sum_duration(source):
 
 def workout(user, name, rng=None):
     source = models.Gpx.objects.filter(workout__user=user, name=name)
+    source = utils.between_timerange(source, rng, time_field="workout__started")
+
     workouts = models.Workout.objects.filter(user=user, gpx__name=name)
+    workouts = utils.between_timerange(workouts, rng, time_field="started")
 
     if not source:
         return {}
