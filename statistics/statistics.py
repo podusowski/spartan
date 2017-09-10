@@ -73,8 +73,8 @@ class Statistics:
     def __init__(self, user):
         self.user = user
 
-    def favourites_this_month(self, now=timezone.now()):
-        return self.most_popular_workouts(dates.this_month(now))
+    def favourites_this_month(self):
+        return self.most_popular_workouts(dates.this_month(timezone.now()))
 
     def _activities_in_range(self, source, time_range=None):
         return utils.between_timerange(source.filter(workout__user=self.user),
@@ -119,6 +119,8 @@ class Statistics:
         return [decorate_strength_workout(w) for w in annotated]
 
     def most_popular_workouts(self, time_range=None) -> Iterable[PopularWorkout]:
+        logging.debug("Getting workout overview withing time range: {}".format(time_range))
+
         excercises = (self._most_popular_gps_workouts(time_range)
                       + self._most_popular_strength_workouts(time_range))
 

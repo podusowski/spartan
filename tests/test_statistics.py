@@ -51,6 +51,27 @@ class StatisticsTestCase(ClientTestCase):
         self.assertEqual(units.Volume(meters=4), excercises[2].volume)
         self.assertEqual(time(2016, 6, 30, 6, 22, 5), excercises[2].earliest)
 
+    def test_excercises_overview_this_month(self):
+        with faked_time(time(2016, 7, 1)):
+            self._strength_workout('chin-up', [1])
+
+        with faked_time(time(2016, 8, 1)):
+            self._strength_workout('push-up', [1])
+
+        self._import_gpx('3p_simplest.gpx')  # 07.2016
+        self._import_gpx('3p_simplest_2.gpx')  # 08.2016
+        self._import_gpx('3p_cycling.gpx')  # 06.2016
+
+        with faked_time(time(2016, 8, 1)):
+            statistics = self.get('/statistics/statistics_this_month').context['statistics']
+            excercises = statistics.favourites_this_month()
+
+            assert 'running' == excercises[0].name
+            assert 1         == excercises[0].count
+
+            assert 'push-up' == excercises[1].name
+            assert 1         == excercises[1].count
+
     def test_timer_based_excercise_is_visible_on_statistics_page(self):
         workout = self._start_workout()
 
