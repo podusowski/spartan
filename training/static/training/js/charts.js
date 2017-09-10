@@ -89,37 +89,34 @@ spartan.charts.Points.prototype.time = function() {
     });
 };
 
-spartan.charts.render = function(charts_id, points)
-{
+spartan.charts.makeDataset = function(data, label, color='rgba(153, 0, 0, 0.8)') {
+    return {
+        borderColor: color,
+        label: label,
+        fill: false,
+        pointRadius: 0,
+        data: data
+    };
+};
+
+spartan.charts.render = function(charts_id, points) {
     this.setGlobalSettings();
 
     var p = new this.Points(points);
 
     var datasets = [];
 
-    var makeDataset = function(data, label, color='rgba(153, 0, 0, 0.8)') {
-        return {
-            borderColor: color,
-            label: label,
-            fill: false,
-            pointRadius: 0,
-            data: data
-        };
-    };
-
-    if (p.hr() !== null)
-    {
+    if (p.hr() !== null) {
         datasets = datasets.concat([
-            makeDataset(p.hr(), "HR", 'rgba(153, 0, 0, 0.8)'),
-            makeDataset(p.averageHr(), "AVG HR", 'rgba(153, 0, 0, 0.4)')
+            this.makeDataset(p.hr(), "HR", 'rgba(153, 0, 0, 0.8)'),
+            this.makeDataset(p.averageHr(), "AVG HR", 'rgba(153, 0, 0, 0.4)')
         ]);
     }
 
-    if (p.cad() !== null)
-    {
+    if (p.cad() !== null) {
         datasets = datasets.concat([
-            makeDataset(p.cad(), "CADENCE", 'rgba(0, 76, 153, 0.8)'),
-            makeDataset(p.averageCad(), "AVG CADENCE", 'rgba(0, 76, 153, 0.4)')
+            this.makeDataset(p.cad(), "CADENCE", 'rgba(0, 76, 153, 0.8)'),
+            this.makeDataset(p.averageCad(), "AVG CADENCE", 'rgba(0, 76, 153, 0.4)')
         ]);
     }
 
@@ -128,6 +125,16 @@ spartan.charts.render = function(charts_id, points)
         data: {
             labels: p.time(),
             datasets: datasets
+        }
+    });
+}
+
+spartan.charts.renderMetrics = function(canvasId, points) {
+    new Chart($(canvasId), {
+        type: "line",
+        data: {
+            labels: p.time(),
+            datasets: [this.makeDataset(points, "Metric")]
         }
     });
 }
