@@ -8,8 +8,7 @@ from statistics import utils
 
 def _sum_duration(source):
     """Django's SQLite backend doesn't support datetime expressions so we
-    have to count this in python
-    """
+       have to count this in python"""
     return sum([workout.duration for workout in source], datetime.timedelta())
 
 

@@ -3,6 +3,7 @@ import datetime
 import pytest
 
 from training import dates
+from training.dates import TimeRange
 from tests.utils import time
 
 
@@ -41,9 +42,9 @@ def test_month_range():
                                     end=time(2015, 12, 1, 0, 0, 0)))
 
     assert 3 == len(months)
-    assert (time(2016, 2, 1, 0, 0, 0), time(2016, 2, 29, 23, 59, 59, 999999)) == months[0]
-    assert (time(2016, 1, 1, 0, 0, 0), time(2016, 1, 31, 23, 59, 59, 999999)) == months[1]
-    assert (time(2015, 12, 1, 0, 0, 0), time(2015, 12, 31, 23, 59, 59, 999999)) == months[2]
+    assert TimeRange(time(2016, 2, 1, 0, 0, 0), time(2016, 2, 29, 23, 59, 59, 999999)) == months[0]
+    assert TimeRange(time(2016, 1, 1, 0, 0, 0), time(2016, 1, 31, 23, 59, 59, 999999)) == months[1]
+    assert TimeRange(time(2015, 12, 1, 0, 0, 0), time(2015, 12, 31, 23, 59, 59, 999999)) == months[2]
 
 
 def test_month_range_by_limit():
@@ -68,3 +69,13 @@ def test_days_left_in_month():
 def test_convert_timerange_to_ordinal_and_back():
     s = JANUARY_2016.tourl()
     assert JANUARY_2016 == dates.TimeRange.fromurl(s)
+
+
+def test_timerange_can_be_treated_like_tuple():
+    assert FIRST_JAN_2016, LAST_JAN_2016 == JANUARY_2016
+
+
+def test_timerage_str():
+    first_to_tenth = TimeRange(FIRST_JAN_2016, TENTH_JAN_2016)
+
+    assert "01 Jan 2016 - 10 Jan 2016" == str(first_to_tenth)

@@ -291,6 +291,10 @@ dl.metric-long, dl.metric-mixed, dl.metric {
 
     margin-bottom: 0.5em;
     width: 100%;
+
+    &.active {
+        background-color: lighten($color-primary-2, 30%);
+    }
 }
 
 dl.metric-mixed {

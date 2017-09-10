@@ -34,7 +34,8 @@ def workout(request, name, rng=None):
     return render(request, 'statistics/workout.html', {'name': name,
                                                        'workout': workout,
                                                        'goal': goal,
-                                                       'timeranges': timeranges})
+                                                       'timeranges': timeranges,
+                                                       'rng': rng})
 
 
 @login_required

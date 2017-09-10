@@ -10,7 +10,8 @@ class TimeRange:
         self.end = end
 
     def __str__(self) -> str:
-        return "{} - {}".format(self.start, self.end)
+        start, end = (dt.strftime("%d %b %Y") for dt in (self.start, self.end))
+        return " - ".join([start, end])
 
     def __repr__(self) -> str:
         return "TimeRange({}, {})".format(repr(self.start), repr(self.end))
@@ -22,11 +23,9 @@ class TimeRange:
         return None not in [self.start, self.end]
 
     def progress(self, date) -> int:
-        '''
-        Return percentage of the date in the context of given TimeRange.
-        For example, if TimeRange is a month and middle day is given, it will
-        return 50.
-        '''
+        """Return percentage of the date in the context of given TimeRange.
+           For example, if TimeRange is a month and middle day is given, it will
+           return 50."""
         s = self.start.toordinal()
         e = self.end.toordinal()
         d = date.toordinal()
@@ -44,11 +43,11 @@ class TimeRange:
         return TimeRange.URL_SEP.join(parts)
 
     @classmethod
-    def fromurl(cls, ordinal):
+    def fromurl(cls, url):
         '''
         Construct TimeRange from URL parameter.
         '''
-        parts = tuple(datetime.datetime.strptime(s, TimeRange.FORMAT) for s in ordinal.split(TimeRange.URL_SEP))
+        parts = tuple(datetime.datetime.strptime(s, TimeRange.FORMAT) for s in url.split(TimeRange.URL_SEP))
         return cls(*parts)
 
 
@@ -80,7 +79,7 @@ def month_range(number=None, end=None, start=None):
     week_start = arrow.get(start).floor('month').datetime
 
     while True:
-        yield (week_start, arrow.get(week_start).ceil('month').datetime)
+        yield TimeRange(week_start, arrow.get(week_start).ceil('month').datetime)
         week_start = arrow.get(week_start).replace(months=-1).datetime
 
         if end is not None and week_start < end:
@@ -94,7 +93,7 @@ def month_range(number=None, end=None, start=None):
 
 def this_month(now=timezone.now()):
     months = list(month_range(1, start=now))
-    return TimeRange(*months[0])
+    return months[0]
 
 
 def days_left_in_this_month(now=timezone.now()):
