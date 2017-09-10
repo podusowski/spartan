@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from unittest.mock import patch
 
 from tests.utils import *
@@ -5,6 +6,13 @@ from tests import utils
 from tests import test_strength
 from training import units
 from training import dates
+
+
+@contextmanager
+def faked_time(datetime):
+    with patch('django.utils.timezone.now', autospec=True) as now:
+        now.return_value = datetime
+        yield
 
 
 class StatisticsTestCase(ClientTestCase):
@@ -122,12 +130,10 @@ class StatisticsTestCase(ClientTestCase):
         assert units.Volume(meters=4) == self._find_statistics_field('running', 'max distance', rng)
 
     def test_strength_statistics_in_timerange(self):
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = time(2016, 7, 1, 0, 0, 0)
+        with faked_time(time(2016, 7, 1)):
             self._strength_workout('push-up', [5])
 
-        with patch('django.utils.timezone.now', autospec=True) as now:
-            now.return_value = time(2016, 8, 1, 0, 0, 0)
+        with faked_time(time(2016, 8, 1)):
             self._strength_workout('push-up', [10])
 
         rng = dates.TimeRange(time(2016, 8, 1, 0, 0, 0),
