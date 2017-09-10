@@ -120,6 +120,19 @@ class StatisticsTestCase(ClientTestCase):
         self.assertEqual(3, self._find_statistics_field('push-up', 'average reps per series'))
         self.assertEqual(7, self._find_statistics_field('push-up', 'average reps per workout'))
 
+    def test_available_timeranges_in_workout_statistics(self):
+        with faked_time(time(2016, 1, 1)):
+            self._strength_workout('push-up', [1, 2, 3])
+
+        with faked_time(time(2016, 2, 1)):
+            self._strength_workout('push-up', [2, 2])
+
+        with faked_time(time(2016, 3, 1)):
+            self._strength_workout('push-up', [10])
+
+            timeranges = self.get('/statistics/workout/{}'.format('push-up')).context['timeranges']
+            assert 3 == len(timeranges)
+
     def test_workout_statistics_of_strength_workout_max_reps(self):
         self._strength_workout('push-up', [5, 5, 5])
         self._strength_workout('push-up', [10])

@@ -73,7 +73,10 @@ def week_range(number=None, end=None, start=timezone.now()):
                 break
 
 
-def month_range(number=None, end=None, start=timezone.now()):
+def month_range(number=None, end=None, start=None):
+    if start is None:
+        start = timezone.now()
+
     week_start = arrow.get(start).floor('month').datetime
 
     while True:

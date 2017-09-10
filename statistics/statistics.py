@@ -56,17 +56,25 @@ class Week:
 PopularWorkout = collections.namedtuple('PopularWorkout', ['name', 'count', 'volume', 'earliest', 'latest'])
 
 
-def workout(user, workout_name, rng=None):
+def workout(user, excercise_name, rng=None):
     result = []
     for app_statistics in registry.modules('local_statistics'):
-        stats = app_statistics.workout(user, workout_name, rng)
+        stats = app_statistics.workout(user, excercise_name, rng)
         if stats:
             result.extend(stats)
 
     if not result:
-        logging.warning("no stats found for '{}'".format(workout_name))
+        logging.warning("no stats found for '{}'".format(excercise_name))
 
     return result
+
+
+def first_time(user, excercise_name):
+    for app_statistics in registry.modules('local_statistics'):
+        if hasattr(app_statistics, 'first_time'):
+            stats = app_statistics.first_time(user, excercise_name)
+            if stats:
+                return stats
 
 
 class Statistics:

@@ -13,6 +13,11 @@ def _sum_duration(source):
     return sum([workout.duration for workout in source], datetime.timedelta())
 
 
+def first_time(user, name):
+    source = models.Excercise.objects.filter(workout__user=user, name=name)
+    return source.aggregate(earliest=Min('workout__started'))["earliest"]
+
+
 def workout(user, name, rng=None):
     source = models.Excercise.objects.filter(workout__user=user, name=name)
     source = utils.between_timerange(source, rng, time_field="workout__started")
