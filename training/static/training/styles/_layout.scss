@@ -22,6 +22,11 @@ $media-large: "all and (min-width: 768px)";
     section {
         flex: 1 1 100%;
     }
+
+    .bigscreen {
+        display: none;
+        background: black;
+    }
 }
 
 @media #{$media-large} {
