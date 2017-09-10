@@ -4,6 +4,7 @@ from django.db.models import Sum, Min, Max, F
 from training import models
 from training import units
 from statistics import utils
+from statistics.utils import Metric
 
 
 def _sum_duration(source):
@@ -29,9 +30,9 @@ def workout(user, name, rng=None):
     total_duration = _sum_duration(workouts)
 
     return [
-            ('total workouts', source.count()),
-            ('total distance', units.Volume(meters=total_distance)),
-            ('total duration', total_duration),
-            ('average distance per workout', units.Volume(meters=total_distance/source.count())),
-            ('max distance', units.Volume(meters=max_distance)),
+            Metric('total workouts', source.count()),
+            Metric('total distance', units.Volume(meters=total_distance)),
+            Metric('total duration', total_duration),
+            Metric('average distance per workout', units.Volume(meters=total_distance/source.count())),
+            Metric('max distance', units.Volume(meters=max_distance)),
            ]

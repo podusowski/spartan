@@ -4,6 +4,7 @@ from django.db.models import Sum, Min, Max
 from training import models
 from training import units
 from statistics import utils
+from statistics.utils import Metric
 
 
 def _sum_duration(source):
@@ -43,12 +44,12 @@ def workout(user, name, rng=None):
     series = utils.between_timerange(series, rng, time_field="excercise__workout__started").count()
 
     return [
-            ('total workouts', source.count()),
-            ('total duration', total_duration),
-            ('total series', series),
-            ('total reps', units.Volume(reps=reps)),
-            ('average reps per workout', round(reps / source.count())),
-            ('average reps per series', round(reps / series)),
-            ('max reps per series', max_reps_per_series),
-            ('max reps per workout', max_reps_per_workout),
+            Metric('total workouts', source.count()),
+            Metric('total duration', total_duration),
+            Metric('total series', series),
+            Metric('total reps', units.Volume(reps=reps)),
+            Metric('average reps per workout', round(reps / source.count())),
+            Metric('average reps per series', round(reps / series)),
+            Metric('max reps per series', max_reps_per_series),
+            Metric('max reps per workout', max_reps_per_workout),
            ]

@@ -27,3 +27,18 @@ def between_timerange(source, rng, time_field='started'):
         return source.filter(**kwargs)
     else:
         return source
+
+
+class Metric:
+    """Used by activities module as workout metric."""
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def __iter__(self):
+        yield self.name
+        yield self.value
+
+    def __len__(self):
+        return 2
