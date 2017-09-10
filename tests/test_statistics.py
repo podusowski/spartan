@@ -133,14 +133,14 @@ class StatisticsTestCase(ClientTestCase):
             timeranges = self.get('/statistics/workout/{}'.format('push-up')).context['timeranges']
             assert 3 == len(timeranges)
 
-    def test_workout_statistics_of_strength_workout_max_reps(self):
+    def test_max_reps_in_excercise_statistics_of_strength_workout(self):
         self._strength_workout('push-up', [5, 5, 5])
         self._strength_workout('push-up', [10])
 
         self.assertEqual(10, self._find_statistics_field('push-up', 'max reps per series'))
         self.assertEqual(15, self._find_statistics_field('push-up', 'max reps per workout'))
 
-    def test_workout_statistics_of_gps_workout(self):
+    def test_excercise_statistics_of_gps_workout(self):
         self._import_gpx('3p_simplest.gpx')
         self._import_gpx('3p_simplest_2.gpx')
 

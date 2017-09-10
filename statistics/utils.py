@@ -32,9 +32,10 @@ def between_timerange(source, rng, time_field='started'):
 class Metric:
     """Used by activities module as workout metric."""
 
-    def __init__(self, name, value):
+    def __init__(self, name, value, support_chart=False):
         self.name = name
         self.value = value
+        self.support_chart = support_chart
 
     def __iter__(self):
         yield self.name
