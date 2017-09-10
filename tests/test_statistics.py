@@ -34,11 +34,11 @@ class StatisticsTestCase(ClientTestCase):
         statistics = self.get('/statistics/statistics').context['statistics']
         excercises = statistics.most_popular_workouts()
 
-        self.assertEqual('running', excercises[0].name)
-        self.assertEqual(3, excercises[0].count)
-        self.assertEqual(units.Volume(meters=8), excercises[0].volume)
-        self.assertEqual(time(2016, 7, 30, 6, 22, 5), excercises[0].earliest)
-        self.assertEqual(time(2016, 8, 30, 6, 22, 5), excercises[0].latest)
+        assert 'running' == excercises[0].name
+        assert 3 == excercises[0].count
+        assert units.Volume(meters=8) == excercises[0].volume
+        assert time(2016, 7, 30, 6, 22, 5) == excercises[0].earliest
+        assert time(2016, 8, 30, 6, 22, 5) == excercises[0].latest
 
         self.assertEqual('push-up', excercises[1].name)
         self.assertEqual(2, excercises[1].count)
