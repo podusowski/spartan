@@ -13,10 +13,7 @@ class StatisticsTestCase(ClientTestCase):
     _import_gpx = utils.import_gpx
     _timer_rep = test_strength._timer_rep
 
-    def _get_statistics_from_dashboard(self):
-        return self.get('/dashboard').context['statistics']
-
-    def test_most_popular_excercises(self):
+    def test_excercises_overview(self):
         self._import_gpx('3p_simplest.gpx')
         self._import_gpx('3p_simplest_2.gpx')
         self._import_gpx('running_no_points.gpx')
@@ -26,7 +23,7 @@ class StatisticsTestCase(ClientTestCase):
         pushups = self._strength_workout('push-up', [2, 4, 8])
         more_pushups = self._strength_workout('push-up', [1])
 
-        statistics = self._get_statistics_from_dashboard()
+        statistics = self.get('/statistics/statistics').context['statistics']
         excercises = statistics.most_popular_workouts()
 
         self.assertEqual('running', excercises[0].name)
@@ -54,7 +51,7 @@ class StatisticsTestCase(ClientTestCase):
 
         self._timer_rep(excercise.id, ONE_O_CLOCK, TWO_O_CLOCK)
 
-        statistics = self._get_statistics_from_dashboard()
+        statistics = self.get('/statistics/statistics').context['statistics']
         excercises = statistics.most_popular_workouts()
 
         self.assertEqual('plank front', excercises[0].name)
@@ -76,7 +73,7 @@ class StatisticsTestCase(ClientTestCase):
             keys = ', '.join(["'{}'".format(k) for k in workout_statistics.keys()])
             raise KeyError("there is no '{}': it has: {}".format(field, keys))
 
-    def test_strength_statistics(self):
+    def test_workout_statistics_of_strength_workout(self):
         self.switch_user(self.other_user)
 
         self._strength_workout('push-up', [1])
@@ -94,14 +91,14 @@ class StatisticsTestCase(ClientTestCase):
         self.assertEqual(3, self._find_statistics_field('push-up', 'average reps per series'))
         self.assertEqual(7, self._find_statistics_field('push-up', 'average reps per workout'))
 
-    def test_strength_max(self):
+    def test_workout_statistics_of_strength_workout_max_reps(self):
         self._strength_workout('push-up', [5, 5, 5])
         self._strength_workout('push-up', [10])
 
         self.assertEqual(10, self._find_statistics_field('push-up', 'max reps per series'))
         self.assertEqual(15, self._find_statistics_field('push-up', 'max reps per workout'))
 
-    def test_gps_statistics(self):
+    def test_workout_statistics_of_gps_workout(self):
         self._import_gpx('3p_simplest.gpx')
         self._import_gpx('3p_simplest_2.gpx')
 
