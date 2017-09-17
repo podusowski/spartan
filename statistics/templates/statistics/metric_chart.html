@@ -3,6 +3,18 @@
 {% block content %}
 
 <section>
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Value</th>
+        </tr>
+        {% for rng, value in data %}
+        <tr>
+            <td>{{ rng }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </section>
 
 {% endblock %}
