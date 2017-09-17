@@ -203,3 +203,9 @@ class StatisticsTestCase(ClientTestCase):
             assert "push-up" == page["name"]
             assert "total reps" == page["metric"]
             assert [(JUL_2016, Volume(reps=5)), (AUG_2016, Volume(reps=10))] == page["data"]
+
+    def test_metric_detail_in_nonexisting_excercise(self):
+        """When this test was written, there was a bug which caused
+        infinite loop."""
+
+        page = self.get('/statistics/metric/{}/{}'.format("push-up", "total reps")).context

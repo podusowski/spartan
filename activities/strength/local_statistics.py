@@ -59,7 +59,13 @@ def workout(user, name, rng=None):
 
 
 def metric_chart(user, excercise_name: str, metric_name: str):
-    for month in dates.month_range(end=first_time(user, excercise_name)):
+    start = first_time(user, excercise_name)
+
+    if start is None:
+        logging.warn("It seems that there is no such excercise")
+        return
+
+    for month in dates.month_range(end=start):
         metrics = dict(workout(user, excercise_name, month))
         logging.debug("Workout stats for range %s: %s", month, metrics)
 
