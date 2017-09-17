@@ -23,11 +23,13 @@
 <article>
     <section>
         <h2>{{ name }}</h2>
-        {% for name, value in workout %}
-            <dl class="metric-long">
-                <dt>{{ name }}</dt>
-                <dd>{{ value }}</dd>
-            </dl>
+        {% for metric_name, value in workout %}
+            <a href="{% url 'metric_chart' name metric_name %}">
+                <dl class="metric-long">
+                    <dt>{{ metric_name }}</dt>
+                    <dd>{{ value }}</dd>
+                </dl>
+            </a>
         {% empty %}
             <p>Nothing here</p>
         {% endfor %}
