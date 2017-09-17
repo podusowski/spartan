@@ -36,3 +36,7 @@ def workout(user, name, rng=None):
             Metric('average distance per workout', units.Volume(meters=total_distance/source.count())),
             Metric('max distance', units.Volume(meters=max_distance)),
            ]
+
+
+def metric_chart(user, excercise_name: str, metric_name: str):
+    return []

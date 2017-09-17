@@ -63,7 +63,13 @@ class Volume:
         else:
             return '-'
 
-    __repr__ = __str__
+    def __repr__(self):
+        if self.type == Volume.Type.DISTANCE:
+            return "Volume(meters={})".format(self.value)
+        elif self.type == Volume.Type.REPS:
+            return "Volume(reps={})".format(self.value)
+        elif self.type == Volume.Type.DURATION:
+            return "Volume(seconds={})".format(self.value)
 
     def __eq__(self, other):
         if isinstance(other, Volume):

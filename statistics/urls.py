@@ -11,4 +11,5 @@ urlpatterns = [
     url('^delete_goal$', views.delete_goal, name='delete_goal'),
     url('^workout/(?P<name>.+)$', views.workout, name='workout_statistics'),
     url('^workout_during_timerange/(?P<name>.+)/(?P<rng>.+)$', views.workout, name='workout_statistics_rng'),
+    url('^metric/(?P<excercise_name>.+)/(?P<metric_name>.+)$', views.metric_chart, name='metric_chart'),
 ]

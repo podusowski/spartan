@@ -57,6 +57,12 @@ PopularWorkout = collections.namedtuple('PopularWorkout', ['name', 'count', 'vol
 
 
 def workout(user, excercise_name, rng=None):
+    """Statistics about single workout.abs
+
+    Function will look in all activities module for this excercise
+    name and ask for workout statistics.
+    """
+
     result = []
     for app_statistics in registry.modules('local_statistics'):
         stats = app_statistics.workout(user, excercise_name, rng)
@@ -67,6 +73,14 @@ def workout(user, excercise_name, rng=None):
         logging.warning("no stats found for '{}'".format(excercise_name))
 
     return result
+
+
+def metric_chart(user, excercise_name, metric_name):
+    for app_statistics in registry.modules('local_statistics'):
+        stats = app_statistics.metric_chart(user, excercise_name, metric_name)
+        if stats:
+            return list(reversed(list(stats)))
+    logging.warning("no chart found for '{}'::'{}'".format(excercise_name, metric_name))
 
 
 def first_time(user, excercise_name):

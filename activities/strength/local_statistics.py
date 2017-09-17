@@ -1,3 +1,4 @@
+import logging
 import datetime
 from django.db.models import Sum, Min, Max
 
@@ -5,6 +6,7 @@ from training import models
 from training import units
 from statistics import utils
 from statistics.utils import Metric
+from training import dates
 
 
 def _sum_duration(source):
@@ -23,6 +25,7 @@ def workout(user, name, rng=None):
     source = utils.between_timerange(source, rng, time_field="workout__started")
 
     if not source:
+        logging.debug("no '%s' between '%s'", name, rng)
         return {}
 
     reps = utils.sum(source, 'reps__reps')
@@ -53,3 +56,15 @@ def workout(user, name, rng=None):
             Metric('max reps per series', max_reps_per_series),
             Metric('max reps per workout', max_reps_per_workout),
            ]
+
+
+def metric_chart(user, excercise_name: str, metric_name: str):
+    for month in dates.month_range(end=first_time(user, excercise_name)):
+        w = dict(workout(user, excercise_name, month))
+        logging.debug("Workout stats for range %s: %s", month, w)
+
+        value = 0
+        if metric_name in w:
+            value = w[metric_name]
+
+        yield month, value

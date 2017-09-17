@@ -6,6 +6,7 @@ from tests import utils
 from tests import test_strength
 from training import units
 from training import dates
+from training.units import Volume
 
 
 @contextmanager
@@ -179,3 +180,34 @@ class StatisticsTestCase(ClientTestCase):
         assert 1 == self._find_statistics_field('push-up', 'total series', rng)
         assert 10 == self._find_statistics_field('push-up', 'average reps per series', rng)
         assert 10 == self._find_statistics_field('push-up', 'average reps per workout', rng)
+
+    def test_charts_in_excercise_statistics_of_strength_workout(self):
+        with faked_time(time(2016, 7, 1)):
+            self._strength_workout('push-up', [5])
+
+        with faked_time(time(2016, 8, 1)):
+            self._strength_workout('push-up', [10])
+
+        JUL_2016 = dates.TimeRange(time(2016, 7, 1, 0, 0, 0),
+                                   time(2016, 7, 31, 23, 59, 59, 999999))
+
+        AUG_2016 = dates.TimeRange(time(2016, 8, 1, 0, 0, 0),
+                                   time(2016, 8, 31, 23, 59, 59, 999999))
+
+        SEP_2016 = dates.TimeRange(time(2016, 9, 1, 0, 0, 0),
+                                   time(2016, 9, 30, 23, 59, 59, 999999))
+
+        with faked_time(time(2016, 8, 2)):
+            chart = self.get('/statistics/metric/{}/{}'.format("push-up", "total reps")).context["data"]
+
+            import logging
+            logging.debug("got: %s", chart)
+            logging.debug("exp: %s", [
+                    (JUL_2016, 5),
+                    (AUG_2016, 10),
+                   ])
+
+            assert [
+                    (JUL_2016, Volume(reps=5)),
+                    (AUG_2016, Volume(reps=10)),
+                   ] == chart

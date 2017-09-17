@@ -17,7 +17,8 @@ class TimeRange:
         return "TimeRange({}, {})".format(repr(self.start), repr(self.end))
 
     def __eq__(self, other):
-        return (self.start, self.end) == (other.start, other.end)
+        if isinstance(other, TimeRange):
+            return (self.start, self.end) == (other.start, other.end)
 
     def fully_bound(self):
         return None not in [self.start, self.end]
