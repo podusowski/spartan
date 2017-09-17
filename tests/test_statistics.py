@@ -198,9 +198,8 @@ class StatisticsTestCase(ClientTestCase):
                                    time(2016, 9, 30, 23, 59, 59, 999999))
 
         with faked_time(time(2016, 8, 2)):
-            chart = self.get('/statistics/metric/{}/{}'.format("push-up", "total reps")).context["data"]
+            page = self.get('/statistics/metric/{}/{}'.format("push-up", "total reps")).context
 
-            assert [
-                    (JUL_2016, Volume(reps=5)),
-                    (AUG_2016, Volume(reps=10)),
-                   ] == chart
+            assert "push-up" == page["name"]
+            assert "total reps" == page["metric"]
+            assert [(JUL_2016, Volume(reps=5)), (AUG_2016, Volume(reps=10))] == page["data"]

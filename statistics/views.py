@@ -41,7 +41,10 @@ def workout(request, name, rng=None):
 @login_required
 def metric_chart(request, excercise_name, metric_name):
     chart = statistics_mod.metric_chart(request.user, excercise_name, metric_name)
-    return render(request, 'statistics/metric_chart.html', {'data': chart})
+
+    return render(request, 'statistics/metric_chart.html', {'name': excercise_name,
+                                                            'metric': metric_name,
+                                                            'data': chart})
 
 
 @login_required
