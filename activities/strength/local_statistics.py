@@ -60,11 +60,11 @@ def workout(user, name, rng=None):
 
 def metric_chart(user, excercise_name: str, metric_name: str):
     for month in dates.month_range(end=first_time(user, excercise_name)):
-        w = dict(workout(user, excercise_name, month))
-        logging.debug("Workout stats for range %s: %s", month, w)
+        metrics = dict(workout(user, excercise_name, month))
+        logging.debug("Workout stats for range %s: %s", month, metrics)
 
         value = 0
-        if metric_name in w:
-            value = w[metric_name]
+        if metric_name in metrics:
+            value = metrics[metric_name]
 
         yield month, value
