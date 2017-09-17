@@ -200,13 +200,6 @@ class StatisticsTestCase(ClientTestCase):
         with faked_time(time(2016, 8, 2)):
             chart = self.get('/statistics/metric/{}/{}'.format("push-up", "total reps")).context["data"]
 
-            import logging
-            logging.debug("got: %s", chart)
-            logging.debug("exp: %s", [
-                    (JUL_2016, 5),
-                    (AUG_2016, 10),
-                   ])
-
             assert [
                     (JUL_2016, Volume(reps=5)),
                     (AUG_2016, Volume(reps=10)),
