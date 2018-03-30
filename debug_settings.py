@@ -14,6 +14,8 @@ DEBUG = True
 import logging
 logging.basicConfig(level=DEBUG)
 
+logging.info("Application is running on DEBUG mode")
+
 
 class PytestTestRunner(object):
     def __init__(self, verbosity=1, failfast=False, keepdb=False, **kwargs):
