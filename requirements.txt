@@ -5,6 +5,7 @@ django-compressor==2.1
 django-sass-processor==0.4.6
 django-el-pagination
 gunicorn
+whitenoise
 
 pytest
 pytest-django
