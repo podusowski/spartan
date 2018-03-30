@@ -4,6 +4,7 @@ django-appconf==1.0.2
 django-compressor==2.1
 django-sass-processor==0.4.6
 django-el-pagination
+gunicorn
 
 pytest
 pytest-django
