@@ -1,4 +1,6 @@
 import os
+import logging
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -85,7 +87,13 @@ MEDIA_URL = os.path.join("/", FILES_DIR, 'media/')
 LOGIN_REDIRECT_URL = '/dashboard'
 LOGIN_URL = '/login/'
 
+logging.basicConfig(level=logging.INFO)
+
 try:
     from deployment_settings import *
 except:
+    logging.info('No deployment_settings module, will expect environemnt configuration')
+
+
+if 'DEBUG' in os.environ:
     from debug_settings import *
