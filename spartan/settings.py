@@ -94,6 +94,15 @@ try:
 except:
     logging.info('No deployment_settings module, will expect environemnt configuration')
 
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+            'NAME': os.environ.get('DB_NAME', 'spartan'),
+            'USER': os.environ.get('DB_USER', 'spartan'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'localhost')
+        }
+    }
 
 if 'DEBUG' in os.environ:
     from debug_settings import *
