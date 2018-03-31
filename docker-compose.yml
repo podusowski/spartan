@@ -1,10 +1,9 @@
 version: '2'
 
 services:
-    web-test:
+    web:
         build: .
-        command: gunicorn --bind 0.0.0.0:8000 spartan.wsgi
         volumes:
             - .:/code
         ports:
-            - "8000:8000"
+            - "8000:80"
