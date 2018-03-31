@@ -7,3 +7,5 @@ services:
             - .:/code
         ports:
             - "8000:80"
+        environment:
+            - "DEBUG=1"

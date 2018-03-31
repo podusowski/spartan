@@ -6,7 +6,11 @@ RUN apt-get -y update && \
 
 RUN mkdir /code
 WORKDIR /code
-ADD . /code
+
+ADD requirements.txt /code
 RUN pip install -r requirements.txt
+
+ADD . /code
+
 EXPOSE 80
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "spartan.wsgi"]
