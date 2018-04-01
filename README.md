@@ -15,7 +15,7 @@ Live version: http://91.203.132.230 (I couldn't find any cool domain, sorry :))
 
 Deployment and development
 ==========================
-Spartan is built into single `Docker` image which serve the application and static files on port `8000`. There is also a `Makefile` for common tasks.
+Spartan is built into single `Docker` image which serve the application and static files on port `8000`. There is also a `Makefile` for common tasks so you won't need to remember all those docker parameters. Obviously you need to have [Docker](https://www.docker.com/) installed. On newest Ubuntu you can do this through `sudo apt install docker.io`.
 
 
 ### Tests
