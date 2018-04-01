@@ -6,7 +6,7 @@ image:
 	docker build -t $(IMAGE_NAME) .
 
 test:
-	docker-compose run -u $(USER) $(COMPOSE_SERVICE) python manage.py test
+	docker run -e DEBUG=1 -u $(USER) -v `pwd`:/code $(IMAGE_NAME) python manage.py test
 
 debugserver:
-	docker-compose run -u $(USER) $(COMPOSE_SERVICE)
+	docker run -e DEBUG=1 -p 8000:8000 -u $(USER) -v `pwd`:/code $(IMAGE_NAME)
