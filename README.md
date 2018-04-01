@@ -25,4 +25,9 @@ All of them are managed by `pytest` which is integrated with `django`. The easie
 
 
 ### How to run locally
+You can start debug server using `make debugserver`. It will run the same docker image that is used in production but with `DEBUG` environment variable passed into the container. `DEBUG` will change some things.
 
+- Python logger is set to debug level
+- SQLite is used as database, `db.sqlite3` will be created in current directory
+
+After starting, application will be available on port `8000`.
