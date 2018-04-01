@@ -12,5 +12,5 @@ RUN pip install -r requirements.txt
 
 ADD . /code
 
-EXPOSE 80
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "spartan.wsgi"]
+EXPOSE 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "spartan.wsgi"]
