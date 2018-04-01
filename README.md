@@ -35,3 +35,9 @@ After starting, application will be available on port `8000`.
 
 ### Deployment
 Spartan image doesn't come with the database so it needs to be configured while deploying. You can do it though environment variables: `DB_ENGINE DB_NAME DB_USER DB_PASSWORD DB_HOST`. You can check [`django` documentation](https://docs.djangoproject.com/en/2.0/ref/settings/#databases) to find out what to put in here.
+
+When you have those covered, you can start the container and leave the management to Docker by using `--restart always` flag to `run` command. This way, the container will be running on your machine all the time.
+
+At this point, you database is most likely empty so before using the application, you have to migrate the models.
+
+[TODO]
