@@ -1,5 +1,6 @@
-# spartan
-Web activity tracker for both strength and cardio (GPS tracked) activities.
+Spartan
+-------
+Personal activity tracker for both strength and cardio (GPS tracked) excercises.
 
 Live version: http://91.203.132.230 (I couldn't find any cool domain, sorry :))
 
@@ -11,35 +12,17 @@ Live version: http://91.203.132.230 (I couldn't find any cool domain, sorry :))
 <img src="screenshots/gps_workout.png?raw=true" />
 <img src="screenshots/strength_workout.png?raw=true" />
 
-## How to run locally
 
-### Preparations
-This will install required dependencies and create virtual python environment in your working copy. This needs to be done only once after you clone the repo.
-```
-sudo apt-get install virtualenv postgresql-server-dev-all build-essential python3-dev
-virtualenv -p python3 env
-```
+Deployment and development
+==========================
+Spartan is built into single `Docker` image which serve the application and static files on port `8000`. There is also a `Makefile` for common tasks.
 
-### Things to do after pulling changes
-```
-. env/bin/activate
-pip install -r requirements.txt
-./manage.py migrate
-./manage.py collectstatic
-```
 
-### Running tests
-```
-./manage.py test
-```
+### Tests
+Spartan has two level of testing. Unit tests lives near application modules, eg `training/tests/test_hexagons.py` while higher level testing are in global `tests` directory.
 
-`pytest` is used as testing framework, this means that `assert` statements are preferred over `assert*` functions of `TestCase` base class.
+All of them are managed by `pytest` which is integrated with `django`. The easiest way to run them is to use `make test` as it will handle all docker stuff.
 
-### Running server
-```
-./manage.py runserver
-```
 
-### SASS
+### How to run locally
 
-You need to install sass processor, in debian it's ususally in package called `ruby-sass`.
