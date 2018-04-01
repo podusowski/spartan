@@ -31,3 +31,7 @@ You can start debug server using `make debugserver`. It will run the same docker
 - SQLite is used as database, `db.sqlite3` will be created in current directory
 
 After starting, application will be available on port `8000`.
+
+
+### Deployment
+Spartan image doesn't come with the database so it needs to be configured while deploying. You can do it though environment variables: `DB_ENGINE DB_NAME DB_USER DB_PASSWORD DB_HOST`.
