@@ -34,4 +34,4 @@ After starting, application will be available on port `8000`.
 
 
 ### Deployment
-Spartan image doesn't come with the database so it needs to be configured while deploying. You can do it though environment variables: `DB_ENGINE DB_NAME DB_USER DB_PASSWORD DB_HOST`.
+Spartan image doesn't come with the database so it needs to be configured while deploying. You can do it though environment variables: `DB_ENGINE DB_NAME DB_USER DB_PASSWORD DB_HOST`. You can check [`django` documentation](https://docs.djangoproject.com/en/2.0/ref/settings/#databases) to find out what to put in here.
