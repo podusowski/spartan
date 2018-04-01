@@ -1,5 +1,4 @@
 IMAGE_NAME=spartan
-COMPOSE_SERVICE=web
 USER=`id -u`:`id -g`
 DOCKER=docker run -it -e DEBUG=1 -p 8000:8000 -u $(USER) -v `pwd`:/code $(IMAGE_NAME)
 
