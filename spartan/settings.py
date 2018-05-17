@@ -96,7 +96,7 @@ except:
 
     DATABASES = {
         'default': {
-            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
             'NAME': os.environ.get('DB_NAME', 'spartan'),
             'USER': os.environ.get('DB_USER', 'spartan'),
             'PASSWORD': os.environ.get('DB_PASSWORD', ''),
