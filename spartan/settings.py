@@ -65,6 +65,7 @@ STATICFILES_FINDERS = (
 )
 
 COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
 
 COMPRESS_PRECOMPILERS = (
     ('type/x-scss', 'sass --scss {infile} {outfile}'),
@@ -76,10 +77,10 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-FILES_DIR = "_files/"
+FILES_DIR = "/files/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, FILES_DIR, 'static/')
-STATIC_URL = os.path.join("/", FILES_DIR, 'static/')
+STATIC_ROOT = os.path.join(FILES_DIR, 'static/')
+STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, FILES_DIR, 'media/')
 MEDIA_URL = os.path.join("/", FILES_DIR, 'media/')
@@ -100,7 +101,7 @@ except:
             'NAME': os.environ.get('DB_NAME', 'spartan'),
             'USER': os.environ.get('DB_USER', 'spartan'),
             'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': os.environ.get('DB_HOST', 'localhost')
+            'HOST': os.environ.get('DB_HOST', '')
         }
     }
 
