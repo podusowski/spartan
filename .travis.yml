@@ -1,21 +1,13 @@
-dist: trusty
-language: python
+sudo: required
 
-python:
-  - 3.4
+services:
+    - docker
 
 before_install:
-  - sudo apt-get install ruby-sass
-
-install:
-  - pip install -r requirements.txt
-  - pip install python-coveralls
+    - docker build
 
 script:
-  - coverage run --omit '*virtualenv/*' manage.py test
-
-after_success:
-  - coveralls
+    - docker run python manage.py test
 
 notifications:
-  email: false
+    email: false
