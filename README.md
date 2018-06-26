@@ -5,7 +5,6 @@ Personal activity tracker for both strength and cardio (GPS tracked) excercises.
 Live version: http://91.203.132.230 (I couldn't find any cool domain, sorry :))
 
 <a href="https://travis-ci.org/podusowski/spartan"><img src="https://travis-ci.org/podusowski/spartan.svg?branch=master" /></a>
-[![Coverage Status](https://coveralls.io/repos/github/podusowski/spartan/badge.svg?branch=master)](https://coveralls.io/github/podusowski/spartan?branch=master)
 <a href="https://codeclimate.com/github/podusowski/spartan"><img src="https://codeclimate.com/github/podusowski/spartan/badges/gpa.svg" /></a>
 
 <img src="screenshots/dashboard.png?raw=true" />
