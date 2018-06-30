@@ -224,7 +224,9 @@ class StatisticsTestCase(ClientTestCase):
         self._strength_workout('push-up', [1])
         self.switch_user(self.user)
 
-        self.post('/statistics/bulk_rename', {'from': 'push-up', 'to': 'chin-up'})
+        self.post('/statistics/bulk_rename', {'from': 'push-up',
+                                              'confirmed': 'push-up',
+                                              'to': 'chin-up'})
 
         excercises = self._get_made_excercises_names()
         assert 'chin-up' in excercises
@@ -233,3 +235,12 @@ class StatisticsTestCase(ClientTestCase):
         self.switch_user(self.other_user)
         excercises = self._get_made_excercises_names()
         assert 'push-up' in excercises
+
+    def test_confirm_bulk_rename(self):
+        self._strength_workout('push-up', [5])
+        self._strength_workout('chin-up', [5])
+
+        confirmation_page = self.post('/statistics/bulk_rename', {'from': 'push-up', 'to': 'chin-up'})
+
+        assert 1 == confirmation_page.context['number_of_excercises_to_change']
+        assert 1 == confirmation_page.context['number_of_excercises_to_be_merged_with']

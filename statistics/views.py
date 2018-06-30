@@ -84,5 +84,11 @@ def delete_goal(request):
 @login_required
 def bulk_rename(request):
     if request.method == "POST":
-        Excercise.objects.filter(name=request.POST['from'], workout__user=request.user).update(name=request.POST['to'])
-        return redirect('workout_statistics', request.POST['to'])
+        if 'confirmed' in request.POST and request.POST['confirmed'] == request.POST['from']:
+            Excercise.objects.filter(name=request.POST['from'], workout__user=request.user).update(name=request.POST['to'])
+            return redirect('workout_statistics', request.POST['to'])
+        else:
+            number_of_excercises_to_change = Excercise.objects.filter(name=request.POST['from'], workout__user=request.user).count()
+            number_of_excercises_to_be_merged_with = Excercise.objects.filter(name=request.POST['to'], workout__user=request.user).count()
+            return render(request, 'statistics/bulk_rename.html', {'number_of_excercises_to_change': number_of_excercises_to_change,
+                                                                   'number_of_excercises_to_be_merged_with':  number_of_excercises_to_be_merged_with})
