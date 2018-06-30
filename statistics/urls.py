@@ -12,5 +12,5 @@ urlpatterns = [
     url('^workout/(?P<name>.+)$', views.workout, name='workout_statistics'),
     url('^workout_during_timerange/(?P<name>.+)/(?P<rng>.+)$', views.workout, name='workout_statistics_rng'),
     url('^metric/(?P<excercise_name>.+)/(?P<metric_name>.+)$', views.metric_chart, name='metric_chart'),
-    url('^bulk_rename$', views.bulk_rename),
+    url('^bulk_rename$', views.bulk_rename, name='bulk_rename'),
 ]

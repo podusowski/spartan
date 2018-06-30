@@ -225,7 +225,7 @@ class StatisticsTestCase(ClientTestCase):
         self.switch_user(self.user)
 
         self.post('/statistics/bulk_rename', {'from': 'push-up',
-                                              'confirmed': 'push-up',
+                                              'confirmed': 'chin-up',
                                               'to': 'chin-up'})
 
         excercises = self._get_made_excercises_names()

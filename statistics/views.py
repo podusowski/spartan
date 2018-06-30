@@ -84,7 +84,7 @@ def delete_goal(request):
 @login_required
 def bulk_rename(request):
     if request.method == "POST":
-        if 'confirmed' in request.POST and request.POST['confirmed'] == request.POST['from']:
+        if 'confirmed' in request.POST and request.POST['confirmed'] == request.POST['to']:
             Excercise.objects.filter(name=request.POST['from'], workout__user=request.user).update(name=request.POST['to'])
             return redirect('workout_statistics', request.POST['to'])
         else:

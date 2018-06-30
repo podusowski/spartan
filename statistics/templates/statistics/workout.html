@@ -70,6 +70,17 @@
 
         <p class="note">Enter <strong>number of total reps</strong> for strength excercises or <strong>number of kilometers</strong> for GPS tracked activities.</p>
     </section>
+
+    <section>
+        <h2>rename</h2>
+        <form method="post" action="{%url 'bulk_rename'%}">
+            {%csrf_token%}
+            <input type="hidden" name="from" value="{{name}}" />
+            <label for="to">new name for this excercise</label>
+            <input type="text" name="to" required />
+            <input type="submit" class="dangerous" value="rename" />
+        </form>
+    </section>
 </article>
 
 {% endblock %}

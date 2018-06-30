@@ -4,6 +4,22 @@
 
 <section>
     <h2>renaming {{from}} to {{to}}</h2>
+    {%if number_of_excercises_to_be_merged_with > 0%}
+        <p>This will cause <strong>{{number_of_excercises_to_change}}</strong> excercises to be changed and theirs stats merged with the <strong>{{number_of_excercises_to_be_merged_with}}</strong> excercises that already exist with that name. You won't be able to revert this change.</p>
+    {%else%}
+        <p>This will cause <strong>{{number_of_excercises_to_change}}</strong> excercises to be changed.</p>
+    {%endif%}
+
+    <p>If you're sure that this is what you want, confirm the request by typing the new name again.</p>
+
+    <form method="post" action="{%url 'bulk_rename'%}">
+        {%csrf_token%}
+        <input type="hidden" name="from" value="{{from}}" />
+        <input type="hidden" name="to" value="{{to}}" />
+        <label for="to">new name for this excercise</label>
+        <input type="text" name="confirmed" required />
+        <input type="submit" class="dangerous" value="rename" />
+    </form>
 </section>
 
 {% endblock %}
