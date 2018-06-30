@@ -5,6 +5,7 @@ from . import statistics as statistics_mod
 from .statistics import Statistics
 from .goals import Goals
 from training.dates import TimeRange, month_range
+from training.models import *
 
 
 @login_required
@@ -78,3 +79,10 @@ def delete_goal(request):
     if request.method == "POST":
         goals.delete(request.POST['name'])
         return redirect('workout_statistics', request.POST['name'])
+
+
+@login_required
+def bulk_rename(request):
+    if request.method == "POST":
+        Excercise.objects.filter(name=request.POST['from'], workout__user=request.user).update(name=request.POST['to'])
+        return redirect('workout_statistics', request.POST['to'])

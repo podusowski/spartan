@@ -209,3 +209,27 @@ class StatisticsTestCase(ClientTestCase):
         infinite loop."""
 
         page = self.get('/statistics/metric/{}/{}'.format("push-up", "total reps")).context
+
+    def _get_made_excercises_names(self):
+        statistics = self.get('/statistics/statistics').context['statistics']
+        return set(e.name for e in statistics.most_popular_workouts())
+
+    def test_rename_excercise(self):
+        self._strength_workout('push-up', [5])
+
+        # to see that other excercises are left alone
+        self._strength_workout('pull-up', [5])
+
+        self.switch_user(self.other_user)
+        self._strength_workout('push-up', [1])
+        self.switch_user(self.user)
+
+        self.post('/statistics/bulk_rename', {'from': 'push-up', 'to': 'chin-up'})
+
+        excercises = self._get_made_excercises_names()
+        assert 'chin-up' in excercises
+        assert 'push-up' not in excercises
+
+        self.switch_user(self.other_user)
+        excercises = self._get_made_excercises_names()
+        assert 'push-up' in excercises
