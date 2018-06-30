@@ -90,5 +90,6 @@ def bulk_rename(request):
         else:
             number_of_excercises_to_change = Excercise.objects.filter(name=request.POST['from'], workout__user=request.user).count()
             number_of_excercises_to_be_merged_with = Excercise.objects.filter(name=request.POST['to'], workout__user=request.user).count()
-            return render(request, 'statistics/bulk_rename.html', {'number_of_excercises_to_change': number_of_excercises_to_change,
+            return render(request, 'statistics/bulk_rename.html', {'from': request.POST['from'], 'to': request.POST['to'],
+                                                                   'number_of_excercises_to_change': number_of_excercises_to_change,
                                                                    'number_of_excercises_to_be_merged_with':  number_of_excercises_to_be_merged_with})
