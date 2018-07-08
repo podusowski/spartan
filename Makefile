@@ -9,7 +9,6 @@ test:
 	$(DOCKER) python manage.py test
 
 debugserver:
-	$(DOCKER) python manage.py migrate
 	$(DOCKER)
 
 deploy:
