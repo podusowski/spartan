@@ -42,33 +42,32 @@
     </section>
 {% endif %}
 
-<section>
-    <h2>excercises</h2>
 
-    {% for excercise in workout.excercise_set.all %}
-        <div class="excercise {% if forloop.first and workout.live %}active{% endif %}">
+{% for excercise in workout.excercise_set.all %}
+    <section>
+        <h2>{{ excercise.name }}</h2>
 
-            <div class="name">
+        <dl class="metric">
+            <dt>duration</dt>
+            <dd>
                 {% if forloop.first and not workout.finished %}
-                    <span class="note" data-stopwatch-from="{{excercise.time_started.isoformat}}">{{excercise.duration|duration}}</span>
+                    <span data-stopwatch-from="{{excercise.time_started.isoformat}}">{{excercise.duration|duration}}</span>
                 {% else %}
-                    <span class="note">{{excercise.duration|duration}}</span>
+                    <span>{{excercise.duration|duration}}</span>
                 {% endif %}
-            </div>
+            </dd>
+        </dl>
 
-            <div class="name">
-                {{ excercise.name }}
-            </div>
+        {% if excercise.reps_set.count > 1 %}
+            <dl class="metric"><dt>volume</dt><dd>{{ excercise.volume }}</dd></dl>
+        {% endif %}
 
-            <div class="content">
+        <div class="excercise">
+
                 <ul class="reps">
                     {% for reps in excercise.reps_set.all %}
                         <li>{{ reps.reps }}</li>
                     {% endfor %}
-
-                    {% if excercise.reps_set.count > 1 %}
-                        <li><strong>{{ excercise.volume }}</strong></li>
-                    {% endif %}
 
                     {% if forloop.first and not workout.finished %}
                         <li>
@@ -80,7 +79,6 @@
                         </li>
                     {% endif %}
                 </ul>
-            </div>
 
                 {% if forloop.first and excercise.time_updated and not workout.finished %}
                     <script>
@@ -104,10 +102,12 @@
                     </div>
                 {%endif%}
         </div>
+    </section>
     {% empty %}
-        workout is not started until you start first excercise
+        <section>
+            workout is not started until you start first excercise
+        </section>
     {% endfor %}
-</section>
 
 {% if not workout.finished %}
     <script>
