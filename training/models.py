@@ -13,7 +13,7 @@ from . import units
 import activities.registry
 
 class Workout(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     activity_type = models.CharField(max_length=200, default=None)
 
     @property
@@ -84,7 +84,7 @@ class Excercise(models.Model):
         else:
             return datetime.timedelta()
 
-    workout = models.ForeignKey(Workout)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     time_started = models.DateTimeField(null=True, default=None)
     time_finished = models.DateTimeField(null=True, default=None)
@@ -95,7 +95,7 @@ class Excercise(models.Model):
 
 
 class Reps(models.Model):
-    excercise = models.ForeignKey(Excercise)
+    excercise = models.ForeignKey(Excercise, on_delete=models.CASCADE)
     reps = models.IntegerField()
 
     class Meta:
@@ -107,7 +107,7 @@ class Timers(models.Model):
     Timer based excercises tracks time instead of reps. Example
     of such workout is plank.
     '''
-    excercise = models.ForeignKey(Excercise)
+    excercise = models.ForeignKey(Excercise, on_delete=models.CASCADE)
     time_started = models.DateTimeField(null=True, default=None)
     duration = models.DurationField(null=True, default=None)
 
@@ -125,7 +125,7 @@ class SportField(models.CharField):
 
 
 class Gpx(models.Model):
-    workout = models.ForeignKey(Workout)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
     name = SportField(max_length=20)
     distance = models.IntegerField(null=True, default=None)
 
@@ -162,7 +162,7 @@ class Gpx(models.Model):
 
 
 class GpxTrackPoint(models.Model):
-    gpx = models.ForeignKey(Gpx)
+    gpx = models.ForeignKey(Gpx, on_delete=models.CASCADE)
     lat = models.DecimalField(max_digits=10, decimal_places=8)
     lon = models.DecimalField(max_digits=11, decimal_places=8)
     hr = models.PositiveSmallIntegerField(null=True, default=None)
@@ -171,16 +171,16 @@ class GpxTrackPoint(models.Model):
 
 
 class AuthKeys(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     key = models.CharField(max_length=200)
 
 
 class EndomondoWorkout(models.Model):
     endomondo_id = models.IntegerField()
-    workout = models.ForeignKey(Workout)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     timezone = models.CharField(max_length=30, null=True, default=None)
