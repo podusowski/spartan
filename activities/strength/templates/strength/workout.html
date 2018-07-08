@@ -30,21 +30,25 @@
             <dd><span id="last_update_stopwatch" data-beep-sound="{% static 'training/Beep_Short.mp3' %}" data-beep-every="30">--:--</span></dd>
         </dl>
 
-        <dl class="metric"><dt>total reps</dt><dd>{{workout.volume}}</dd></dl>
+        <dl class="metric"><dt>volume</dt><dd>{{workout.volume}}</dd></dl>
     </section>
 {% endif %}
 
 {% if workout.finished %}
     <section>
         <dl class="metric"><dt>started</dt><dd>{{workout.started}}</dd></dl>
-        <dl class="metric"><dt>took</dt><dd>{{workout.duration|duration}}</dd></dl>
+        <dl class="metric"><dt>duration</dt><dd>{{workout.duration|duration}}</dd></dl>
         <dl class="metric"><dt>volume</dt><dd>{{workout.volume}}</dd></dl>
     </section>
 {% endif %}
 
 {% for excercise in workout.excercise_set.all %}
     <section>
-        <h2>{{ excercise.name }}</h2>
+        <h2>
+            <a href="{% url 'workout_statistics' excercise.name %}">
+                {{ excercise.name }}
+            </a>
+        </h2>
 
         <dl class="metric">
             <dt>duration</dt>
