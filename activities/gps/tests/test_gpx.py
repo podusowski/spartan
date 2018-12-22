@@ -47,7 +47,7 @@ class GpxTestCase(TestCase):
 
         expected_points = [{'lat': 51.05772623, 'lon': 16.99809956, 'hr': 100, 'cad': 60,
 			    'time': datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc).isoformat()},
-                           {'lat': 51.05773386, 'lon': 16.99807215, 'hr': 110, 'cad': 70,
+                           {'lat': 51.05773386, 'lon': 16.99807216, 'hr': 110, 'cad': 70,
 			    'time': datetime.datetime(2016, 7, 30, 6, 22, 6, tzinfo=pytz.utc).isoformat()},
                            {'lat': 51.05774031, 'lon': 16.99804198, 'hr': 120, 'cad': 80,
                             'time': datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc).isoformat()}]
@@ -87,7 +87,7 @@ class GpxTestCase(TestCase):
         self.assertEqual((Decimal('51.05772623'), Decimal('16.99809956'), datetime.datetime(2016, 7, 30, 6, 22, 5, tzinfo=pytz.utc)),
                          (points[0].lat, points[0].lon, points[0].time))
 
-        self.assertEqual((Decimal('51.05773386'), Decimal('16.99807215'), datetime.datetime(2016, 7, 30, 6, 22, 6, tzinfo=pytz.utc)),
+        self.assertEqual((Decimal('51.05773386'), Decimal('16.99807216'), datetime.datetime(2016, 7, 30, 6, 22, 6, tzinfo=pytz.utc)),
                          (points[1].lat, points[1].lon, points[1].time))
 
         self.assertEqual((Decimal('51.05774031'), Decimal('16.99804198'), datetime.datetime(2016, 7, 30, 6, 22, 7, tzinfo=pytz.utc)),
