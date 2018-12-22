@@ -9,6 +9,7 @@ from django.shortcuts import *
 from django.utils import timezone
 from django.apps import apps
 from django import forms
+from django.core.paginator import Paginator
 
 from .models import *
 from statistics.statistics import *
@@ -50,9 +51,15 @@ def user_profile(request):
 def dashboard(request):
     statistics = Statistics(request.user) # type: Statistics
     goals = Goals(request.user)
+
+    paginator = Paginator(statistics.weeks(), 4)
+    page = request.GET.get("page")
+    weeks = paginator.get_page(page)
+
     return render(request, 'training/dashboard.html', {'statistics': statistics,
                                                        'goals': goals,
-                                                       'days_left_in_this_month': dates.days_left_in_this_month()})
+                                                       'days_left_in_this_month': dates.days_left_in_this_month(),
+                                                       'weeks': weeks})
 
 
 @login_required

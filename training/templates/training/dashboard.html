@@ -50,7 +50,6 @@
 </aside>
 
 {% load training_format %}
-{% load el_pagination_tags %}
 
 <article>
 
@@ -66,10 +65,6 @@
             </a>
         {% endfor %}
 {% endif %}
-
-{% paginate 4 statistics.weeks as weeks %}
-
-<p>{% show_pages %}</p>
 
 {% for week in weeks %}
     <h2>{{ week.time_range.start.date }}  .. {{ week.time_range.end.date }}</h2>
@@ -104,7 +99,21 @@
     <p>your workouts will show up here</p>
 {% endfor %}
 
-<p class="pagination">{% show_pages %}</p>
+<p>
+    {% if weeks.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ weeks.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        page {{ weeks.number }} of {{ weeks.paginator.num_pages }}
+    </span>
+
+    {% if weeks.has_next %}
+        <a href="?page={{ weeks.next_page_number }}">next</a>
+        <a href="?page={{ weeks.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+</p>
 
 </section>
 </article>
