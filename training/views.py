@@ -27,7 +27,7 @@ def _make_form(form_type, request, initial=None):
 
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('dashboard')
     else:
         return render(request, 'training/index.html', {'users_count': User.objects.all().count()})
