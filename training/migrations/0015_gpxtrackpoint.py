@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('lat', models.DecimalField(decimal_places=8, max_digits=10)),
                 ('log', models.DecimalField(decimal_places=8, max_digits=11)),
                 ('time', models.DateTimeField()),
-                ('gpx', models.ForeignKey(to='training.Gpx')),
+                ('gpx', models.ForeignKey(to='training.Gpx', on_delete=models.CASCADE)),
             ],
         ),
     ]

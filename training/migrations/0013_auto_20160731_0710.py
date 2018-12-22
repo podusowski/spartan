@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='gpx',
             name='workout',
-            field=models.ForeignKey(to='training.Workout', default=None),
+            field=models.ForeignKey(to='training.Workout', default=None, on_delete=models.CASCADE),
             preserve_default=False,
         ),
     ]

@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='workout',
             name='user',
-            field=models.OneToOneField(to=settings.AUTH_USER_MODEL, default=None),
-            preserve_default=False,
+            field=models.OneToOneField(to=settings.AUTH_USER_MODEL, default=None, on_delete=models.CASCADE),
+            preserve_default=False
         ),
     ]

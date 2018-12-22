@@ -25,6 +25,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='reps',
             name='excercise',
-            field=models.ForeignKey(to='training.Excercise'),
+            field=models.ForeignKey(to='training.Excercise', on_delete=models.CASCADE),
         ),
     ]
