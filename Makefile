@@ -5,6 +5,9 @@ DOCKER=docker run --rm -it -e DEBUG=1 -p 8000:8000 -u $(USER) -v `pwd`:/code $(I
 image:
 	docker build -t $(IMAGE_NAME) .
 
+makemigrations:
+	$(DOCKER) python manage.py makemigrations
+
 test:
 	$(DOCKER) python manage.py test
 
