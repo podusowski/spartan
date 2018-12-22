@@ -154,7 +154,7 @@ class Statistics:
         try:
             return workouts.earliest("started").started
         except Exception as e:
-            logging.warn(str(e))
+            logging.warning(str(e))
             return None
 
     def weeks(self, start=datetime.datetime.utcnow()):
