@@ -25,15 +25,6 @@ INSTALLED_APPS = (
     'compressor',
 )
 
-    #'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
-    #'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    #'training.userprof.TimezoneMiddleware',
-    #'django.contrib.messages.middleware.MessageMiddleware',
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'django.middleware.security.SecurityMiddleware',
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,6 +39,7 @@ MIDDLEWARE = [
 
 
 ROOT_URLCONF = 'spartan.urls'
+
 
 TEMPLATES = [
     {
