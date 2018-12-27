@@ -4,3 +4,6 @@ services:
     web:
         ports:
             - 80:8000
+        volumes:
+            - /var/run/postgresql/:/var/run/postgresql
+        user: "1001:1001"
