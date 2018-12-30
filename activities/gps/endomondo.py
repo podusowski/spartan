@@ -40,7 +40,7 @@ def _endomondo_time_bounds(user):
         return latest_workout.started, earliest_workout.started
 
     except Exception as e:
-        logging.warn(str(e))
+        logging.warning(str(e))
         return None, None
 
 
