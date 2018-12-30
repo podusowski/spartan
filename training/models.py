@@ -15,6 +15,7 @@ import activities.registry
 class Workout(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     activity_type = models.CharField(max_length=200, default=None)
+    description = models.CharField(max_length=2000, default="")
 
     @property
     def workout_type(self):
