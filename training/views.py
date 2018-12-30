@@ -70,6 +70,16 @@ def workout(request, training_session_id):
 
 
 @login_required
+def edit_workout(request, workout_id):
+    workout = get_object_or_404(Workout, pk=workout_id, user=request.user)
+    workout.description = request.POST["description"]
+    workout.save()
+
+    activity_module = activities.registry.import_module(workout)
+    return activity_module.redirect_to_workout(workout)
+
+
+@login_required
 def delete_workout(request, workout_id):
     workout = Workout.objects.get(pk=workout_id, user=request.user)
     workout.delete()

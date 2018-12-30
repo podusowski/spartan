@@ -1,6 +1,7 @@
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.conf.urls import url, include
+from django.urls import path
 
 from . import views
 
@@ -25,5 +26,6 @@ urlpatterns = [
     url('^dashboard$', views.dashboard, name='dashboard'),
     url('^delete_workout/(?P<workout_id>[0-9]+)/$', views.delete_workout, name='delete_workout'),
     url('^workout/(?P<training_session_id>[0-9]+)/$', views.workout, name='workout'),
+    path('edit_workout/<int:workout_id>', views.edit_workout, name='edit_workout'),
     url('^explorer/$', views.explorer, name='explorer'),
 ]

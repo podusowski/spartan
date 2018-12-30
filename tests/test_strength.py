@@ -77,6 +77,13 @@ class StrengthWorkoutTestCase(ClientTestCase):
         self.assertIsNotNone(workout.started)
         self.assertIsNotNone(workout.finished)
 
+    def test_setting_description(self):
+        workout = self._start_workout()
+        assert workout.description == ""
+
+        workout = self.post('/edit_workout/{}'.format(workout.id), {'description': 'my description'}).context['workout']
+        assert workout.description == "my description"
+
     def test_timer_based_excercise(self):
         workout = self._start_workout()
 
