@@ -42,3 +42,14 @@ When you have those covered, you can start the container and leave the managemen
 At this point, you database is most likely empty so before using the application, you have to migrate the models.
 
 [TODO]
+
+### Deployment (new)
+
+Spartan comes with `docker-compose` configuration which should be preferred way to start the application.
+
+```
+docker-compose build
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+Django models are migrated at each startup in `dokcer-entrypoint.sh`.
