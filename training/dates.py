@@ -81,7 +81,7 @@ def month_range(number=None, end=None, start=None):
 
     while True:
         yield TimeRange(week_start, arrow.get(week_start).ceil('month').datetime)
-        week_start = arrow.get(week_start).replace(months=-1).datetime
+        week_start = arrow.get(week_start).shift(months=-1).datetime
 
         if end is not None and week_start < end:
             break
