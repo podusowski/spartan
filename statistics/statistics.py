@@ -157,7 +157,7 @@ class Statistics:
             logging.warning(str(e))
             return None
 
-    def weeks(self, start=datetime.datetime.utcnow()):
+    def weeks(self, start=timezone.now()):
         end_time = self._first_time_working_out()
 
         logging.debug("building weeks up to {}".format(end_time))
