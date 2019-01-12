@@ -2,7 +2,7 @@ Spartan
 -------
 Personal activity tracker for both strength and cardio (GPS tracked) excercises.
 
-Live version: http://91.203.132.230 (I couldn't find any cool domain, sorry :))
+Live version is here: http://145.239.84.96 (I couldn't find any cool domain, sorry :))
 
 <a href="https://travis-ci.org/podusowski/spartan"><img src="https://travis-ci.org/podusowski/spartan.svg?branch=master" /></a>
 <a href="https://codeclimate.com/github/podusowski/spartan"><img src="https://codeclimate.com/github/podusowski/spartan/badges/gpa.svg" /></a>
@@ -24,7 +24,13 @@ All of them are managed by `pytest` which is integrated with `django`. The easie
 
 
 ### How to run locally
-You can start debug server using `make debugserver`. It will run the same docker image that is used in production but with `DEBUG` environment variable passed into the container. `DEBUG` will change some things.
+You can start debug server using `docker-compose`:
+
+```
+docker-compose up
+```
+
+It will run the same docker image that is used in production but with `DEBUG` environment variable passed into the container. `DEBUG` will change some things.
 
 - Python logger is set to debug level
 - SQLite is used as database, `db.sqlite3` will be created in current directory
