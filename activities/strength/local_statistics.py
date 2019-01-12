@@ -62,7 +62,7 @@ def metric_chart(user, excercise_name: str, metric_name: str):
     start = first_time(user, excercise_name)
 
     if start is None:
-        logging.warn("It seems that there is no such excercise")
+        logging.warning("It seems that there is no such excercise")
         return
 
     for month in dates.month_range(end=start):
