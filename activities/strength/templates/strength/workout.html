@@ -42,6 +42,13 @@
     </section>
 {% endif %}
 
+<section>
+    <form class="big-form">
+        <textarea placeholder="your description">{{workout.description}}</textarea>
+        <input type="submit" value="save" />
+    </form>
+</section>
+
 {% for excercise in workout.excercise_set.all %}
     <section>
         <h2>
