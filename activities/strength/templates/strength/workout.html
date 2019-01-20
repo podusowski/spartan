@@ -43,8 +43,9 @@
 {% endif %}
 
 <section>
-    <form class="big-form">
-        <textarea placeholder="your description">{{workout.description}}</textarea>
+    <form class="big-form" action="{% url 'edit_workout' workout.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="description" placeholder="your description">{{workout.description}}</textarea>
         <input type="submit" value="save" />
     </form>
 </section>
