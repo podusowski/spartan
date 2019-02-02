@@ -12,7 +12,7 @@ makemigrations:
 	$(DOCKER) python manage.py makemigrations
 
 test:
-	$(DOCKER) python manage.py test
+	docker-compose run web python manage.py test
 
 debugserver:
 	$(DOCKER)
