@@ -50,17 +50,9 @@ textarea:focus {
     border: 1px solid blue;
 }
 
-a:hover {
-    text-decoration: none;
-    font-weight: bold;
-    background-color: #45779D;
-    color: white;
-}
-
 a {
     padding: 2px;
     text-decoration: none;
-    font-weight: bold;
     border-radius: 3px;
     color: #45779D;
 }
