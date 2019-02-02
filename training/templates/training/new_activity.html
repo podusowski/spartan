@@ -1,0 +1,33 @@
+{% extends "training/base.html" %}
+
+{% block content %}
+
+<section>
+    <h2>strength workout</h2>
+
+    <p>
+        This mode gives you live strength workout view where you can add your excercises, sets and reps as you go.
+    </p>
+
+    <p>
+        <a href="{% url 'start_workout' %}">start a live excercise</a>
+    </p>
+</section>
+
+<section>
+    <h2>GPS tracked activities</h2>
+
+    <p>
+        You can import GPS tracked activities by uploading GPX file or by synchronizing your account with endomondo.
+    </p>
+
+    <p>
+        <a href="{% url 'upload_gpx' %}">upload gpx</a>
+    </p>
+
+    <p>
+        <a href="{% url 'endomondo' %}">synchronize endomondo</a>
+    </p>
+</section>
+
+{% endblock %}

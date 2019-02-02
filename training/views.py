@@ -63,6 +63,11 @@ def dashboard(request):
 
 
 @login_required
+def new_activity(request):
+    return render(request, 'training/new_activity.html')
+
+
+@login_required
 def workout(request, training_session_id):
     workout = get_object_or_404(Workout, pk=training_session_id, user=request.user)
     activity_module = activities.registry.import_module(workout)

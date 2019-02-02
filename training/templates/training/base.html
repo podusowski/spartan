@@ -50,6 +50,7 @@
             {% if request.user.is_authenticated %}
                 <div id="menu-content">
                     <a href="{% url 'dashboard' %}">dashboard</a>
+                    <a href="{% url 'new_activity' %}">new</a>
                     <a href="{% url 'start_workout' %}">new workout</a>
                     <a href="{% url 'upload_gpx' %}">upload gpx</a>
                     <a href="{% url 'endomondo' %}">endomondo</a>
