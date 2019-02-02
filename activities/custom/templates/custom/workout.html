@@ -1,0 +1,20 @@
+{% extends 'training/base.html' %}
+
+{% block toolbox %}
+    <a href="{% url 'delete_workout' workout.id %}" class="dangerous" onclick="return confirm('are you sure you want to delete this workout?')">delete</a>
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+{% load training_format %}
+
+<section>
+    <form class="big-form" action="{% url 'edit_workout' workout.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="description" placeholder="your description">{{workout.description}}</textarea>
+        <input type="submit" value="save" />
+    </form>
+</section>
+
+{% endblock %}
