@@ -189,4 +189,5 @@ class StatisticsTestCase(ClientTestCase):
 
 class CustomWorkoutTestCase(ClientTestCase):
     def test_adding_custom_workout(self):
-        self.get('/custom/add_workout')
+        workout = self.get('/custom/add_workout').context['workout']
+        self.get('/workout/{}'.format(workout.id))
