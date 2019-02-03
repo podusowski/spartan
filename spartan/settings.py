@@ -13,6 +13,7 @@ INSTALLED_APPS = (
     'statistics',
     'activities.strength',
     'activities.gps',
+    'activities.custom',
     'nested_inline',
     'django.contrib.admin',
     'django.contrib.auth',

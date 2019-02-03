@@ -22,6 +22,7 @@ urlpatterns = [
 
     url('^strength/', include('activities.strength.urls')),
     url('^gps/', include('activities.gps.urls')),
+    url('^custom/', include('activities.custom.urls')),
 
     url('^dashboard$', views.dashboard, name='dashboard'),
     url('^new_activity$', views.new_activity, name='new_activity'),

@@ -3,7 +3,7 @@ USER=`id -u`:`id -g`
 DOCKER=docker run --rm -it -e DEBUG=1 -p 8000:8000 -u $(USER) -v `pwd`:/code $(IMAGE_NAME)
 
 image:
-	docker build -t $(IMAGE_NAME) .
+	docker-compose build
 
 manage:
 	$(DOCKER) python manage.py $(CMD)

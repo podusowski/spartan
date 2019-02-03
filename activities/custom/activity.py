@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 
 
 TYPE = 'custom'

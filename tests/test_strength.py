@@ -186,3 +186,7 @@ class StatisticsTestCase(ClientTestCase):
         self.assertEqual(THREE_O_CLOCK, second_timer.time_started)
         self.assertEqual(ONE_HOUR, second_timer.duration)
 
+
+class CustomWorkoutTestCase(ClientTestCase):
+    def test_adding_custom_workout(self):
+        self.get('/custom/add_workout')
