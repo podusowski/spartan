@@ -190,4 +190,16 @@ class StatisticsTestCase(ClientTestCase):
 class CustomWorkoutTestCase(ClientTestCase):
     def test_adding_custom_workout(self):
         workout = self.get('/custom/add_workout').context['workout']
+
+        # workout is accesible
         self.get('/workout/{}'.format(workout.id))
+
+        assert workout.started is None
+        assert workout.finished is None
+
+        data = {'description': 'my description', 'started': ONE_O_CLOCK, 'finished': FOUR_O_CLOCK}
+        workout = self.post('/edit_workout/{}'.format(workout.id), data).context['workout']
+
+        assert workout.description == "my description"
+        # assert workout.started == ONE_O_CLOCK
+        # assert workout.finished == FOUR_O_CLOCK
