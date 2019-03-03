@@ -63,6 +63,21 @@ def dashboard(request):
 
 
 @login_required
+def new_dashboard(request):
+    statistics = Statistics(request.user) # type: Statistics
+    goals = Goals(request.user)
+
+    paginator = Paginator(Workout.objects.filter(user=request.user), 20)
+    page = request.GET.get("page")
+    workouts = paginator.get_page(page)
+
+    return render(request, 'training/new_dashboard.html', {'statistics': statistics,
+                                                       'goals': goals,
+                                                       'days_left_in_this_month': dates.days_left_in_this_month(),
+                                                       'workouts': workouts})
+
+
+@login_required
 def new_activity(request):
     return render(request, 'training/new_activity.html')
 

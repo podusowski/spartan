@@ -25,6 +25,7 @@ urlpatterns = [
     url('^custom/', include('activities.custom.urls')),
 
     url('^dashboard$', views.dashboard, name='dashboard'),
+    url('^new_dashboard$', views.new_dashboard),
     url('^new_activity$', views.new_activity, name='new_activity'),
     url('^delete_workout/(?P<workout_id>[0-9]+)/$', views.delete_workout, name='delete_workout'),
     url('^workout/(?P<training_session_id>[0-9]+)/$', views.workout, name='workout'),

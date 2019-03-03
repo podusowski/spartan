@@ -1,0 +1,130 @@
+{% extends "training/base.html" %}
+
+{%block content%}
+
+<aside>
+
+    <section>
+        <h2>goals</h2>
+        {% for goal in goals.all %}
+            <a href="{% url 'workout_statistics' goal.name %}">
+                <dl class="metric-mixed">
+                    <dt>{{ goal.name }}</dt>
+                    <dd>{{ goal.left }}</dd>
+                    <dd><div class="percent-bar {{ goal.forecast.name }}"><div style="width: {{ goal.percent }}%"> </div></div></dd>
+                </dl>
+            </a>
+        {% empty %}
+            <p class="note">You have no goals defined, go ahead and add some.</p>
+        {% endfor %}
+
+        {% if goals.all %}
+            <p class="note">
+                {% if days_left_in_this_month > 0 %}
+                    you have today and <strong>{{days_left_in_this_month}}</strong> days left to finish your goals
+                {% else %}
+                    today is the last day to finish your goals
+                {% endif %}
+            </p>
+        {% endif %}
+
+        <a class="section-link" href="{% url 'goals' %}">manage</a>
+    </section>
+
+    {% if statistics.favourites_this_month %}
+    <section>
+            <h2>this month</h2>
+            {% for excercise in statistics.favourites_this_month %}
+                <a href="{% url 'workout_statistics' excercise.name %}">
+                    <dl class="metric-mixed">
+                        <dt>{{ excercise.name }}</dt>
+                        <dd>{{ excercise.volume }}</dd>
+                        <dd>{{ excercise.count }} times</dd>
+                    </dl>
+                </a>
+            {% endfor %}
+        <a class="section-link" href="{% url 'statistics_this_month' %}">more</a>
+    </section>
+    {% endif %}
+
+</aside>
+
+{% load training_format %}
+{% load humanize %}
+
+<article>
+
+{% if statistics.not_started_workouts %}
+    <section>
+        <h2>not started</h2>
+        {% for workout in statistics.not_started_workouts %}
+            <a href="{% url 'workout' workout.id %}">
+                <dl>
+                    <dt>{{ workout.workout_type }}</dt>
+                </dl>
+            </a>
+        {% endfor %}
+    </section>
+{% endif %}
+
+{% for workout in workouts %}
+    <section class="dashboard-workout workout-color-{{ workout.color }}">
+    <span class=note>{{ workout.started|naturaltime }}</span>
+
+    {% if workout.live %}
+        <h2>live</h2>
+    {% else %}
+        <h2><strong>{{ workout.duration|duration }}</strong> of {{ workout.workout_type }}</h2>
+    {% endif %}
+
+    <p>{{ workout.volume }}</p>
+    {% for day in week.days %}
+        <div class="day">
+            <div class="name">
+                {{ day.start_time|date:"D" }}
+            </div>
+            <div class="content">
+                {% for workout in day.workouts %}
+                    <a href="{% url 'workout' workout.id %}">
+                        <dl class="dashboard-workout workout-color-{{ workout.color }}">
+                            <dt>
+                                <span class="note">
+                                    {{ workout.started|date:"P" }}
+                                </span>
+                                {{ workout.workout_type }}
+                            </dt>
+                            <dd>
+                            </dd>
+                        </dl>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</section>
+{% empty %}
+    <section>
+    <p>your workouts will show up here</p>
+    </section>
+{% endfor %}
+
+<p>
+    {% if weeks.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ weeks.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        page {{ weeks.number }} of {{ weeks.paginator.num_pages }}
+    </span>
+
+    {% if weeks.has_next %}
+        <a href="?page={{ weeks.next_page_number }}">next</a>
+        <a href="?page={{ weeks.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+</p>
+
+</section>
+</article>
+
+{% endblock %}
